@@ -91,17 +91,17 @@
 	  <a href="javascript:void(0)" onclick="w3_close()"class=" w3-button" style="border-radius: 70px; margin:30px"><i class="fas fa-times"></i></a>
 	  <a class="navbar-brand" href="index.html" style="margin-left:30px"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="35"/></a>
   </div>
-  <div class="container" style="margin:30px 130px; font-size:14px">
+  <div class="container text-dark" style="margin:30px 130px; font-size:14px">
       <h2><b>모든 제품</b></h2><br>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>암케어/카우치</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>사무용의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>식탁의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>스툴/벤치</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>바의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>어린이의자</b></a><br><br>
-	  <a href="#고객지원" onclick="w3_close()" class="w3-bar-item w3-button">고객지원</a>
-	  <a href="#배송조회" onclick="w3_close()" class="w3-bar-item w3-button">배송조회</a>
-	  <a href="#마이페이지" onclick="w3_close()" class="w3-bar-item w3-button">마이페이지</a>
+	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>암케어/카우치</b></a>
+	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>사무용의자</b></a>
+	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>식탁의자</b></a>
+	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>스툴/벤치</b></a>
+	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>바의자</b></a>
+	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>어린이의자</b></a><br><br>
+	  <a href="#고객지원" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
+	  <a href="#배송조회" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
+	  <a href="#마이페이지" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>
  </div>
 </nav>
 <!-- Sidebar 끝-->
@@ -111,33 +111,34 @@
 <div class="container" style="max-width:1600px">		
 	<nav class="navbar navbar-expand-sm  navbar-light  w3-border-bottom w3-border-light-grey w3-padding-16">
 	  <div class="w3-button w3-padding-16 w3-left" style="border-radius: 70px" onclick="w3_open()"><i class="fas fa-align-justify"></i></div>
-		  <a class="navbar-brand" href="index.html" style="margin-left:25px"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="35"/></a>
+		  <a class="navbar-brand ml-4" href="index.html"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="37"/></a>
 	
-		  <ul class="navbar-nav w-25 nav_text" style="font-size:14px">
+		  <ul class="navbar-nav  nav_text" style="font-size:14px">
 		    <li class="nav-item text ml-xl-4 ml-2">
 		      <a class="nav-link text-body" href="productMain2.html"><b>모든 제품</b></a>
 		    </li>
-		    <li class="nav-item ml-2 mr-2" >
+		    <li class="nav-item ml-2 mr-5" >
 		      <a class="nav-link text-body" href="#고객지원"><b>고객지원</b></a>
 		    </li>
 		  </ul>
-		 <form class="mx-2 my-auto d-inline w-100">
-	        <div class="input-group">
-	            <input type="text" class="form-control border" style=" border-radius: 25px; " placeholder="검색어 입력">
-	            <span class="input-group-append">
-	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button">
+		 
+	        <div class="input-group" style="max-width:530px">
+	            <input type="text" class="form-control " style=" border-radius: 25px; background-color: #f2f2f2; border: 0px; height:50px" placeholder="&emsp;검색어 입력">
+	           <span class="input-group-append"> 
+	                <button class="btn btn-outline-secondary border ml-1" style="border-radius: 20px" type="button">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            </span>
 	        </div>
-	    </form>
-		
-		<ul class="navbar-nav w-25 list-group-horizontal mt-sm-0 mt-2 mx-auto">
-	    	<li class="nav-item ml-auto"><a class="nav-link text-dark fa fa-truck fa-lg" href="#"></a></li>
+
+		<ul class="navbar-nav w-15  list-group-horizontal">
+	    	<li class="nav-item" style="margin-left:50px"><a class="nav-link text-dark fa fa-truck fa-lg" href="#"></a></li>
 	    	<li class="nav-item ml-2"><a class="nav-link text-dark fa fa-user fa-lg" href="#"></a></li>
 	    	<li class="nav-item ml-2"><a class="nav-link text-dark fa fa-heart fa-lg" href="wishList.html"></a></li>
 	    	<li class="nav-item ml-2"><a class="nav-link text-dark fa fa-shopping-bag fa-lg" href="#"></a></li>
 	   	</ul>	  
+
+
 	</nav>
 </div>
 <!-- 상단 네비게이션 끝 --> 
@@ -173,7 +174,7 @@
 	    <div class="carousel-item">
 	      <img src="<%= ctxPath%>/images/main1.jpg" class="d-block w-100" alt="..."> 
 	      <div class=" d-none d-md-block w3-display-middle w3-margin-left w3-right"> 
-		    <h3 class="text-center text-white">2022.01.01.</h3>
+		    <h3 class="text-center text-white"><b>2022.01.01.</b></h3>
 		    <h3 class="w3-text-white"><b>IKEA 쌍용점이 여러분을 찾아갑니다.</b></h3>
 		  </div> 
 	    </div>    
@@ -193,11 +194,11 @@
 <!-- header 끝-->
 
 <!-- Page content 시작-->
-<div class="w3-content w3-padding" style="max-width:1130px">
+<div class="w3-content w3-padding text-dark" style="max-width:1130px">
 
 <!-- 인기제품 시작 -->
   <div class="w3-container w3-padding-32" id="about">
-    <h4 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>IKEA 인기제품</b></h4>
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>IKEA 인기제품</b></h3>
     <p style="font-size:12px">고객들의 솔직 후기로 사랑받고 있는 IKEA의 인기제품을 확인해 보세요!</p>
   </div>
 
@@ -272,7 +273,7 @@
  
 	<!-- 신제품 시작 -->
 	<div class="w3-container w3-padding-32" id="about">
-	  <h4 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>신제품을 만나보세요</b></h4>
+	  <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>신제품을 만나보세요</b></h3>
 	  <p style="font-size:12px">스마트하고 관리가 편리하며 쌓아둘 수 있는 스툴과 몸을 감싸주는 아늑한 소파까지 다양한 신제품을 만나보세요.</p>
 	</div>
 
@@ -347,15 +348,15 @@
 
  <!-- 서비스 항목 시작 -->
  <div class="w3-content w3-padding" style="max-width:1170px; margin-top:80px">
-    <h4 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>IKEA 서비스</b></h4>
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>IKEA 서비스</b></h3>
     <p style="font-size:12px">직접 해도 좋고, 도움을 받아도 좋아요. IKEA는 생활이 더욱 간편해지는 다양한 서비스를 제공합니다.</p>
  
    <div class="card-deck mb-5" style="margin-top:35px">
 		  <div class="card bg-light text-black" style="margin-left:15px">
 		    <div class="card-body text-center">
 		      <span class="card-text"><i class="fa fa-truck"></i></span><br>
-		      <span class="card-text" style="font-size:14px"><b>배송 서비스</b></span>
-		      <p class="card-text" style="font-size:12px">편리한 배송 옵션을 살펴보세요</p>
+		      <span class="card-text" style="font-size:16px"><b>배송 서비스</b></span>
+		      <p class="card-text mt-1" style="font-size:13px">편리한 배송 옵션을 살펴보세요</p>
 	
 		<!-- Button trigger modal1 -->
 		<button type="button" class="btn btn-light" style="font-size:12px" data-toggle="modal" data-target="#Modal1">
@@ -402,8 +403,8 @@
 		  <div class="card bg-light text-black">
 		    <div class="card-body text-center">
 		      <span class="card-text"><i class="fa fa-pen"></i></span><br>
-		      <span class="card-text" style="font-size:14px"><b>플래닝 서비스</b></span>
-		      <p class="card-text" style="font-size:12px">제품 추천부터 배치까지 전문가의 도움을 받아보세요</p>
+		      <span class="card-text" style="font-size:16px"><b>플래닝 서비스</b></span>
+		      <p class="card-text mt-1" style="font-size:13px">제품 추천부터 배치까지 전문가의 <br>도움을 받아보세요</p>
 		    
 		<!-- Button trigger modal2 -->
 		<button type="button" class="btn btn-light" style="font-size:12px" data-toggle="modal" data-target="#Modal2">
@@ -446,8 +447,8 @@
 		  <div class="card bg-light text-black" style="margin-right:25px">
 		    <div class="card-body text-center">
 		      <span class="card-text"><i class="fa fa-tools"></i></span><br>
-		      <span class="card-text" style="font-size:14px"><b>조립 서비스</b></span>
-		      <p class="card-text" style="font-size:12px">IKEA에게 조립을 맡기고 소중한 시간을 아끼세요</p>
+		      <span class="card-text" style="font-size:16px"><b>조립 서비스</b></span>
+		      <p class="card-text mt-1" style="font-size:13px">IKEA에게 조립을 맡기고 소중한 <br>시간을 아끼세요</p>
 		      
 		<!-- Button trigger modal3 -->
 		<button type="button" class="btn btn-light" style="font-size:12px" data-toggle="modal" data-target="#Modal3">
@@ -492,7 +493,7 @@
  
   <!-- 추천제품 시작 -->
   <div class="w3-container w3-padding-32" id="projects">
-    <h4 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>추천 제품</b></h4>
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16"><b>추천 제품</b></h3>
   </div>
   
 	<div class="w3-row" id="myGrid" style="margin-bottom:120px">
