@@ -13,7 +13,7 @@ public class LoginAction extends AbstractController {
 		
 		
 //		super.setRedirect(false); // 기본값이 false 이므로 forward로 페이지를 보여주고 싶을때는 생략가능
-			super.setViewPage("/WEB-INF/login.jsp");
+			super.setViewPage("/WEB-INF/login/login.jsp");
 		
 	}
 

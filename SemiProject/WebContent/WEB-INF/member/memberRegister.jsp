@@ -6,7 +6,7 @@
 	// /SemiProject
 %>    
 
-<jsp:include page="header.jsp"/>
+<jsp:include page="/WEB-INF/header.jsp"/>
 
 
 <style>
@@ -184,7 +184,7 @@
 	      <tr>
 	         <td colspan="2" style="text-align: center; vertical-align: middle;">
 	         <!-- iframe 태그가 문서를 넣어주는곳이다 -->
-	            <iframe src="../iframeAgree/agree.html" width="100%" height="150px" class="box" ></iframe>
+	            <iframe src="../iframeAgree/agree.html" width="100%" height="200px" class="box" ></iframe>
 	         </td>
 	      </tr>
 	      <tr>
@@ -216,6 +216,6 @@
 </html>
 
 
-<jsp:include page="footer.jsp"/>
+<jsp:include page="/WEB-INF/footer.jsp"/>
 
 

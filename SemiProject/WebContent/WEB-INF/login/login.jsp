@@ -9,7 +9,7 @@
 
 <jsp:include page="/WEB-INF/header.jsp"/>
 
-<div class="container pt-5">
+
 <div class="container"  style="max-width:1000px">
 <!-- 상단 컨텐츠 시작 -->
  <div class="row custom-topcontents">
@@ -20,7 +20,7 @@
 		<a href="memberRegister.html" style="font-size:14px"><b>회원가입</b></a> 
 	</div>
 	<div class="col-md-9">
-		<img src="./images/loginpage.jpg" class="img-fluid"	alt="반응형 로그인 이미지" width="750" height="300">
+		<img src="<%= ctxPath%>/images/loginpage.jpg" class="img-fluid"	alt="반응형 로그인 이미지" width="750" height="300">
  	</div>
  </div>
 <!-- 상단 컨텐츠 끝 -->
@@ -72,7 +72,7 @@
 			
 	
 		<!-- 아이디 찾기 시작 -->
-		<a style="cursor: pointer; margin-left:26px" data-toggle="modal" data-target="#modalid" data-dismiss="modal">아이디찾기</a> /
+		<a style="cursor: pointer; margin-left:18px" data-toggle="modal" data-target="#modalid" data-dismiss="modal">아이디찾기</a> /
 		          
 		<!-- Modal 시작-->
 		<div class="modal fade" id="modalid">
@@ -145,13 +145,6 @@
 <!-- 중앙 컨텐츠 끝 -->
 </div><hr>
 
-
-<!-- Footer -->
- <div id="footer">
-	<div class="w3-light w3-center w3-padding-24">Powered by <a href="https://www.sist.co.kr/index.jsp" title="W3.CSS" target="_blank" class="w3-hover-opacity">©SSANGYONG</a></div>
-</div> 
-</div>	
- <!-- container 끝 -->
 
 
 <!-- Optional JavaScript -->
