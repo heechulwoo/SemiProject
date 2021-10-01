@@ -113,25 +113,27 @@
 	  <div class="w3-button w3-padding-16 w3-left" style="border-radius: 70px" onclick="w3_open()"><i class="fas fa-align-justify"></i></div>
 		  <a class="navbar-brand ml-4" href="<%= ctxPath %>/index.one"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="37"/></a>
 	
-		  <ul class="navbar-nav  nav_text" style="font-size:14px">
+		  <ul class="navbar-nav w-25 nav_text" style="font-size:14px">
 		    <li class="nav-item text ml-xl-4 ml-2">
 		      <a class="nav-link text-body" href="<%= ctxPath %>/product/productAll.one"><b>모든 제품</b></a>
 		    </li>
-		    <li class="nav-item ml-2 mr-5" >
+		    <li class="nav-item ml-2 mr-2" >
 		      <a class="nav-link text-body" href="#고객지원"><b>고객지원</b></a>
 		    </li>
 		  </ul>
 		 
-	        <div class="input-group" style="max-width:530px">
-	            <input type="text" class="form-control " style=" border-radius: 25px; background-color: #f2f2f2; border: 0px; height:50px" placeholder="&emsp;검색어 입력">
-	           <span class="input-group-append"> 
-	                <button class="btn btn-outline-secondary border ml-1" style="border-radius: 20px" type="button">
+	    <form class="mx-2 my-auto d-inline w-100">
+	        <div class="input-group">
+	            <input type="text" class="form-control border" style=" border-radius: 25px; " placeholder="검색어 입력">
+	            <span class="input-group-append">
+	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            </span>
 	        </div>
+	    </form>
 
-		<ul class="navbar-nav w-15  list-group-horizontal nav_text">
+		<ul class="navbar-nav w-25 list-group-horizontal mt-sm-0 mt-2 mx-auto nav_text">
 	    	<li class="nav-item text" style="margin-left:50px"><a class="nav-link text-body text-dark fa fa-truck fa-lg" href="#"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" href="#"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-heart fa-lg" href="<%= ctxPath%>/product/wishlist.one"></a></li>
