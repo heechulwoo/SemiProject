@@ -8,14 +8,9 @@
 
 <jsp:include page="../header.jsp"/>
 
-<style>
-
-</style>
-
 <script>
 
 </script>
-
 
 	<div class="container-fluid container-xl">
 		<nav aria-label="breadcrumb">
