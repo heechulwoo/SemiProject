@@ -4,7 +4,7 @@
 body {
 	font-family: 'NanumGothic', 'MalgunGothic' ; 
 	font-size: 12pt;
-	color: dark;
+	color: black;
 }
 
 #sideinfo	{ background-color: #E6E6E6;  
@@ -26,13 +26,13 @@ img { border: 0px; }
 a {text-decoration: none !important;}
 
 /* unvisited link */
-a:link {color: #005c99;	}
+a:link {color: #000;}
 
 /* visited link */
-a:visited {color: #005c99;}
+a:visited {color: #000;}
 
 /* mouse over link */
-a:hover { color:maroon; 
+a:hover { color:#000; 
           font-weight: bold; }
           
 /* selected link */
