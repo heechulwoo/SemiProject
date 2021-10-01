@@ -9,7 +9,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- jstl을 사용하기 위함  -->    
 
 
+
 <jsp:include page="/WEB-INF/header.jsp"/>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
 
 
 <style>
@@ -73,7 +75,7 @@
 		<table class="table my-4" style="font-size: 10pt">
 		  <thead>
 		  <tr>
-		      <th class="table-light" >나의 정보</th>
+		      <th class="table-light w3-border-light-grey">나의 정보</th>
 		      <td></td>
 		      <td></td>
 		    </tr>
