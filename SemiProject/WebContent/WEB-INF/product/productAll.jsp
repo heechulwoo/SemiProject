@@ -149,7 +149,7 @@
 		</div>
 		<hr>
 	</div>
-	<div class="container-fluid container-xl mt-1">
+	<div class="container-fluid container-xl mt-1 mb-5">
 		<div class="row">
 			<div class="col-md-3 col-6 product">
 				<div class="hidden my-2">
