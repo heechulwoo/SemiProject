@@ -132,8 +132,8 @@
 	      <tr>
 	         <td style="width: 20%; font-weight: bold;">주소</td>
 	         <td style="width: 80%; text-align: left;">
-	            <input type="text" id="address" name="address" size="40" placeholder="주소" /><br/>
-	            <input type="text" id="detailAddress" name="detailAddress" size="40" placeholder="상세주소" />&nbsp;<input type="text" id="extraAddress" name="extraAddress" size="40" placeholder="참고항목" /> 
+	            <input type="text" id="address" name="address" size="40" placeholder="주소" /><br>
+	            <input type="text" id="detailAddress" name="detailAddress" size="40" placeholder="상세주소" class="mt-1"/>&nbsp;<input type="text" id="extraAddress" name="extraAddress" size="40" placeholder="참고항목" /> 
 	            <span class="error">주소를 입력하세요</span>
 	         </td>
 	      </tr>
