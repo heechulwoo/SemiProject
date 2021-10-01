@@ -6,13 +6,8 @@
 	// /SemiProject
 %>    
 
+<jsp:include page="header.jsp"/>
 
-
-
-
-
-<!doctype html>
-<html lang="ko">
 
 <style>
    table#tblMemberRegister {
@@ -47,33 +42,7 @@
    
 </style>
 
-<!-- title icon -->
-<link rel="icon" href="<%= ctxPath%>/images/ico.jpg">
 
-<!-- Font Awesome 5 Icons -->
-<script src="https://kit.fontawesome.com/69a29bca1e.js" crossorigin="anonymous"></script>
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
-
-<!-- Optional JavaScript -->
-<script src="<%= ctxPath%>/js/jquery-3.3.1.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script> 
-<script type="text/javascript" src="<%= ctxPath%>/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
-
-
-<link rel="stylesheet" href="<%= ctxPath%>/css/style.css">
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/jquery-ui-1.11.4.custom/jquery-ui.css" />
-
-<!-- Required meta tags -->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- w3schools 탬플릿 -->
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	
-
-	
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -82,96 +51,17 @@
 				
 	});
 
-	
-	
-	
-	function w3_open() {
-		  document.getElementById("mySidebar").style.display = "block";
-		}
-		 
-		function w3_close() {
-		  document.getElementById("mySidebar").style.display = "none";
-		}
-	
 
 </script>	
 
 
-
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>회원가입</title>
-	<link rel="icon" href="./images/ico2.jpg">
-
-
-    
-<body>
-  
-  
-  <!-- Sidebar 시작 -->
-<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
-  <div class="container">
-	  <a href="javascript:void(0)" onclick="w3_close()"class=" w3-button" style="border-radius: 70px; margin:30px"><i class="fas fa-times"></i></a>
-	  <a class="navbar-brand" href="index.html" style="margin-left:30px"><img src="./images/logo.png" alt="IKEA_logo" width="90" height="35"/></a>
-  </div>
-  <div class="container" style="margin:30px 130px; font-size:14px">
-      <h2><b>모든 제품</b></h2><br>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>암케어/카우치</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>사무용의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>식탁의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>스툴/벤치</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>바의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button"><b>어린이의자</b></a><br><br>
-	  <a href="#고객지원" onclick="w3_close()" class="w3-bar-item w3-button">고객지원</a>
-	  <a href="#배송조회" onclick="w3_close()" class="w3-bar-item w3-button">배송조회</a>
-	  <a href="#마이페이지" onclick="w3_close()" class="w3-bar-item w3-button">마이페이지</a>
- </div>
-</nav>
-<!-- Sidebar 끝-->
-
-
-<!-- 상단 네비게이션 시작 -->
-<div class="container" style="max-width:1300px">		
-
-<nav class="navbar navbar-expand-sm  navbar-light  w3-border-bottom w3-border-light-grey w3-padding-16">
-  <div class="w3-button w3-padding-16 w3-left" style="border-radius: 70px" onclick="w3_open()"><i class="fas fa-align-justify"></i></div>
-	  <a class="navbar-brand" href="index.html" style="margin-left:25px"><img src="./images/logo.png" alt="IKEA_logo" width="90" height="35"/></a>
-
-	  <ul class="navbar-nav" style="font-size:14px">
-	    <li class="nav-item text">
-	      <a class="nav-link text-body" href="board.html"><b>모든 제품</b></a>
-	    </li>
-	    <li class="nav-item" >
-	      <a class="nav-link text-body" href="#고객지원"><b>고객지원</b></a>
-	    </li>
-	  </ul>
-	
-	<form class="form-inline my-2 my-lg-0" style="margin-left:50px">
-	      <input class="form-control mr-sm-2 w-800" style="width:450px;  border-radius: 25px; font-size:12px" type="search" placeholder="검색어 입력" aria-label="Search">
-	      <a><button class="btn my-2 my-sm-0 btn-outline-secondary" type="submit" style="border-radius: 20px"><i class="fa fa-search"></i></button></a>
-	</form>
-		  
-	 <div class="w3-right w3-hide-small w3-text-black" style="margin-left:90px">
-     <b>
-      <a href="#배송조회" class="w3-bar-item w3-button h6"><i class="fa fa-truck"></i></a>
-      <a href="login.html" class="w3-bar-item w3-button h6"><i class="fa fa-user"></i></a>
-      <a href="#위시리스트" class="w3-bar-item w3-button h6"><i class="fa fa-heart"></i></a>
-      <a href="#장바구니" class="w3-bar-item w3-button h6"><i class="fa fa-shopping-bag"></i></a>
-      </b>
-    </div>		
-	</nav>
-</div>
-<!-- 상단 네비게이션 끝 --> 
-  
 
 
   <!-- 상단 컨텐츠 시작 -->
   <div class="container" style="max-width:850px; margin-top:40px">
 	<div class="row custom-topcontents">
 		<h2>&nbsp;<b>회원 가입</b></h2>
-			<img class="w3-image" width="1000" height="300" src="./images/제목 없음.png" style="margin-top:40px">	
+			<img class="w3-image" width="1000" height="300" src="<%= ctxPath%>/images/제목 없음.png" style="margin-top:40px">	
 		</div>
 	
 	<div class="row" id="divRegisterFrm">
@@ -309,23 +199,14 @@
 	   </form>
 	   </div>
 	</div>
+</div>
 		
-		 	
-
-		
-		</div>
-		
-	</div>
 	<!-- row 끝 -->
 	<!-- 중앙 컨텐츠 끝 -->
 
 	<hr>
 
-	<!-- 푸터 시작 -->
-	<div id="footer">
-		<div class="w3-light w3-center w3-padding-24">Powered by <a href="https://www.sist.co.kr/index.jsp" title="W3.CSS" target="_blank" class="w3-hover-opacity">©SSANGYONG</a></div>
-	</div>
-	
+
  <!-- .container 끝 -->
 
 
@@ -333,3 +214,8 @@
 	
 </body>
 </html>
+
+
+<jsp:include page="footer.jsp"/>
+
+
