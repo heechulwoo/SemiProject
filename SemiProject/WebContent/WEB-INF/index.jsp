@@ -18,7 +18,7 @@
 <jsp:include page="header.jsp"/>
 
 <!-- header 시작-->
-<header class="w3-display-container w3-content w3-wide" style="max-width:1100px; margin-top:40px" id="home">
+<header class="w3-display-container w3-content w3-wide" style="max-width:1100px; margin-top:40px;" id="home">
 <div class="container w3-padding-16">
 	<div id="carousel" class="carousel slide" data-ride="carousel">
 	  <ol class="carousel-indicators">

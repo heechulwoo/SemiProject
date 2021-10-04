@@ -42,7 +42,6 @@
 <script type="text/javascript">
 
 	
-	
 </script>
 
 <jsp:include page="../header.jsp" />
