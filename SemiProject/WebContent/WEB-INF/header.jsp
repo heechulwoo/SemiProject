@@ -53,6 +53,23 @@
 			display: none;
 		}
 	}
+    html {
+      position: relative;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100%;
+    }
+
+    footer {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+    }
 </style>
 
 <script>
