@@ -6,13 +6,13 @@ create table tbl_member
 ,pwd                varchar2(200)  not null  -- 비밀번호 (SHA-256 암호화 대상)
 ,name               varchar2(30)   not null  -- 회원명
 ,email              varchar2(200)  not null  -- 이메일 (AES-256 암호화/복호화 대상)
-,mobile             varchar2(200)            -- 연락처 (AES-256 암호화/복호화 대상) 
-,postcode           varchar2(10)              -- 우편번호
-,address            varchar2(200)            -- 주소
-,detailaddress      varchar2(200)            -- 상세주소
+,mobile             varchar2(200)  not null  -- 연락처 (AES-256 암호화/복호화 대상) 
+,postcode           varchar2(10)   not null  -- 우편번호
+,address            varchar2(200)  not null  -- 주소
+,detailaddress      varchar2(200)  not null  -- 상세주소
 ,extraaddress       varchar2(200)            -- 참고항목
-,gender             varchar2(1)              -- 성별   남자:1  / 여자:2
-,birthday           varchar2(10)             -- 생년월일   
+,gender             varchar2(1)    not null  -- 성별   남자:1  / 여자:2
+,birthday           varchar2(10)   not null  -- 생년월일   
 ,registerday        date default sysdate     -- 가입일자 
 ,lastpwdchangedate  date default sysdate     -- 마지막으로 암호를 변경한 날짜  
 ,status             number(1) default 0 not null     -- 회원탈퇴유무   0: 사용가능(가입중) / 1:사용불능(탈퇴) 
@@ -24,6 +24,11 @@ create table tbl_member
 ,constraint CK_tbl_member_idle check( idle in(0,1) )
 );
 
+alter table tbl_member modify birthday not null;
+
+select *
+from user_constraints
+where table_name = 'TBL_MEMBER';
 
 -- **** 회원로그인 테이블 생성하기 **** --
 create table tbl_loginhistory
@@ -244,3 +249,5 @@ create table tbl_shoppingmap
 ,detailaddress      varchar2(200) not null        
 ,extraaddress       varchar2(200)
 );
+
+select * from tab;
