@@ -24,6 +24,7 @@ create table tbl_member
 ,constraint CK_tbl_member_idle check( idle in(0,1) )
 );
 
+
 alter table tbl_member modify birthday not null;
 
 select *
@@ -202,14 +203,23 @@ create table tbl_product
  constraint fk_tbl_product foreign key(fk_cnum) references tbl_category(cnum)
  );
 
-update tbl_product set color='블랙'
-where pnum='10009002';
+alter table tbl_product add prodimage varchar2(30);
+ALTER TABLE tbl_product MODIFY prodimage VARCHAR2(100);
+
+select pnum, fk_cnum, pname, price, color, pinpupdate, prodimage 
+from tbl_product;
+
+update tbl_product set prodimage = '쿨라베리_블랙1.webp'
+where pnum='50009070';
+
 
 insert into tbl_product(pnum, fk_cnum, pname, price, color, pqty, psummary, pcontent)
 values(1000||seq_pnum.nextval, 1000, 'NILSERIK 닐세리크', 69900, '베이지/비슬레 다크그레이', 20, '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다.', '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다. 좌식/입식 겸용 책상과 함께 사용하면 좋습니다.');
 
 insert into tbl_product(pnum, fk_cnum, pname, price, color, pqty, psummary, pcontent)
 values(1000||seq_pnum.nextval, 1000, 'NILSERIK 닐세리크', 69900, '블랙/비슬레 다크그레이', 15, '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다.', '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다. 좌식/입식 겸용 책상과 함께 사용하면 좋습니다.');
+
+------------------------------------------------------------------------------------------------
 
 
 select * from tbl_product
@@ -251,13 +261,22 @@ values(seq_img.nextval, 10009001, '닐세리크1.webp');
 insert into tbl_imagefile(imgfileno, fk_pnum, imgfilename)
 values(seq_img.nextval, 10009001, '닐세리크2.webp');
 
+update tbl_imagefile set imgfilename = '쿨라베리_브라운4.webp'
+where imgfileno=124;
 
-select * from tbl_product
+
+121	50009069	5000	KULLABERG 쿨라베리	59900	브라운
+-----------------------------------------------------------------------
+
+select pnum, fk_cnum, pname, price, color, pinpupdate, prodimage 
+from tbl_product
 order by pnum;
 
 select *
 from tbl_imagefile
 order by imgfileno;
+
+
 
 commit;
 
