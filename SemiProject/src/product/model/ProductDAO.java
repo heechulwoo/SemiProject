@@ -49,23 +49,23 @@ public class ProductDAO implements InterProductDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select pnum,fk_cnum,pname,price,color, pinupdate ,pqty,psummary,pcontent,cname " + 
+			String sql = " select pnum,fk_cnum,pname,price,color, pinupdate ,pqty,psummary,pcontent,cname, prodimage " + 
 						 " from " + 
 						 "     ( " + 
-						 "     select pnum,fk_cnum,pname,price,color,to_char(pinpupdate,'yyyy-mm-dd') as pinupdate ,pqty,psummary,pcontent " + 
+						 "     select pnum,fk_cnum,pname,price,color,to_char(pinpupdate,'yyyy-mm-dd') as pinupdate ,pqty,psummary,pcontent, prodimage " + 
 						 "     from " + 
 						 "     ( " + 
-						 "         select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(order by pinpupdate desc) as new " + 
+						 "         select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(order by pinpupdate desc) as new, prodimage " + 
 						 "         from " + 
 						 "         ( " + 
-						 "             select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(partition by pname order by pinpupdate) as updatedate " + 
+						 "             select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(partition by pname order by pinpupdate) as updatedate, prodimage " + 
 						 "             from tbl_product " + 
 						 "         ) " + 
 						 "         where updatedate = 1 " + 
 						 "     ) " + 
 						 "     where new < 5 " + 
 						 " )P join tbl_category C " + 
-						 " on P.fk_cnum = c.cnum";
+						 " on P.fk_cnum = c.cnum ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -85,6 +85,7 @@ public class ProductDAO implements InterProductDAO {
 				pvo.setPsummary(rs.getString(8));
 				pvo.setPcontent(rs.getString(9));
 				pvo.setCname(rs.getString(10));
+				pvo.setProdimage(rs.getNString(11));
 				
 				newproductList.add(pvo);
 			}
