@@ -167,6 +167,25 @@ create table tbl_category
  CONSTRAINT pk_tbl_category_cnum primary key(cnum)
 );
 
+insert into tbl_category(cnum, cname)
+values(1000, '사무용의자');
+
+insert into tbl_category(cnum, cname)
+values(2000, '식탁의자');
+
+insert into tbl_category(cnum, cname)
+values(3000, '어린이의자');
+
+insert into tbl_category(cnum, cname)
+values(4000, '카페의자');
+
+insert into tbl_category(cnum, cname)
+values(5000, '스툴의자');
+
+commit;
+
+select *
+from tbl_category;
 
 -- ***** 제품 테이블 생성하기 ***** --
 create table tbl_product
@@ -182,6 +201,21 @@ create table tbl_product
  constraint pk_tbl_product_pnum primary key(pnum),
  constraint fk_tbl_product foreign key(fk_cnum) references tbl_category(cnum)
  );
+
+update tbl_product set color='블랙'
+where pnum='10009002';
+
+insert into tbl_product(pnum, fk_cnum, pname, price, color, pqty, psummary, pcontent)
+values(1000||seq_pnum.nextval, 1000, 'NILSERIK 닐세리크', 69900, '베이지/비슬레 다크그레이', 20, '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다.', '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다. 좌식/입식 겸용 책상과 함께 사용하면 좋습니다.');
+
+insert into tbl_product(pnum, fk_cnum, pname, price, color, pqty, psummary, pcontent)
+values(1000||seq_pnum.nextval, 1000, 'NILSERIK 닐세리크', 69900, '블랙/비슬레 다크그레이', 15, '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다.', '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다. 좌식/입식 겸용 책상과 함께 사용하면 좋습니다.');
+
+
+select * from tbl_product
+order by pnum;
+
+commit;
 
 
 -- 제품번호 시퀀스 -- 
@@ -201,6 +235,31 @@ create table tbl_imagefile
  constraint pk_tbl_imagefile_fileno primary key(imgfileno),
  constraint fk_tbl_imagefile foreign key(fk_pnum) references tbl_product(pnum)
 );
+
+-- 이미지번호 시퀀스 -- 
+create sequence seq_img
+start with 1
+increment by 1
+nomaxvalue
+nominvalue
+nocycle
+nocache;
+
+insert into tbl_imagefile(imgfileno, fk_pnum, imgfilename)
+values(seq_img.nextval, 10009001, '닐세리크1.webp');
+
+insert into tbl_imagefile(imgfileno, fk_pnum, imgfilename)
+values(seq_img.nextval, 10009001, '닐세리크2.webp');
+
+
+select * from tbl_product
+order by pnum;
+
+select *
+from tbl_imagefile
+order by imgfileno;
+
+commit;
 
 -- ***** 장바구니 테이블 생성하기 ***** --
 create table tbl_cart
