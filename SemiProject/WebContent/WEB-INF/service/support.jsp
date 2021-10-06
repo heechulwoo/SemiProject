@@ -25,7 +25,7 @@
 
 	<div class="service-wrapper1">
 		<div class="flex_item">
-			<a href="#" class="my_a"> 
+			<a href="<%= ctxPath%>/contact/shippingTracking.one" class="my_a"> 
 			<img class="service-img" src="../images/track_package.jpg" alt="배송조회">
 			<div class="myimg-title">배송조회 및 관리</div>
 			</a>
@@ -58,7 +58,7 @@
 			<h3 class="service-title">비대면 전화 주문 서비스</h3>
 			<p class="service-description">온라인 주문이 어려우신가요? 원하는 제품을 전화로 쉽게
 				주문해보세요</p>
-			<a href="untactCall.html" class="my_a"><u>자세히보기</u></a>
+			<a href="<%= ctxPath%>/contact/untactCall.one" class="my_a"><u>자세히보기</u></a>
 		</div>
 
 		<div class="service-item">
@@ -66,7 +66,7 @@
 			<h3 class="service-title">주문 조회 및 관리</h3>
 			<p class="service-description">주문을 확인하거나, 변경 또는 취소가 필요하다면 이곳에서
 				해결해보세요</p>
-			<a href="#" class="my_a"><u>자세히보기</u></a>
+			<a href="<%= ctxPath%>/product/shipping.one" class="my_a"><u>자세히보기</u></a>
 		</div>
 
 		<div class="service-item">
@@ -74,7 +74,7 @@
 			<h3 class="service-title">교환환불</h3>
 			<p class="service-description">마음에 들지 않는 제품이 있나요? 교환 및 환불 방법을
 				알려드릴게요</p>
-			<a href="returnClaim.html" class="my_a"><u>자세히보기</u></a>
+			<a href="<%= ctxPath%>/contact/returnClaim.one" class="my_a"><u>자세히보기</u></a>
 		</div>
 
 	</div>
@@ -84,7 +84,7 @@
 	<div style="margin-bottom: 4vw;">
 		<p>고객지원센터로 연락해주세요. 궁금한 사항은 저희가 해결해드릴게요.</p>
 		<br>
-		<br> <a role="button" class="my_btn" href="contactUs.html">IKEA 고객지원센터</a>
+		<br> <a role="button" class="my_btn" href="<%= ctxPath%>/contact/contactUs.one">IKEA 고객지원센터</a>
 	</div>
 
 	<br>
@@ -98,7 +98,7 @@
 			<p style="margin-bottom: 2.5vw;">매장에서 다양한 아이디어를 만나보세요. 마음에 드는 제품을
 				보며 영감을 얻고, 맛있는 스웨덴 간식과 음료도 잊지 말고 확인해보세요!</p>
 			<div style="color: white">
-				<a href="#" role="button" class="my_btn_black">매장 안내</a>
+				<a href="<%= ctxPath%>/contact/stores.one" role="button" class="my_btn_black">매장 안내</a>
 			</div>
 		</div>
 	</div>

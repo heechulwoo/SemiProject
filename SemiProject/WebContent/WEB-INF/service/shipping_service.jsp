@@ -73,7 +73,7 @@
 			온라인 주문 내역 페이지에서 확인할 수 있습니다.<br>
 		</p>
 
-		<a href="contactUs.html" role="button" class="my_btn">문의하기</a>
+		<a href="<%= ctxPath%>/contact/contactUs.one" role="button" class="my_btn">문의하기</a>
 		<hr style="margin-top: 10vw; margin-bottom: 4vw;">
 
 		<a href="<%= ctxPath%>/service/services.one" role="button" class="my_btn_black">모든 서비스 보기</a>

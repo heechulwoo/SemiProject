@@ -162,14 +162,14 @@ div#questions {
         <br><br>
         <p style="font-weight: bold">
           Q. 온라인 배송비와 매장 배송비는 어떻게 다른가요?<br>
-          A. <a id="untactIkea" href="shipping_service.html">배송비 확인하기</a>
+          A. <a id="untactIkea" href="<%= ctxPath%>/service/shipping_service.one">배송비 확인하기</a>
         </p>
 
         <br />
 
         <p style="font-weight: bold">
           Q.조립 서비스도 가능한가요?<br>
-          A. <a id="untactIkea" href="assemble_service.html">조립 서비스 알아보기</a>
+          A. <a id="untactIkea" href="<%= ctxPath%>/service/assemble_service.one">조립 서비스 알아보기</a>
         </p>
       </div>
       <!-- 자주하는 질문 끝 -->
