@@ -1,0 +1,109 @@
+
+* {
+  word-break: keep-all;
+}
+/* 줄을 바꿀 때 단어를 끊지 않게 한다. */
+
+.mycontainer {
+  padding: 2% 6% 2% 6%;
+  font-family: Verdana, sans-serif;
+}
+
+.main_title{
+ font-size: 2rem;
+ font-family: Verdana, sans-serif;
+}
+
+.menu-title{
+ font-size: 1.7rem;	
+ font-family: Verdana, sans-serif;
+}
+
+@media (max-width: 580px) {
+   .main-title{
+   font-size: 1.7em;
+   }
+   
+   .menu-title{
+    font-size: 1.3em; 
+  }
+  .my_p {
+  	margin-top: 2vw !important;
+  	margin-bottom: 3vw !important;
+  }
+}
+.menu-title {
+  margin-bottom: 3vw;
+}
+
+.menu-title, .main-title{
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 3vh;
+  margin-bottom: 5vh;
+}
+
+.my_img {
+  width: 90vw;
+  margin-bottom: 2%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.my_p {
+  display: block;
+  font-size: 0.9rem;
+  width: 70%;
+  line-height: 26px;
+}
+
+@media (max-width: 885px) {
+ .my_p {
+    width: 90%;
+  }
+}
+
+.my_ul{
+	color: #48484E;
+}
+
+.my_btn {
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.75rem;
+  border-radius: 30px;
+  border: black;
+  background-color: black;
+  color: white !important;
+}
+
+.my_btn:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+
+table{
+	margin-left: 2vw; 
+	margin-bottom: 5vw;
+}
+
+table,
+th,
+td {
+  color: #48484E;	
+  border: 1px solid gray;
+  padding: 1em;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+@media(max-width: 580px){
+ table{
+ margin: auto;
+ }
+	
+}
