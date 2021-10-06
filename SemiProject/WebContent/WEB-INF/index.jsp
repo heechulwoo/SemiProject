@@ -2,12 +2,11 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 
 <%
 	String ctxPath = request.getContextPath();
 %>    
-
-<jsp:include page="header.jsp"/>
 
 <style>
 
@@ -16,8 +15,11 @@
 <script>
 
 </script>
+
+<jsp:include page="header.jsp"/>
+
 <!-- header 시작-->
-<header class="w3-display-container w3-content w3-wide" style="max-width:1100px; margin-top:40px" id="home">
+<header class="w3-display-container w3-content w3-wide" style="max-width:1100px; margin-top:40px;" id="home">
 <div class="container w3-padding-16">
 	<div id="carousel" class="carousel slide" data-ride="carousel">
 	  <ol class="carousel-indicators">
@@ -150,66 +152,23 @@
 
 <div class="container-fluid container-xl mt-1">
 	<div class="row">
+		<c:forEach var="pvo" items="${requestScope.newproductList}" varStatus="status">
+			<div class="col-md-3 col-6 product">
+				<div class="hidden my-2">
+	                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
+	            </div>
+				<a href="" class="text-body">				
+				  <img src="<%= ctxPath%>/images/${pvo.prodimage}" style="width:100%">
+			      <span class="w3-bar-item" style="font-size:12px"><b>${pvo.pname}</b></span><br>
+			      <span class="w3-opacity" style="font-size:12px">${pvo.cname}</span><br>
+			                ￦<span style="font-size:20px"><b><fmt:formatNumber value="${pvo.price}" pattern="###,###" /> &emsp;</b></span>		        
+		        </a>
+		        <div class="hidden">
+	                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
+	            </div>
+			</div>
+		</c:forEach>
 		
-		<div class="col-md-3 col-6 product">
-			<div class="hidden my-2">
-                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-            </div>
-			<a href="" class="text-body">				
-			  <img src="<%= ctxPath%>/images/STOCKHOLM.jpg" style="width:100%">
-		      <span class="w3-bar-item" style="font-size:12px"><b>STOCKHOLM 2017 스톡홀름</b></span><br>
-		      <span class="w3-opacity" style="font-size:12px">라탄 암체어</span><br>
-		                ￦<span style="font-size:20px"><b>329,000 &emsp;</b></span>		        
-	        </a>
-	        <div class="hidden">
-                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-            </div>
-		</div>
-		
-		<div class="col-md-3 col-6 product">
-			<div class="hidden my-2">
-                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-            </div>
-			<a href="" class="text-body">
-		      <img src="<%= ctxPath%>/images/EKERO.jpg" style="width:100%">
-		      <span class="w3-bar-item" style="font-size:12px"><b>EKERO 에케뢰</b></span><br>
-		      <span class="w3-opacity" style="font-size:12px">천연가죽 암체어</span><br>
-		                ￦<span style="font-size:20px"><b>199,000 &emsp;</b></span>
-	        </a>
-	        <div class="hidden">
-                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-            </div>
-		</div>
-		
-		<div class="col-md-3 col-6 product">
-			<div class="hidden my-2">
-                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-            </div>
-			<a href="" class="text-body">
-	          <img src="<%= ctxPath%>/images/KLIMPFJALL.jpg" style="width:100%">
-		      <span class="w3-bar-item" style="font-size:12px"><b>KLIMPFJALL 클림프피엘</b></span><br>
-		      <span class="w3-opacity" style="font-size:12px">벤치</span><br>
-		                ￦<span style="font-size:20px"><b>119,000 &emsp;</b></span>
-	        </a>
-	        <div class="hidden">
-                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-            </div>
-		</div>
-		
-		<div class="col-md-3 col-6 product">
-			<div class="hidden my-2">
-                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-            </div>
-			<a href="" class="text-body">
-		      <img src="<%= ctxPath%>/images/PERJOHAN.jpg" alt="Dan" style="width:100%">
-		      <span class="w3-bar-item" style="font-size:12px"><b>PERJOHAN 페리오한</b></span><br>
-		      <span class="w3-opacity" style="font-size:12px">침대협탁</span><br>
-		                ￦<span style="font-size:20px"><b>29,900 &emsp;</b></span>
-	        </a>
-	        <div class="hidden">
-                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-            </div>
-		</div>
 	
 	</div>
 </div>

@@ -53,6 +53,23 @@
 			display: none;
 		}
 	}
+    html {
+      position: relative;
+      min-height: 90%;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100%;
+    }
+
+    footer {
+      position: absolute;
+      left: 0;
+      bottom: -100px;
+      width: 100%;
+      text-align: center;
+    }
 </style>
 
 <script>
@@ -82,7 +99,6 @@
 </script>
 </head>
 
-
 <body>
 
 <!-- Sidebar 시작 -->
@@ -99,7 +115,7 @@
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>스툴/벤치</b></a>
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>바의자</b></a>
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>어린이의자</b></a><br><br>
-	  <a href="#고객지원" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
+	  <a href="<%= ctxPath%>/service/support.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
 	  <a href="#배송조회" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
 	  <a href="#마이페이지" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>
 	  
@@ -112,31 +128,37 @@
 <div class="container" style="max-width:1600px">		
 	<nav class="navbar navbar-expand-sm  navbar-light  w3-border-bottom w3-border-light-grey w3-padding-16">
 	  <div class="w3-button w3-padding-16 w3-left" style="border-radius: 70px" onclick="w3_open()"><i class="fas fa-align-justify"></i></div>
+<<<<<<< HEAD
 		  <a class="navbar-brand ml-4" href="<%= ctxPath%>/index.one"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="37"/></a>
+=======
+		  <a class="navbar-brand ml-4" href="<%= ctxPath %>/index.one"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="37"/></a>
+>>>>>>> branch 'main' of https://github.com/heechulwoo/SemiProject.git
 	
-		  <ul class="navbar-nav  nav_text" style="font-size:14px">
+		  <ul class="navbar-nav w-25 nav_text" style="font-size:14px">
 		    <li class="nav-item text ml-xl-4 ml-2">
-		      <a class="nav-link text-body" href="productMain2.html"><b>모든 제품</b></a>
+		      <a class="nav-link text-body" href="<%= ctxPath %>/product/productAll.one"><b>모든 제품</b></a>
 		    </li>
-		    <li class="nav-item ml-2 mr-5" >
-		      <a class="nav-link text-body" href="#고객지원"><b>고객지원</b></a>
+		    <li class="nav-item ml-2 mr-2" >
+		      <a class="nav-link text-body" href="<%= ctxPath%>/service/support.one"><b>고객지원</b></a>
 		    </li>
 		  </ul>
 		 
-	        <div class="input-group" style="max-width:530px">
-	            <input type="text" class="form-control " style=" border-radius: 25px; background-color: #f2f2f2; border: 0px; height:50px" placeholder="&emsp;검색어 입력">
-	           <span class="input-group-append"> 
-	                <button class="btn btn-outline-secondary border ml-1" style="border-radius: 20px" type="button">
+	    <form class="mx-2 my-auto d-inline w-100">
+	        <div class="input-group">
+	            <input type="text" class="form-control border" style=" border-radius: 25px; " placeholder="검색어 입력">
+	            <span class="input-group-append">
+	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            </span>
 	        </div>
+	    </form>
 
-		<ul class="navbar-nav w-15  list-group-horizontal nav_text">
-	    	<li class="nav-item text" style="margin-left:50px"><a class="nav-link text-body text-dark fa fa-truck fa-lg" href="#"></a></li>
+		<ul class="navbar-nav w-25 list-group-horizontal mt-sm-0 mt-2 mx-auto nav_text">
+	    	<li class="nav-item text" style="margin-left:50px"><a class="nav-link text-body text-dark fa fa-truck fa-lg" href="<%= ctxPath%>/product/shipping.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" href="#"></a></li>
-	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-heart fa-lg" href="wishList.html"></a></li>
-	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-shopping-bag fa-lg" href="#"></a></li>
+	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-heart fa-lg" href="<%= ctxPath%>/product/wishlist.one"></a></li>
+	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-shopping-bag fa-lg" href="<%= ctxPath%>/product/shoppingBasket.one"></a></li>
 	   	</ul>	  
 		
 		<c:if test="${loginuser == null}"><div style="font-size:14px; font-weight: bolder; margin-left: 60px;"><a href="<%= ctxPath %>/login/login.one" class="text-dark">로그인</a></div></c:if>

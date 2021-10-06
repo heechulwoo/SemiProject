@@ -7,7 +7,9 @@
 	String ctxPath = request.getContextPath();
 %>
 
+
 <jsp:include page="/WEB-INF/header.jsp"/>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
 
 
   
@@ -157,7 +159,7 @@
 			</div>
 			
 			<div class="form-group"  style="margin-left:24px">
-				<label for="user_remember_me">아이디 기억하기</label>
+				<label for="user_remember_me" style="width: 20%">아이디 기억하기</label>
 				<input type="checkbox" id="user_remember_me" name="remember" value="1" />
 			
 	

@@ -1,0 +1,142 @@
+body {
+  font-size: 16px important;
+}
+
+* {
+  word-break: keep-all;
+}
+/* 줄을 바꿀 때 단어를 끊지 않게 한다. */
+
+.mycontainer {
+  padding: 2% 6% 2% 6%;
+  font-family: Verdana, sans-serif;
+}
+
+/* 글자 크기 설정 */
+
+.main_title{
+ font-size: 2rem;
+ font-family: Verdana, sans-serif;
+}
+
+.menu-title{
+ font-size: 1.7rem;	
+ font-family: Verdana, sans-serif;
+}
+
+@media (max-width: 580px) {
+   .main-title{
+   font-size: 1.7em;
+   }
+   
+   .menu-title{
+    font-size: 1.3em;
+  }
+  
+  .my_p {
+  	margin-top: 2vw !important;
+  	margin-bottom: 3vw !important;
+  }
+}
+
+.menu-title {
+  margin-bottom: 3vw;
+}
+
+.menu-title, .main-title{
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 3vh;
+  margin-bottom: 5vh;
+}
+
+.myimg {
+  width: 90vw;
+  margin-bottom: 2%;
+}
+
+.my_a {
+  text-decoration: none;
+}
+
+.my_p {
+  color: #48484E;	
+  padding: 0;
+  display: block;
+  font-size: 0.9rem;
+  width: 70%;
+  line-height: 26px;
+  font-weight: 500;
+}
+
+@media (max-width: 885px) {
+  .my_p {
+    width: 90%;
+  }
+}
+
+.my_btn {
+  color: black;
+  font-weight: bold;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.75rem;
+  border-radius: 30px;
+  border: 1px solid lightgray;
+}
+
+.my_btn:hover {
+  border: 1px solid black;
+  border-radius: 30px;
+  text-decoration: none;
+}
+
+.my_btn_black {
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.75rem;
+  border-radius: 30px;
+  border: black;
+  background-color: black;
+  color: white !important;
+}
+
+.my_btn_black:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+ol > li {
+  margin-bottom: 1.5vw;
+}
+
+.my_ul > li {
+  margin-bottom: 1vw;
+}
+
+.basicfee {
+  color: #484848;
+  font-weight: bold;
+}
+
+.my_ul {
+  margin-top: 2vw;
+}
+
+.flex-box {
+  width: 100%;
+  display: flex;
+  margin-bottom: 5vw;
+  flex-wrap: wrap;
+}
+
+.flex-item {
+  width: 45%;
+}
+
+@media (max-width: 1000px) {
+  .flex-item {
+    width: 100%;
+    margin-top: 3vw;
+  }
+}
