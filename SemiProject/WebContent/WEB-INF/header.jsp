@@ -55,7 +55,7 @@
 	}
     html {
       position: relative;
-      min-height: 100%;
+      min-height: 90%;
       margin: 0;
     }
 
@@ -66,7 +66,7 @@
     footer {
       position: absolute;
       left: 0;
-      bottom: 0;
+      bottom: -100px;
       width: 100%;
       text-align: center;
     }
