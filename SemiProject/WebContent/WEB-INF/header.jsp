@@ -117,8 +117,7 @@
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>어린이의자</b></a><br><br>
 	  <a href="<%= ctxPath%>/service/support.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
 	  <a href="#배송조회" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
-	  <a href="#마이페이지" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>
-	  
+	  <a href="#마이페이지" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>	  
  </div>
 </nav>
 <!-- Sidebar 끝-->
@@ -128,12 +127,8 @@
 <div class="container" style="max-width:1600px">		
 	<nav class="navbar navbar-expand-sm  navbar-light  w3-border-bottom w3-border-light-grey w3-padding-16">
 	  <div class="w3-button w3-padding-16 w3-left" style="border-radius: 70px" onclick="w3_open()"><i class="fas fa-align-justify"></i></div>
-<<<<<<< HEAD
 		  <a class="navbar-brand ml-4" href="<%= ctxPath%>/index.one"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="37"/></a>
-=======
-		  <a class="navbar-brand ml-4" href="<%= ctxPath %>/index.one"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="37"/></a>
->>>>>>> branch 'main' of https://github.com/heechulwoo/SemiProject.git
-	
+
 		  <ul class="navbar-nav w-25 nav_text" style="font-size:14px">
 		    <li class="nav-item text ml-xl-4 ml-2">
 		      <a class="nav-link text-body" href="<%= ctxPath %>/product/productAll.one"><b>모든 제품</b></a>
@@ -160,13 +155,8 @@
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-heart fa-lg" href="<%= ctxPath%>/product/wishlist.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-shopping-bag fa-lg" href="<%= ctxPath%>/product/shoppingBasket.one"></a></li>
 	   	</ul>	  
-		
-		<c:if test="${loginuser == null}"><div style="font-size:14px; font-weight: bolder; margin-left: 60px;"><a href="<%= ctxPath %>/login/login.one" class="text-dark">로그인</a></div></c:if>
-	    <c:if test="${loginuser == null}"><div style="font-size:14px; font-weight: bolder; margin-left: 25px;"><a href="<%= ctxPath %>/login/login.one" class="text-dark">회원가입</a></div></c:if>
-	    <c:if test="${loginuser != null}"><div style="color:black; font-size:14px; font-weight: bolder; margin-left: 60px;">${loginuser.name}님</div></c:if>
-	    <c:if test="${loginuser != null}"><div style="font-size:14px; font-weight: bolder; margin-left: 25px;"><a href="<%= ctxPath %>/login/logout.one" class="text-dark">로그아웃</a></div></c:if>
-	    
-		
+		<c:if test="${loginuser == null}"><div style="font-size:14px; font-weight: bolder; margin-left: 60px;"><a href="<%= ctxPath %>/login/login.one" class="text-dark">로그인</a></div></c:if> <c:if test="${loginuser == null}"><div style="font-size:14px; font-weight: bolder; margin-left: 25px;"><a href="<%= ctxPath %>/login/login.one" class="text-dark">회원가입</a></div></c:if>
+	    <c:if test="${loginuser != null}"><div style="color:black; font-size:14px; font-weight: bolder; margin-left: 60px;">${loginuser.name}님</div></c:if> <c:if test="${loginuser != null}"><div style="font-size:14px; font-weight: bolder; margin-left: 25px;"><a href="<%= ctxPath %>/login/logout.one" class="text-dark">로그아웃</a></div></c:if>
 	</nav>
 </div>
 <!-- 상단 네비게이션 끝 --> 
