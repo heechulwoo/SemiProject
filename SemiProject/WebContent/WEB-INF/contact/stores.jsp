@@ -11,7 +11,7 @@
 
 <style>
 	
-	div#storesMain {
+div#storesMain {
   padding-top: 70px;
   padding-bottom: 50px;
 }
@@ -40,7 +40,6 @@ span#where {
 	font-weight: bold;
 }
 
-
 .btnWhere {
   width: 10em;
   text-align: center;
@@ -68,7 +67,6 @@ span#where {
   justify-content: center;
   border: solid 1px black;
 }
-	
 	
 </style>
 
@@ -326,4 +324,7 @@ span#where {
 	</div>
 	<!-- container 끝 -->
 	
-<jsp:include page="/WEB-INF/footer.jsp"/>	
+	<!-- 줄 띄우기 용 -->
+    <br><br><br><br><br>
+	
+<jsp:include page="../footer.jsp"/>	
