@@ -26,14 +26,6 @@ div#breakDoMain {
   padding-top: 70px;
   padding-bottom: 70px;
 }
-a {
-  text-decoration: none;
-  color: black;
-}
-a:hover {
-  text-decoration: underline;
-  color: inherit;
-}
 a#returnIkea {
   font-weight: bold;
 }
