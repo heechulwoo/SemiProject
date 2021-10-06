@@ -1,0 +1,209 @@
+body {
+  font-size: 16px important;
+}
+
+.mycontainer {	
+  padding: 2% 2% 2% 6%;
+  font-family: Verdana, sans-serif;
+} 
+ 
+/* 줄 바꿀 때 단어가 끊기지 않도록 함 */
+* {
+  word-break: keep-all;
+}
+
+/* 글자 크기 설정 */
+
+.main_title{
+ font-size: 2rem;
+ font-family: Verdana, sans-serif;
+}
+
+.menu-title{
+ font-size: 1.7rem;	
+ font-family: Verdana, sans-serif;
+}
+
+@media (max-width: 580px) {
+   .main-title{
+   font-size: 1.7em;
+   }
+   
+   .menu-title{
+    font-size: 1.3em;
+  }
+}
+
+p,
+u {
+  font-size: 0.9rem;
+  padding: 0 !important;
+}
+
+
+.menu-title, .main-title{
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 3vh;
+  margin-bottom: 5vh;
+}
+
+.service-wrapper1 {
+  display: flex;
+  justify-content: flex-start;
+  gap: 5%;
+  flex-wrap: wrap;
+}
+
+.flex_item {
+  width: 20%;
+}
+
+.service-img {
+  width: 21vw;
+}
+
+@media (max-width: 880px) {
+  .service-wrapper1 {
+    gap: 0;
+    justify-content: space-between;
+  }
+  .flex_item {
+    width: 40vw;
+    margin-bottom: 3vw;
+  }
+  .service-img {
+    width: 100%;
+  }
+}
+
+.my_a{
+ font-weight: normal;	
+}
+
+
+.my_a:visited {
+  color: inherit;
+}
+
+.my_a:hover {
+  color: black !important;
+  text-decoration: underline !important;
+  font-weight: normal;
+}
+
+.myimg-title { 
+  font-size: 0.9em;
+  font-weight: bold;
+  color:#5d5d5d;
+  display: flex;
+  width: 100%;
+  padding-top: 1.25rem;
+  text-overflow: ellipsis;
+}
+
+.service-wrapper2 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.service-title {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.service-item {
+  font-size: 0.8rem;
+  text-align: center;
+  background-color: #f5f5f5;
+  width: 30%;
+  padding: 2rem;
+  margin: 1px;
+  flex-grow: 1;
+}
+
+@media (max-width: 580px) {
+  .service-item {
+    width: 80vw;
+  }
+}
+
+.service-description {
+  color: #484848;
+}
+
+.service-title,
+.service-description {
+  margin-bottom: 0.25rem;
+}
+
+strong {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.my_btn {
+  font-weight: bold;
+  padding: 0.8rem 1rem;
+  font-size: 0.75rem;
+  border-radius: 30px;
+  border: 1px solid lightgray;
+}
+
+.my_btn:hover {
+  border: 1px solid #484848;
+  border-radius: 30px;
+  text-decoration: none
+  important!;
+}
+
+.my_btn_black {
+  color: white !important;
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.75rem;
+  border-radius: 30px;
+  border: black;
+  background-color: black;
+}
+
+.my_btn_black:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.storeinfo {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.storeimage {
+  width: 65%;
+}
+/* storeinfo의 65% */
+
+@media (max-width: 1000px) {
+  .storeimage {
+    width: 100%;
+  }
+  .storeimage > img {
+    width: 100vw;
+  }
+}
+
+.storeinfo_side {
+  padding: 3vw;
+  width: 25%;
+  background-color: #f5f5f5;
+  flex-grow: 1;
+}
+
+@media (max-width: 1000px) {
+  .storeinfo_side {
+    width: 100%;
+  }
+}

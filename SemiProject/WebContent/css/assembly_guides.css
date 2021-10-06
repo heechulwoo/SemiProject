@@ -1,0 +1,93 @@
+
+* {
+  word-break: keep-all;
+}
+/* 줄을 바꿀 때 단어를 끊지 않게 한다. */
+
+.mycontainer {
+  padding: 2% 6% 2% 6%;
+  font-family: Verdana, sans-serif;
+}
+
+
+/* 글자 크기 설정 */
+
+.main_title{
+ font-size: 2rem;
+}
+
+.menu-title  {
+  font-size: 1.7em;
+}
+
+.menu-title, .main-title{
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+}
+
+
+@media (max-width: 580px) {
+   .main-title{
+   font-size: 1.7em;
+   }
+   
+   .menu-title{
+    font-size: 1.3em;
+  }
+}
+
+.assemble_caution{
+  width: 70%;
+}
+
+.assemble_caution, .step_item {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 26px;
+  flex-direction: column;
+}
+
+.my_hr {
+  margin-top: 4vw;
+  margin-bottom: 4vw;
+}
+
+.step {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 3vw;
+  margin-bottom: 3vw;
+}
+
+.step_text {
+  width: 50%;
+}
+
+.step_item {
+  width: 100%;
+  margin-bottom: 1vw;
+}
+
+.step > img {
+  width: 50%;
+  position: relative;
+}
+
+@media (max-width: 720px) {
+  .step_text {
+    width: 100%;
+  }
+  .step > img {
+    width: 100%;
+    position: relative;
+  }
+  .assemble_caution {
+    width: 100%;
+  }
+}
+
+.fill{
+	height: 10%;
+}

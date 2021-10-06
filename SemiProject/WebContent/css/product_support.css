@@ -1,0 +1,84 @@
+
+/* 줄을 바꿀 때 단어를 끊지 않게 한다. */
+* {
+  word-break: keep-all;
+}
+
+.mycontainer {
+  padding: 2% 6% 2% 6%;
+  font-family: Verdana, sans-serif;
+}
+
+
+/* 글자 크기 설정 */
+@media (max-width: 580px) {
+  .main-title {
+    font-size: 1.5em;
+  }
+  .my_img {
+    margin-top: 5vw;
+  }
+}
+
+.main-title, .menu-title {
+  font-weight: bold;
+  margin-top: 3vh;
+}
+
+.main-title{
+	margin-bottom: 2vw;
+}
+
+.my_img {
+  width: 30vw;
+  border: 1px solid #bbbaba;
+}
+
+@media (max-width: 400px) {
+  .my_img {
+    width: 100%;
+  }
+}
+
+.my_a {
+  color: black;
+  width: 40vw;
+  text-decoration: none;
+}
+
+.my_a:visited {
+  text-decoration: none;
+  color: inherit;
+}
+
+.my_a:hover {
+  text-decoration: underline !important;
+}
+
+.menu-title {
+  font-size: 1.5vw;
+}
+
+@media (max-width: 1000px) {
+  .menu-title {
+    font-size: 1em;
+  }
+}
+
+.my_img {
+  display:block;
+  width: 30vw;
+  border: 1px solid #bbbaba;
+}
+
+@media (max-width: 400px) {
+  .my_img {
+    width: 100%;
+  }
+}
+
+/* .menu-title:hover {
+	text-decoration: underline;
+} */
+
+
