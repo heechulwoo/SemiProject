@@ -8,6 +8,7 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- jstl을 사용하기 위함  -->    
 
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
 
 <jsp:include page="/WEB-INF/header.jsp"/>
 
@@ -62,10 +63,10 @@
 
 
 	<!-- 상단 컨텐츠 시작 -->
-	<div class="container" style="max-width:950px; margin-top:40px">
+	<div class="container" style="max-width:950px; margin-top:40px; height: 800px;">
 	<div class="row custom-topcontents">
 		
-			<h2><b>&nbsp;계정 관리</b></h2>
+			<h2 style="color: black"><b>&nbsp;계정 관리</b></h2>
 	
 			<img class="w3-image" width="1000" height="300" src="<%= ctxPath%>/images/제목 없음.png" style="margin-top:40px">	
 		</div>

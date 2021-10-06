@@ -10,6 +10,96 @@
 <jsp:include page="/WEB-INF/header.jsp"/>
 
 
+  
+<script>
+
+	$(document).ready(function(){
+	 
+		
+	 	<!-- 사이드바 function 시작-->  
+	 	function w3_open() {
+		  	document.getElementById("mySidebar").style.display = "block";
+		}
+		 
+		function w3_close() {
+		  	document.getElementById("mySidebar").style.display = "none";
+		}
+		<!-- 사이드바 function 끝-->
+		
+		
+		
+		 $("button#login").click(function(){
+			 goLogin();
+		 });
+		 
+		 
+		 $("input#Pwd").bind("keyup",function(event){
+			if(event.keyCode == 13) { 
+				goLogin(); 
+			}
+		});
+		
+	 
+ 	});// end of $(document).ready(function(){})------------------------
+	
+
+
+ 	function goLogin() {
+ 	//	alert("로그인");
+	
+	 	var loginUserid = $("input#loginUserid").val().trim();
+		var loginPwd = $("input#loginPwd").val().trim();
+		
+		console.log(loginUserid);
+		
+
+	
+		if(loginUserid == "") {
+			alert("아이디를 입력하세요!!");
+			$("input#loginUserid").val("");
+			$("input#loginUserid").focus();
+			return; // goLogin() 종료
+		}
+		
+		if(loginPwd == "") {
+			alert("암호를 입력하세요!!");
+			$("input#loginPwd").val("");
+			$("input#loginPwd").focus();
+			return; // goLogin() 종료
+		}
+ 		
+		// 체크박스에 체크가 되어있으면 true
+		if( $("input:checkbox[id=remember]").prop("checked") ) {
+		//	alert("아이디저장 체크를 하셨네요");	
+			
+		//	console.log($("input#loginUserid").val());
+			
+			localStorage.setItem('remember', $("input#loginUserid").val());
+		
+		}
+		else{
+		//	alert("아이디저장 체크를 해제 하셨네요");
+			
+			localStorage.removeItem('remember');
+		}
+		
+		var frm = document.loginFrm;
+		frm.action = "<%= request.getContextPath()%>/login/loginstart.one"
+		frm.method = "post";
+		frm.submit();
+		
+		
+ 	}// end of goLogin();---------------------------
+ 	
+ 
+</script>
+
+
+
+
+
+
+
 <div class="container"  style="max-width:1000px">
 <!-- 상단 컨텐츠 시작 -->
  <div class="row custom-topcontents">
@@ -43,7 +133,7 @@
 	<!-- 경고 메시지 끝 -->
 		
 	<!-- 로그인 폼 시작 -->
-	<form action="login.do" method="post"  class="font-weight-bolder">
+	<form name="loginFrm"  class="font-weight-bolder">
 	<fieldset>
 	   <div class="row pt-4">
 		<div class="col-md-9">
@@ -53,7 +143,7 @@
 					<label for="email">아이디</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" type="email" style="font-size:12px" id="email" name="email" placeholder="아이디" autocomplete="off" required /> 
+					<input class="form-control" type="text" style="font-size:12px" id="loginUserid" name="userid" placeholder="아이디" autocomplete="off" required /> 
 				</div>
 			</div>
 			
@@ -62,7 +152,7 @@
 					<label for="pwd">비밀번호</label>
 				</div>
 				<div class="col-md-9">
-					<input class="form-control" type="password" style="font-size:12px" id="pwd" name="pwd"	placeholder="비밀번호" required />
+					<input class="form-control" type="password" style="font-size:12px" id="loginPwd" name="pwd"	placeholder="비밀번호" required />
 				</div>
 			</div>
 			
@@ -133,7 +223,7 @@
 	</div>
 	
 	<div class="col-md-3">
-       <input class="btn btn-primary" type="submit" value="로그인" style="height: 85px;" />
+       <button class="btn btn-primary" type="button" id="login" value="로그인" style="height: 85px;">로그인</button>
     </div>
  </div>
  </fieldset>
@@ -147,21 +237,6 @@
 
 
 
-<!-- Optional JavaScript -->
-<script src="../js/jquery-3.3.1.min.js" type="text/javascript"></script>
-<script src="../js/bootstrap.bundle.min.js" type="text/javascript"></script>
-	
-	
-<!-- 사이드바 function -->    
-<script>
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-}
- 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-}
-</script>	
 
 </body>
 </html>
