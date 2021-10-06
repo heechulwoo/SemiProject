@@ -115,7 +115,7 @@
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>스툴/벤치</b></a>
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>바의자</b></a>
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>어린이의자</b></a><br><br>
-	  <a href="#고객지원" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
+	  <a href="<%= ctxPath%>/service/support.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
 	  <a href="#배송조회" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
 	  <a href="#마이페이지" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>
  </div>
@@ -134,7 +134,7 @@
 		      <a class="nav-link text-body" href="<%= ctxPath %>/product/productAll.one"><b>모든 제품</b></a>
 		    </li>
 		    <li class="nav-item ml-2 mr-2" >
-		      <a class="nav-link text-body" href="#고객지원"><b>고객지원</b></a>
+		      <a class="nav-link text-body" href="<%= ctxPath%>/service/support.one"><b>고객지원</b></a>
 		    </li>
 		  </ul>
 		 
