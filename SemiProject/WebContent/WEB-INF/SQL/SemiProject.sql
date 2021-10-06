@@ -251,3 +251,51 @@ create table tbl_shoppingmap
 );
 
 select * from tab;
+
+select *
+from tbl_category;
+
+select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,new
+from
+(
+select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,DENSE_RANK () over(order by pinpupdate) as new
+from tbl_product
+)
+where new < 5;
+
+select distinct pname, pinpupdate
+from tbl_product;
+
+select pname, pinpupdate, new
+from
+(
+select distinct pname, to_char(pinpupdate,'yyyy-mm-dd') as pinpupdate ,DENSE_RANK() over(order by to_char(pinpupdate,'yyyy-mm-dd') ) as new
+from tbl_product
+order by new
+)
+where new < 5;
+
+select pnum,fk_cnum,pname,price,color, pinupdate ,pqty,psummary,pcontent,cname
+from
+    (
+    select pnum,fk_cnum,pname,price,color,to_char(pinpupdate,'yyyy-mm-dd') as pinupdate ,pqty,psummary,pcontent
+    from
+    (
+        select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(order by pinpupdate desc) as new
+        from
+        (
+            select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(partition by pname order by pinpupdate) as updatedate
+            from tbl_product
+        )
+        where updatedate = 1
+    )
+    where new < 5
+)P join tbl_category C
+on P.fk_cnum = c.cnum;
+
+select pname,imgfilename
+from tbl_product P join tbl_imagefile I
+on P.pnum = I.fk_pnum ;
+
+select *
+from tbl_imagefile;
