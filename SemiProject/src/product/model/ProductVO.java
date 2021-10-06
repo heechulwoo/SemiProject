@@ -10,6 +10,7 @@ public class ProductVO {
 	private int pqty;          // 제품재고량
 	private String psummary;   // 제품요약
 	private String pcontent;   // 제품설명
+	private String prodimage;
 	
 	private String cname;	   // 카테고리명
 	
@@ -84,6 +85,14 @@ public class ProductVO {
 	
 	public void setPcontent(String pcontent) {
 		this.pcontent = pcontent;
+	}
+
+	public String getProdimage() {
+		return prodimage;
+	}
+
+	public void setProdimage(String prodimage) {
+		this.prodimage = prodimage;
 	}
 
 	public String getCname() {

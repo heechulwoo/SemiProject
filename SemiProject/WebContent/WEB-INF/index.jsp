@@ -158,7 +158,7 @@
 	                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
 	            </div>
 				<a href="" class="text-body">				
-				  <img src="<%= ctxPath%>/images/STOCKHOLM.jpg" style="width:100%">
+				  <img src="<%= ctxPath%>/images/${pvo.prodimage}" style="width:100%">
 			      <span class="w3-bar-item" style="font-size:12px"><b>${pvo.pname}</b></span><br>
 			      <span class="w3-opacity" style="font-size:12px">${pvo.cname}</span><br>
 			                ￦<span style="font-size:20px"><b><fmt:formatNumber value="${pvo.price}" pattern="###,###" /> &emsp;</b></span>		        
