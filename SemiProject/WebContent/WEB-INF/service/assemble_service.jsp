@@ -94,6 +94,9 @@
 		<a href="<%= ctxPath%>/service/services.one" role="button" class="my_btn"
 			style="margin-top: 2vw; margin-bottom: 4vw;">모든 서비스 보기</a>
 	</div>
+	
+	<!-- 줄 띄우기 용 -->
+    <br><br><br><br><br>
 </body>
 
 <jsp:include page="../footer.jsp"/>

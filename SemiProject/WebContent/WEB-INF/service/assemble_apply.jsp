@@ -261,6 +261,8 @@
 		</form>
 	</div>
 	</div>
+	<!-- 줄 띄우기 용 -->
+    <br><br><br><br><br>
 </body>
 
 <jsp:include page="../footer.jsp"/>
