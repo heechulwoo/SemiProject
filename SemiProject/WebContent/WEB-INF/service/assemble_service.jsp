@@ -95,3 +95,5 @@
 			style="margin-top: 2vw; margin-bottom: 4vw;">모든 서비스 보기</a>
 	</div>
 </body>
+
+<jsp:include page="../footer.jsp"/>
