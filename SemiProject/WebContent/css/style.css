@@ -13,7 +13,9 @@ body {
 #maininfo	{ background-color: #F5F5F5; 
               min-height: 1024px; }  
 
-#footer		{ background-color: #999999; 
+#footer		{ 
+		
+		      background-color: #999999; 
               height: 100px; }
 
 td, th, input, select, textarea, p {
