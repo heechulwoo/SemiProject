@@ -24,7 +24,7 @@
 			<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
 				<div class="col-md-2 col-6">
 					<a href="">
-				        <img src="<%= ctxPath%>/images/${cvo.prodimage}" style="width:100%">
+				        <img src="<%= ctxPath%>/image_ikea/${cvo.prodimage}" style="width:100%">
 				        <span>${cvo.cname}</span>
 			        </a>
 				</div>
