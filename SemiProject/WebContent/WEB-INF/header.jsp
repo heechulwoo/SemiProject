@@ -118,6 +118,10 @@
 	  <a href="<%= ctxPath%>/service/support.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
 	  <a href="#배송조회" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
 	  <a href="#마이페이지" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>	  
+ 	  <c:if test="${loginuser == null}"><div style="margin:40px 0 0 15px"><a href="<%= ctxPath %>/login/login.one" class="text-dark">로그인</a></div></c:if>
+ 	  <c:if test="${loginuser == null}"><div style="margin:15px 0 0 15px"><a href="<%= ctxPath %>/member/register.one" class="text-dark">회원가입</a></div></c:if>
+	  <c:if test="${loginuser != null}"><div style="margin:40px 0 0 15px; font-weight: bolder; " >${loginuser.name}님</div></c:if>
+	  <c:if test="${loginuser != null}"><div style="margin:15px 0 0 15px"><a href="<%= ctxPath %>/login/logout.one" >로그아웃</a></div></c:if>	
  </div>
 </nav>
 <!-- Sidebar 끝-->
@@ -155,8 +159,7 @@
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-heart fa-lg" href="<%= ctxPath%>/product/wishlist.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-shopping-bag fa-lg" href="<%= ctxPath%>/product/shoppingBasket.one"></a></li>
 	   	</ul>	  
-		<c:if test="${loginuser == null}"><div style="font-size:14px; font-weight: bolder; margin-left: 60px;"><a href="<%= ctxPath %>/login/login.one" class="text-dark">로그인</a></div></c:if> <c:if test="${loginuser == null}"><div style="font-size:14px; font-weight: bolder; margin-left: 25px;"><a href="<%= ctxPath %>/login/login.one" class="text-dark">회원가입</a></div></c:if>
-	    <c:if test="${loginuser != null}"><div style="color:black; font-size:14px; font-weight: bolder; margin-left: 60px;">${loginuser.name}님</div></c:if> <c:if test="${loginuser != null}"><div style="font-size:14px; font-weight: bolder; margin-left: 25px;"><a href="<%= ctxPath %>/login/logout.one" class="text-dark">로그아웃</a></div></c:if>
+		
 	</nav>
 </div>
 <!-- 상단 네비게이션 끝 --> 
