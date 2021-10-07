@@ -2,7 +2,9 @@ package product.model;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -96,7 +98,48 @@ public class ProductDAO implements InterProductDAO {
 		
 		return newproductList;
 	}// end of public List<ProductVO> newProduct()-----------------------------
-    
+
+	// 모든 제품에서 보여줄 카테고리와 해당 카테고리 의자 이미지 1개 얻어오는 메소드
+	@Override
+	public List<Map<String, String>> selectCategoryImage() throws SQLException {
+		
+		List<Map<String, String>> categoryList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select cnum, cname, prodimage " + 
+						 " from " + 
+						 " ( " + 
+						 " select cnum, cname, prodimage, ROW_NUMBER() over(partition by cname order by prodimage) as images " + 
+						 " from tbl_category C join tbl_product P " + 
+						 " on c.cnum = p.fk_cnum " + 
+						 " ) " + 
+						 " where images = 1 ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while( rs.next() ) {
+				
+				Map<String,String> paraMap= new HashMap<>();
+				paraMap.put("cnum", rs.getString(1));
+				paraMap.put("cname", rs.getString(2));
+				paraMap.put("prodimage", rs.getString(3));
+				
+				categoryList.add(paraMap);
+				
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return categoryList;
+	}
+    // end of public List<Map<String, String>> selectCategoryImage()----------------------
     
     
     

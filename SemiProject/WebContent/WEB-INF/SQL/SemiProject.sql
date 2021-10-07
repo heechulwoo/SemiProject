@@ -299,3 +299,19 @@ on P.pnum = I.fk_pnum ;
 
 select *
 from tbl_imagefile;
+
+select cnum, cname, prodimage
+from
+(
+select cnum, cname, prodimage, ROW_NUMBER() over(partition by cname order by prodimage) as images
+from tbl_category C join tbl_product P
+on c.cnum = p.fk_cnum
+)
+where images = 1;
+
+select distinct color
+from tbl_product;
+
+select color, count(*)
+from tbl_product
+group by color;
