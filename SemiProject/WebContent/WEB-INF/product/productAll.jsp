@@ -13,44 +13,18 @@
 </script>
 
 	<div class="container-fluid container-xl">
-		<nav aria-label="breadcrumb">
-		  <ol class="breadcrumb pl-0" style="background-color: white;">
-		    <li class="breadcrumb-item">제품</li>
-		    <li class="breadcrumb-item active" aria-current="page"><a href="#">의자</a></li>
-		  </ol>
-		</nav>
+		<h6 class="my-3 py-2" style="font-size: 10pt;"><a href="#">제품</a> > 의자</a></h6>
 		<h2 class="mb-4"><b>모든제품</b></h2>
 		<div class="row justify-content-between mb-5">
-			<div class="col-md-2 col-6">
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair1.jpg" style="width:100%">
-			        <span>사무용의자</span>
-		        </a>
-			</div>
-			<div class="col-md-2 col-6">
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair3.jpg" style="width:100%">
-        			<span>식탁의자</span>
-		        </a>
-			</div>
-			<div class="col-md-2 col-6">
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair2.jpg" style="width:100%">
- 			        <span>어린이의자</span>
-		        </a>
-			</div>
-			<div class="col-md-2 col-6">
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair4.jpg" style="width:100%">
-			        <span>카페의자</span>
-		        </a>
-			</div>
-			<div class="col-md-2 col-6">
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair5.jpg" style="width:100%">
-			        <span>스툴</span>
-		        </a>
-			</div>
+			<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
+				<div class="col-md-2 col-6">
+					<a href="">
+				        <img src="<%= ctxPath%>/image_ikea/${cvo.prodimage}" style="width:100%">
+				        <span>${cvo.cname}</span>
+			        </a>
+				</div>
+			</c:forEach>
+			
 		</div>
 		<div class="row my-2">
 			<p class="col-md-7">
@@ -85,21 +59,11 @@
 			  	카테고리
 			  </button>
 			  <div class="dropdown-menu">
-			    <div class="dropdown-item">
-				    <label for="office">사무용의자</label> <input type = "checkbox" id="office">
-		        </div>
-			    <div class="dropdown-item">
-				    <label for="dining">식탁의자</label> <input type = "checkbox" id="dining">
-		        </div>
-			    <div class="dropdown-item">
-				    <label for="child">어린이의자</label> <input type = "checkbox" id="child">
-		        </div>
-			    <div class="dropdown-item">
-				    <label for="cafe">카페의자</label> <input type = "checkbox" id="cafe">
-		        </div>
-			    <div class="dropdown-item">
-				    <label for="stool">스툴</label> <input type = "checkbox" id="stool">
-		        </div>
+				<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
+					<div class="dropdown-item">
+					    <label for="${cvo.cnum}">${cvo.cname}</label> <input type = "checkbox" id="${cvo.cnum}">
+			        </div>
+				</c:forEach>
 			  </div>
 			</div>
 			<div class="btn-group">
