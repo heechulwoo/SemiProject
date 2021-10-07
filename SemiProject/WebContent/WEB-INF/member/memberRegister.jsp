@@ -44,14 +44,14 @@
 
 
 <script type="text/javascript">
-
+	
 	$(document).ready(function(){
 		
 		$("span.error").hide();
 				
 	});
-
-
+	
+	
 </script>	
 
 
@@ -217,5 +217,3 @@
 
 
 <jsp:include page="/WEB-INF/footer.jsp"/>
-
-
