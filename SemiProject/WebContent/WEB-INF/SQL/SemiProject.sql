@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 show user;
 
 -- **** 회원 테이블 생성하기 **** --
@@ -944,8 +942,6 @@ create table tbl_shoppingmap
 );
 
 select * from tab;
->>>>>>> refs/heads/kangkh
-=======
 
 select cnum, cname, prodimage
 from
