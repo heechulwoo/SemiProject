@@ -1,3 +1,4 @@
+
 show user;
 
 -- **** 회원 테이블 생성하기 **** --
@@ -607,6 +608,7 @@ on P.pnum = I.fk_pnum ;
 
 select *
 from tbl_imagefile;
+
 show user;
 
 -- **** 회원 테이블 생성하기 **** --
@@ -874,7 +876,7 @@ update tbl_imagefile set imgfilename = '쿨라베리_브라운4.webp'
 where imgfileno=124;
 
 
--- 121	50009069	5000	KULLABERG 쿨라베리	59900	브라운
+121	50009069	5000	KULLABERG 쿨라베리	59900	브라운
 -----------------------------------------------------------------------
 
 select pnum, fk_cnum, pname, price, color, pinpupdate, prodimage 
