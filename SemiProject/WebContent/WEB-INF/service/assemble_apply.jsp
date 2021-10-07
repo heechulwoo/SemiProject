@@ -19,9 +19,159 @@
 <!-- 달력 -->
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script type="text/javascript">
+
+let regcheck = false; // 정규표현식 위배 확인하는 용도
+
+	$(document).ready(function(){
+		
+	$("span.error").hide();
+
+	$("input[name=name]").blur(function(){
+		let name = $(this).val().trim();
+		if(name == ""){
+			$(this).next().show();
+		}
+		else{
+			$(this).next().hide();
+			regcheck = true;
+		}	
+	});
+	
+	
+	$("input[name=email]").blur(function(){
+		
+	   let regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+        // 이메일 정규표현식
+        
+       let email = $(this).val().trim();
+        
+       let bool = regExp.test(email);
+		
+       if(email == ""){
+			$(this).next().show();
+			 $(this).parent().find(".detailerror").hide();
+			 regcheck = false;
+	   }
+       
+       else if(!bool) {
+         // 이메일이 정규표현식에 위배된 경우
+           $(this).next().hide();
+           $(this).parent().find(".detailerror").show();
+           regcheck = false;
+       }
+      
+       else {
+          // 암호가 정규표현식에 맞는 경우     
+    	   $(this).next().hide();
+    	   $(this).parent().find(".detailerror").hide();
+           regcheck = true;
+ 
+       }
+	});
+	
+	
+	$("input[name=phone_2], input[name=phone_3]").blur(function(){
+		
+		var regExp = /^[1-9][0-9]{3}$/i;
+		// 숫자 4자리만 들어오도록 검사해주는 정규표현식 객체 생성 
+		
+		let phone_2 = $("input[name=phone_2]").val().trim();
+		let phone_3 = $("input[name=phone_3]").val().trim();
+		
+		let bool = regExp.test(phone_2);
+		let bool2 = regExp.test(phone_3);
+		
+		if(phone_2 == "" || phone_3 == ""){
+			$(this).parent().find(".error").show();
+			$(this).parent().find(".pherror").hide();
+			regcheck = false;
+	   }
+       
+       else if(!bool || !bool2) {
+         // 전화번호가 정규표현식에 위배된 경우
+           $(this).parent().find(".error").hide();
+           $(this).parent().find(".pherror").show();
+           regcheck = false;
+       }
+      
+       else {
+          // 암호가 정규표현식에 맞는 경우     
+           $(this).parent().find(".error").hide();
+    	   $(this).parent().find(".pherror").hide();
+    	   regcheck = true;
+          
+       }
+	});
+	
+	// 조립서비스 희망일 검사
+	$("input[name=hopeful]").blur(function(){
+		let hopeful = $(this).val().trim();
+		if(hopeful == ""){
+			$(this).next().show();
+			regcheck = false;
+		}
+		else{
+			$(this).next().hide();
+			regcheck = true;
+		}	
+	});
+	
+	
+	// 설치장소 검사
+	$("input[name=address]").blur(function(){
+		let address = $(this).val().trim();
+		if(address == ""){
+			$(this).next().show();
+			regcheck = false;
+		}
+		else{
+			$(this).next().hide();
+			regcheck = true;
+		}	
+	});
+		
+		
+	}); // end of $(document).ready(function(){}----------------
+	
+// Function Declaration
+
+function goApply(){ // 필수 입력 체크
+
+let boolFlag = false; // 필수입력 사항에 올바르게 모두 입력이 되었는지 확인하는 용도
+		
+let arr_requiredInfo = document.getElementsByClassName("requiredInfo"); // 리턴타입: 배열	
+
+	for(let i=0; i<arr_requiredInfo.length; i++){ // 필수 입력필드 검사
+		let val = arr_requiredInfo[i].value.trim(); // 필수 입력필드 속 값
+		if(val == ""){ // 값이 없다면
+			alert("*")
+			return false;
+			}
+	
+		}// end of for----------------------------		
+
+	if(boolFlag == false || regcheck == false){ // 올바른 입력이 아닌경우
+		return false; // 종료
+	}	
+	
+	let agreeCheck = $("input:checkbox[id=agree]:checked").length; // 이용약관 체크 여부
+	if(agreeCheck == 0){ // 체크안한경우
+		alert("이용약관에 동의해주세요.");
+		return; // 종료
+	}
+	
+	
+		
+}// end of function goApply(){}---------------------
+
+
+</script>
+
+
 
 <script>
 	$(function() {
@@ -175,6 +325,7 @@
 </script>
 
 
+
 <jsp:include page="../header.jsp" />
 
 <body>
@@ -182,24 +333,28 @@
 	<h1 class="main-title">조립 서비스 온라인 신청</h1>
 	<hr />
 	<div class="wrapper">
-	<form class="apply">
+	<form name="assembleapply">
 		<table class="formtable">
 			<tbody>
 				<tr>
 					<th>신청인 성명 *</th>
 					<td><input type="text" name="name" value size="20"
-						placeholder="김철수" class="forminput"></td>
+						placeholder="김철수" class="forminput requiredInfo">
+						<span class="error">성명은 필수입력 필드입니다.</span></td>
 				</tr>
 
 				<tr>
 					<th>신청인 이메일 *</th>
-					<td><input type="text" class="forminput" name="email" value
-						size="20" placeholder="kim@email.com"></td>
+					<td><input type="text" class="forminput requiredInfo" name="email" value
+						size="20" placeholder="kim@email.com">
+						<span class="error">이메일은 필수입력 필드입니다.</span>
+						<span class="error detailerror">이메일 형식에 맞지 않습니다.</span>
+						</td>
 				</tr>
 
 				<tr>
 					<th>신청인 연락처 *</th>
-					<td><select name="phone_1" value class="forminput">
+					<td><select name="phone_1" class="forminput requiredInfo">
 							<option value="010">010</option>
 							<option value="010">011</option>
 							<option value="010">016</option>
@@ -207,17 +362,23 @@
 							<option value="010">018</option>
 							<option value="010">019</option>
 					</select> - <input type="text" name="phone_2" class="forminput"
-						maxlength="4" value size="5" placeholder="1234"> - <input
+						maxlength="4" size="5" placeholder="1234"> - <input
 						type="text" name="phone_3" class="forminput" maxlength="4" value
-						size="5" placeholder="5678"></td>
+						size="5" placeholder="5678">
+						<span class="error">연락처는 필수입력 필드입니다.</span>
+						<span class="error pherror">숫자 4자리를 올바르게 입력해주세요.</span>
+						</td>
 				</tr>
 
 				<tr>
 					<th>조립서비스 희망일 *</th>
-					<td><input type="text" name="hopeful" class="forminput"
+					<td><input type="text" name="hopeful" class="forminput requiredInfo"
 						id="hopeful" value size="33" placeholder="예약 희망일을 클릭해주세요"
-						style="max-width: 250px; width: 80%;" class="hasDatepicker"><br>
-						<small>- 예약을 신청하시면 조립 서비스 직원이 참고하여 일정을 조율하고 연락을 드려요.</small></td>
+						style="max-width: 250px; width: 80%;" class="hasDatepicker">
+						<span class="error">조립서비스 희망일은 필수입력 필드입니다.</span>
+						<br>
+						<small>- 예약을 신청하시면 조립 서비스 직원이 참고하여 일정을 조율하고 연락을 드려요.</small>
+						</td>
 				</tr>
 
 				<tr>
@@ -230,11 +391,13 @@
 				</tr>
 				<tr>
 					<th>설치 장소 *</th>
-					<td><input type="text" id="postcode" class="forminput" placeholder="우편번호"> 
-					<input type="button" class="mybtn" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-					<input type="text" id="address" class="forminput" placeholder="주소"> <br>
-					<input type="text" id="detailAddress" class="forminput"placeholder="상세주소"> 
-					<input type="text" id="extraAddress" class="forminput" placeholder="참고항목"></td>
+					<td><input type="text" id="postcode" name="address" class="forminput requiredInfo" placeholder="우편번호"> 
+					<input type="button" class="mybtn" name="address" onclick="execDaumPostcode()" value="우편번호 찾기">
+					<span class="error">설치장소는 필수입력 필드입니다.</span><br>
+					<input type="text" id="address" name="address" class="forminput" placeholder="주소"> <br>
+					<input type="text" id="detailAddress" name="address" class="forminput"placeholder="상세주소"> 
+					<input type="text" id="extraAddress" class="forminput" placeholder="참고항목">
+					</td>
 				</tr>
 
 				<tr>
@@ -255,8 +418,8 @@
 				<input type="checkbox" id="agree"><label class="mylabel" for="agree">(필수)개인정보수집 및 이용에 동의합니다.</label> 
 				<a href="<%= ctxPath%>/service/privacy_policy.one" class="another" style="margin-left: 2px;" target="_blank">이용약관</a> <br>
 			</div>
-			<a href="#" role="button" class="mybtn_black"
-				style="margin-top: 0.5vw; margin-bottom: 4vw;">서비스 신청하기</a>
+			<button type="button" id="btnAssemble" class="mybtn_black"
+				style="margin-top: 0.5vw; margin-bottom: 4vw;" onClick="goApply();" ">서비스 신청하기</button>
 			</div>
 		</form>
 	</div>

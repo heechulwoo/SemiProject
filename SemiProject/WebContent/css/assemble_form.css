@@ -104,6 +104,21 @@ a {
   font-size: 0.9rem;
 }
 
+@media (max-width:1000px){
+	.formtable{
+	width: 100%;
+	}
+	.error{
+	display: flex;
+	flex-direction: column;
+	}
+	small{
+	display: flex;
+	flex-direction: column;
+	}
+}
+
+
 .forminput {
   height: 2.5em;
   margin: 5px;
