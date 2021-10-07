@@ -312,7 +312,7 @@ where images = 1;
 select distinct color
 from tbl_product;
 
-select color, count(*)
+select color
 from tbl_product
 group by color;
 
