@@ -12,7 +12,7 @@ import util.security.AES256;
 import util.security.SecretMyKey;
 import util.security.Sha256;
 
-public class MemberDAO implements InterMemberDAO {
+public class MemberDAO_jy implements InterMemberDAO_jy {
 	
 	
 	private DataSource ds; // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool) 이다.
@@ -23,7 +23,7 @@ public class MemberDAO implements InterMemberDAO {
 	private AES256 aes;
 	
 	// 기본생성자
-	public MemberDAO() {
+	public MemberDAO_jy() {
 		try {
 			
 			Context initContext = new InitialContext();
@@ -160,6 +160,114 @@ public class MemberDAO implements InterMemberDAO {
 		
 		
 		return member;
-	}
+		
+	}// public MemberVO selectOneMember(Map<String, String> paraMap)---------
 
+	
+	
+	// ID 중복검사 (tbl_member 테이블에서 userid 가 존재하면 true를 리턴해주고, userid 가 존재하지 않으면 false를 리턴한다)
+	   @Override
+	   public boolean idDuplicateCheck(String userid) throws SQLException {
+	      
+	      boolean isExists = false;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select userid "
+	                  + " from tbl_member "
+	                  + " where userid = ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, userid);   
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         isExists = rs.next(); // 행이 있으면 (중복된 userid) true,
+	                          // 행이 없으면 (중복된 userid) false,
+	         
+	         
+	      } finally {
+	         close();
+	         
+	      }
+
+	      return isExists;
+	   }// end of public boolean idDuplicateCheck(String userid)-------------
+	   
+	   
+	  
+	    // email 중복검사 (tbl_member 테이블에서 email이  존재하면 true를 리턴해주고, email이 존재하지 않으면 false를 리턴한다) (추상메소드)
+	   @Override
+	   public boolean emailDuplicateCheck(String email) throws SQLException {
+	      
+	      boolean isExists = false;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select email "
+	                  + " from tbl_member "
+	                  + " where email = ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, aes.encrypt(email)); // "seokj@gmail.com" ==> aes.encrypt("seokj@gmail.com") ==> ZcP4DfL7Voac4wwe6pNyRA==
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         isExists = rs.next(); // 행이 있으면 (중복된 email) true,
+	                          // 행이 없으면 (사용가능한 email) false
+	   
+	      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+	         e.printStackTrace();
+	      } finally {
+	            close();
+	      }
+	   
+	      return isExists;
+	         
+	   }// end of public boolean emailDuplicateCheck(String email)-----------------
+
+
+	   // 회원가입을 해주는 메소드(tbl_member 테이블에 insert)(추상메소드)
+	   @Override
+	   public int registerMember(MemberVO member) throws SQLException {
+	      
+	      int n = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " insert into tbl_member(userid, pwd, name, email, mobile, postcode, address, detailaddress, extraaddress, gender, birthday) "     
+	                  + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "; 
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, member.getUserid());
+	         pstmt.setString(2, Sha256.encrypt(member.getPwd()) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다. (복호화 불가)
+	         pstmt.setString(3, member.getName());
+	         pstmt.setString(4, aes.encrypt(member.getEmail()));  // 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다.
+	         pstmt.setString(5, aes.encrypt(member.getMobile())); // 휴대폰번호를 AES256 알고리즘으로 양방향 암호화 시킨다.
+	         pstmt.setString(6, member.getPostcode());
+	         pstmt.setString(7, member.getAddress());
+	         pstmt.setString(8, member.getDetailaddress());
+	         pstmt.setString(9, member.getExtraaddress());
+	         pstmt.setString(10, member.getGender());
+	         pstmt.setString(11, member.getBirthday());
+	         
+	         n = pstmt.executeUpdate();
+	         
+	      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	      
+
+	      return n;
+	   }// end of public int registerMember(MemberVO member)-------------------
+	
+	
+
+	
 }

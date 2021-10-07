@@ -42,15 +42,383 @@
    
 </style>
 
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script type="text/javascript">
-	
+
 	$(document).ready(function(){
 		
 		$("span.error").hide();
+		$("input#name").focus(); // 첫번째 input인 name에 focus
 				
-	});
+		$("input#name").blur(function(){ // focus가 있다가 잃었을 때
+			
+			var name = $(this).val().trim();
+			if(name == ""){ // 입력하지 않거나 공백만 입력한 경우
+				$("table#tblMemberRegister :input").prop("disabled", true); // 우선 다 막아뒀다가
+				$(this).prop("disabled", false); // 성명칸만 활성화시키자
+				// .prop는 속성값을 가져오거나 추가한다.
+				
+				$(this).parent().find(".error").show(); // error 메시지 보이게
+				$(this).focus(); // focus를 name으로
+			}
+			else { // 공백이 아닌 글자를 입력했을 경우
+				
+				$("table#tblMemberRegister :input").prop("disabled", false);
+			
+				$(this).parent().find(".error").hide();
+				
+			}
+			
+			
+		}); // end of $("input#name").blur(function(){})-----------------
+		
+		
+		$("input#userid").blur(function(){
+			
+			var userid = $(this).val().trim();
+			if(userid == ""){
+				$("table#tblMemberRegister :input").prop("disabled", true); // 우선 다 막아뒀다가
+				$(this).prop("disabled", false); // 성명칸만 활성화시키자
+				
+				$(this).parent().find(".error").show();
+				$(this).focus();
+			}
+			else{
+				$("table#tblMemberRegister :input").prop("disabled", false);
+				$(this).parent().find(".error").hide();
+			}
 	
+		}); // end of $("input#userid").blur(function(){})-------------
+		
+		
+		
+		$("input#pwd").blur(function(){
+			
+			var regExp = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g);
+			// 숫자/문자/특수문자/ 포함 형태의 8~15자리 이내의 암호 정규표현식 객체 생성
+			
+			var pwd  = $(this).val();
+			
+			var bool = regExp.test(pwd); // 정규표현식에 맞는지 test한다.
+			
+			if(!bool){
+				$("table#tblMemberRegister :input").prop("disabled", true);
+				$(this).prop("disabled", false);
+				
+				$(this).parent().find(".error").show();
+				$(this).focus();
+			}
+			else{
+				$("table#tblMemberRegister :input").prop("disabled", false);
+				
+				$(this).parent().find(".error").hide();
+			}
+		
+		}); // end of $("input#pwd").blur(function(){})---------------
+		
+		
+		$("input#pwdcheck").blur(function(){
+			
+			var pwd = $("input#pwd").val();
+			var pwdcheck = $("input#pwdcheck").val();
+			
+			if(pwd != pwdcheck){
+				
+				$("table#tblMemberRegister :input").prop("disabled", true);
+				$(this).prop("disabled", false);
+				$("input#pwd").prop("disabled", true);
+				
+				$(this).parent().find(".error").show();
+				$("input#pwd").focus();
+			}
+			else {
+				$("table#tblMemberRegister :input").prop("disabled", false);
+				$(this).parent().find(".error").hide();		
+			}
+			
+		}); // end of $("input#pwdcheck").blur(function(){})------------------
+		
+		
+		$("input#email").blur(function(){
+			
+			var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+			
+			var email = $(this).val();
+			
+			var bool = regExp.test(email);
+			
+			if(!bool){
+				$("table#tblMemberRegister :input").prop("disabled", true);
+				$(this).prop("disabled", false);
+				
+				$(this).parent().find(".error").show();
+				$(this).focus();				
+			}
+			else{
+				$("table#tblMemberRegister :input").prop("disabled", false);
+				$(this).parent().find(".error").hide();
+			}
+		}); // end of $("input#email").blur(function(){})--------------
+		
+		
+		$("input#hp2").blur(function(){
+			
+			var regExp = /^[1-9][0-9]{3}$/i;
+			
+			var hp2 = $(this).val();
+			
+			var bool = regExp.test(hp2);
+			
+			if(!bool){
+				$("table#tblMemberRegister :input").prop("disabled", true);
+				$(this).prop("disabled", false);
+				
+				$(this).parent().find(".error").show();
+				$(this).focus();
+				
+			}
+			else{
+				$("table#tblMemberRegister :input").prop("disabled", false);
+				$(this).parent().find(".error").hide();
+				
+			}
+		});// end of $("input#hp2").blur(function(){})------------------
+		
+		
+		$("input#hp3").blur(function(){ // focus가 있다가 잃었을 때
+			
+		    //  var regExp = /^[0-9]{4}$/i;
+		    //  또는  
+		        var regExp = /^\d{4}$/i;
+		     	// 숫자 4자리만 들어오도록 검새해주는 정규표현식 객체 생성
+		     	
+				var hp3 = $(this).val();
+				
+				var bool = regExp.test(hp3);
+			
+		     	if(!bool){ 
+		     		// 마지막 전화번호 4자리가 정규표현식에 위배된 경우	
+					$("table#tblMemberRegister :input").prop("disabled",true); // 우선 다 못하게 막아뒀다가
+					$(this).prop("disabled",false); // 성명칸만 활성화시키자
+			
+					$(this).parent().find(".error").show();
+					$(this).focus();
+				}
+				else{
+					// 마지막 전화번호 4자리가 정규표현식에 맞는 경우
+					$("table#tblMemberRegister :input").prop("disabled",false); // 다시 활성화
+				 
+				    $(this).parent().find(".error").hide();
+				}
+				
+			}); // end of $("input#hp3").blur(function(){})-------------------
+		
+			
+		$("img#zipcodeSearch").click(function(){
+	         new daum.Postcode({
+	               oncomplete: function(data) {
+	                  // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+	                  // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	                  var addr = ''; // 주소 변수
+	                  var extraAddr = ''; // 참고항목 변수
+
+	                  //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	                  if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                      addr = data.roadAddress;
+	                  } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                      addr = data.jibunAddress;
+	                  }
+
+	                  // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	                  if(data.userSelectedType === 'R'){
+	                      // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                      // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                      if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                          extraAddr += data.bname;
+	                      }
+	                      // 건물명이 있고, 공동주택일 경우 추가한다.
+	                      if(data.buildingName !== '' && data.apartment === 'Y'){
+	                          extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                      }
+	                      // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                      if(extraAddr !== ''){
+	                          extraAddr = ' (' + extraAddr + ')';
+	                      }
+	                      // 조합된 참고항목을 해당 필드에 넣는다.
+	                      document.getElementById("extraAddress").value = extraAddr;
+	                  
+	                  } else {
+	                      document.getElementById("extraAddress").value = '';
+	                  }
+
+	                  // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	                  document.getElementById('postcode').value = data.zonecode;
+	                  document.getElementById("address").value = addr;
+	                  // 커서를 상세주소 필드로 이동한다.
+	                  document.getElementById("detailAddress").focus();
+	               }
+	           }).open();               
+	      	});
+		//////////////////////////////////////////////////////////
+		var mmhtml = "";
+		for(var i=1; i<=12; i++){
+			if(i<10){
+				mmhtml += "<option>0"+i+"</option>";
+			}
+			else{
+				mmhtml += "<option>"+i+"</option>";
+			}
+		}// end of for----------------
+		
+		$("select#birthmm").html(mmhtml);
+		
+		var ddhtml = "";
+		for(var i=1; i<=31; i++) {
+			if(i<10){
+				ddhtml += "<option>0"+i+"</option>";
+			}
+			else{
+				ddhtml += "<option>"+i+"</option>";
+			}
+		}// end of for---------------------
+		
+		$("select#birthdd").html(ddhtml);
+		
+		// =================== 아이디 중복검사하기  ===================
+		$("img#idcheck").click(function(){
+		
+			b_flagIdDuplicateClick = true;
+			// 가입하기 버튼을 클릭시 "아이디중복확인"을 클릭했는지 안했는지 알아보기 위한 용도임
+			
+			$.ajax({
+				url:"<%= ctxPath%>/member/idDuplicateCheck.one",
+				type:"post",
+				data:{"userid":$("input#userid").val()},
+				dataType:"json",
+				success:function(json){
+					
+					if(json.isExists){
+						// 입력한 userid가 이미 사용 중이라면
+						$("span#idcheckResult").html($("input#userid").val()+" 은 이미 사용 중이므로 사용불가합니다.").css("color", "orange");
+						$("input#userid").val("");
+					}
+					else{
+						// 입력한 userid가 DB 테이블에 존재하지 않는 경우라면
+						$("span#idcheckResult").html($("input#userid").val()+" 은 사용가능합니다.").css("color", "green");
+					}
+				},
+				error: function(request, status, error){
+					alert("code: " +request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					
+				}
+			});
+			
+		});// end of $("img#idcheck").click(function(){})----------------
+		
+		
+		// 아이디값이 변경되면 가입하기 버튼을 클릭시 "아이디 중복확인"을 클릭했는지 안 했는지 알아보기 위한 용도
+		$("input#userid").bind("change", function(){
+			b_flagIdDuplicateClick = false; // 다시 초기화
+		});
+		
+		// 이메일값이 변경되면 "이메일 중복확인"을 클릭했는지 안 했는지 알아보기 위한 용도
+		$("input#email").bind("change", function(){
+			b_flagEmailDuplicateClick = false;
+		});
+		
+	});// end of $(document).ready(function(){})----------------
+
+	
+	
+	// =================== 이메일 중복검사하기  ===================
+	
+	function isExistEmailCheck(){
+		
+		b_flagEmailDuplicateClick = true;
+        // 가입하기 버튼을 클릭시 "이메일중복확인" 을 클릭했는지 클릭안했는지를 알아보기위한 용도임.
+   		
+   	 // 첫번째 방법
+   	 $.ajax({
+   		 url:"<%= ctxPath%>/member/emailDuplicateCheck.one", 
+   		 type:"post",
+   		 data:{"email":$("input#email").val()},
+   		 dataType:"json",	 
+   		 success:function(json){ // json 타입으로 온다.
+                
+              if(json.isExists){
+             	 // 입력한 email이 이미 사용 중이라면
+             	 $("span#emailCheckResult").html($("input#email").val()+ " 은 이미 사용중이므로 사용불가합니다.").css("color","orange");
+             	 $("input#email").val("");
+              }
+              else{
+             	 //입력한 email이 DB 테이블에 존재하지 않는 경우라면
+             	 $("span#emailCheckResult").html($("input#email").val()+" 은 사용가능합니다.").css("color","green");
+              }
+
+   		 },
+   		 error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+         }  		 
+   	  });					
+		
+	}// end of function isExistEmailCheck(){})---------------------
+	
+
+	// 가입하기
+	function goRegister(){
+		
+		// *** 필수입력사항에 모두 입력이 되었는지 검사한다. *** //
+		var boolFlag = false; 
+		
+		$("input.requiredInfo").each(function(){
+			var data = $(this).val().trim();
+			if(data == ""){ // data가 공백이라면
+				alert("*표시된 필수입력사항은 모두 입력하셔야 합니다.");
+				boolFlag = true;
+				return false; 				
+			}
+		});
+		
+		if(boolFlag){
+			return; // 종료
+		}
+		
+		var radioCheckedLength = $("input:radio[name=gender]").length;
+		
+		if(radioCheckedLength == 0){ // 성별 radio가 체크되지 않았다면
+			alert("성별을 선택하셔야 합니다.");
+			return; // 종료
+		}
+		
+		var checkboxCheckedLength = $("input:checkbox[id=agree]:checked").length;
+		
+		if(checkboxCheckedLength == 0){ // 동의 checkbox가 체크되지 않았다면
+			alert("이용약관에 동의하셔야 합니다.");
+			return; // 종료
+		}
+		
+		if(!b_flagIdDuplicateClick){ // ID중복검사를 클릭하지 않았다면
+			alert("아이디중복확인 클릭하여 ID중복검사를 하세요.");
+			return; // 종료
+		}
+		
+		if(!b_flagEmailDuplicateClick){ // email중복검사를 클릭하지 않았다면
+			alert("이메일중복확인 클릭하여 이메일중복검사를 하세요.");
+			return; // 종료
+		}
+		
+		var frm = document.registerFrm;
+		frm.action = "memberRegister.one";
+		frm.method = "post";
+		frm.submit();
+		
+		
+	}// end of function goRegister(){}---------------
+	
+
 	
 </script>	
 
@@ -58,7 +426,7 @@
 
 
   <!-- 상단 컨텐츠 시작 -->
-  <div class="container" style="max-width:850px; margin-top:40px">
+  <div class="container" style="max-width:850px; margin-top:40px; height:1500px">
 	<div class="row custom-topcontents">
 		<h2>&nbsp;<b>회원 가입</b></h2>
 			<img class="w3-image" width="1000" height="300" src="<%= ctxPath%>/images/제목 없음.png" style="margin-top:40px">	
@@ -67,6 +435,7 @@
 	<div class="row" id="divRegisterFrm">
 	   <div class="col-md-12" >
 	   <form name="registerFrm">
+	  
 	   <table id="tblMemberRegister" style="font-size: 10pt">
 	      <thead>
 	      </thead>
@@ -217,3 +586,5 @@
 
 
 <jsp:include page="/WEB-INF/footer.jsp"/>
+
+

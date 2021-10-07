@@ -958,3 +958,5 @@ from tbl_product;
 select color
 from tbl_product
 group by color;
+
+
