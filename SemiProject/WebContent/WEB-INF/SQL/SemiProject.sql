@@ -315,3 +315,5 @@ from tbl_product;
 select color, count(*)
 from tbl_product
 group by color;
+
+
