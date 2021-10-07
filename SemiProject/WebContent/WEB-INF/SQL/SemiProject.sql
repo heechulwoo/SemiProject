@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 show user;
 
 -- **** 회원 테이블 생성하기 **** --
@@ -249,7 +247,6 @@ create table tbl_shoppingmap
 
 
 
-=======
 show user;
 
 -- **** 회원 테이블 생성하기 **** --
@@ -610,8 +607,6 @@ on P.pnum = I.fk_pnum ;
 
 select *
 from tbl_imagefile;
->>>>>>> branch 'main' of https://github.com/heechulwoo/SemiProject.git
-=======
 show user;
 
 -- **** 회원 테이블 생성하기 **** --
@@ -879,7 +874,7 @@ update tbl_imagefile set imgfilename = '쿨라베리_브라운4.webp'
 where imgfileno=124;
 
 
-121	50009069	5000	KULLABERG 쿨라베리	59900	브라운
+-- 121	50009069	5000	KULLABERG 쿨라베리	59900	브라운
 -----------------------------------------------------------------------
 
 select pnum, fk_cnum, pname, price, color, pinpupdate, prodimage 
@@ -943,4 +938,3 @@ create table tbl_shoppingmap
 );
 
 select * from tab;
->>>>>>> refs/heads/kangkh
