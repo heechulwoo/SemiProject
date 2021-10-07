@@ -457,14 +457,24 @@ create table tbl_product
 update tbl_product set color='블랙'
 where pnum='10009002';
 
-insert into tbl_product(pnum, fk_cnum, pname, price, color, pqty, psummary, pcontent)
-values(1000||seq_pnum.nextval, 1000, 'NILSERIK 닐세리크', 69900, '베이지/비슬레 다크그레이', 20, '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다.', '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다. 좌식/입식 겸용 책상과 함께 사용하면 좋습니다.');
+insert into tbl_product(pnum, fk_cnum, pname, price, color, pqty, psummary, pcontent, prodimage)
+values(4000||seq_pnum.nextval, 4000, 'NORRARYD 노라뤼드', 99900, '블랙', 15, '전통 스칸디나비아 디자인의 영향을 받은 제품입니다. 재료와 표현에 군더더기가 없죠. 공공사용 적합성 테스트를 거쳐 승인을 받았으므로 가족들과 함께 하는 집에서의 생활에도 적합합니다.', '넉넉한 깊이의 시트와 등받이의 곡선 디자인으로 몸을 편안하게 받쳐줍니다.
+발받침의 메탈 소재 덕분에 쉽게 닳지 않습니다.
+높이와 디자인이 NORRÅKER/노로케르 바테이블과 잘 맞습니다.
+안정감, 내구성, 안전성 면에서 가장 까다로운 기준으로 엄격한 테스트를 거친 의자로 여러 해 동안 매일 써도 끄떡없습니다.', '노라뤼드_블랙1.webp');
 
-insert into tbl_product(pnum, fk_cnum, pname, price, color, pqty, psummary, pcontent)
-values(1000||seq_pnum.nextval, 1000, 'NILSERIK 닐세리크', 69900, '블랙/비슬레 다크그레이', 15, '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다.', '편하게 자세를 바꿀 수 있고 앉는 자세가 좋아집니다. 좌식/입식 겸용 책상과 함께 사용하면 좋습니다.');
+insert into tbl_product(pnum, fk_cnum, pname, price, color, pqty, psummary, pcontent, prodimage)
+values(3000||seq_pnum.nextval, 3000, 'GRÅVAL 그로발', 89000, '자작나무', 15, '유아용의자는 너무 작고, 일반 의자는 너무 크다면? 식탁 높이와도 잘 맞고 발 지지대가 있어 편안한 어린이의자로 즐거운 식사 시간을 가져보세요.', '어린이 피부는 민감하고 연약하지만 걱정하지 마세요. 테스트를 거쳐 승인 받은 제품으로 어린이의 피부나 건강을 해칠 수 있는 물질을 전혀 사용하지 않았습니다.
+발받침이 2개여서 아이가 혼자서 쉽게 올라가고 내려올 수 있으므로 독립성을 기르는 데 도움이 됩니다.
+표면이 부드럽고 닦기 힘든 구석진 부분도 없으므로 의자를 깔끔하게 관리할 수 있습니다.', '그로발_자작나무1.webp');
+--------------------------------------------------------------------------------------------
 
 
-select * from tbl_product
+update tbl_product set pnum=2000||seq_pnum.nextval
+where fk_cnum=2000;
+
+select * 
+from tbl_product
 order by pnum;
 
 commit;
@@ -498,17 +508,30 @@ nocycle
 nocache;
 
 insert into tbl_imagefile(imgfileno, fk_pnum, imgfilename)
-values(seq_img.nextval, 10009001, '닐세리크1.webp');
+values(seq_img.nextval, 20009178, '군데_화이트1.webp');
 
 insert into tbl_imagefile(imgfileno, fk_pnum, imgfilename)
-values(seq_img.nextval, 10009001, '닐세리크2.webp');
+values(seq_img.nextval, 20009178, '군데_화이트2.webp');
 
+insert into tbl_imagefile(imgfileno, fk_pnum, imgfilename)
+values(seq_img.nextval, 20009178, '군데_화이트3.webp');
 
-select * from tbl_product
+insert into tbl_imagefile(imgfileno, fk_pnum, imgfilename)
+values(seq_img.nextval, 20009178, '군데_화이트4.webp');
+
+20009178	2000	GUNDE 군데	10000	화이트
+
+select * 
+from tbl_product
+where fk_cnum = 2000
 order by pnum;
+
+update tbl_imagefile set imgfilename = '노르네스_블랙4.webp'
+where imgfileno = 148;
 
 select *
 from tbl_imagefile
+where substr(fk_pnum, 1, 4) = 2000
 order by imgfileno;
 
 commit;
