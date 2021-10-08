@@ -75,7 +75,7 @@
 						            "</div>" +
 									"<a href=''>" +
 								        "<img src='<%= ctxPath%>/image_ikea/"+item.prodimage+"' style='width:100%'>" +
-								        "<span>"+item.pname+"<br><b>￦"+(item.price).toLocaleString('en')+"</b></span>" +
+								        "<span>"+item.pname+"<br><span class='w3-opacity' style='font-size:12px'>"+item.cname+"</span><br><b>￦"+(item.price).toLocaleString('en')+"</b></span>" +
 							        "</a>" +
 							        "<div class='hide' style='visibility:hidden;'>" +
 						                "<button class='btn btn-outline-success btn-sm'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +

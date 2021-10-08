@@ -105,7 +105,7 @@
 	  <a class="navbar-brand" href="index.html" style="margin-left:30px"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="35"/></a>
   </div>
   <div class="container text-dark" style="margin:30px 130px; font-size:14px">
-      <h2><b>모든 제품</b></h2><br>
+      <h2><a href="<%= ctxPath%>/product/productAll.one"><b>모든 제품</b></a></h2><br>
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>암케어/카우치</b></a>
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>사무용의자</b></a>
 	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>식탁의자</b></a>
@@ -156,7 +156,7 @@
 	    	<li class="nav-item text" style="margin-left:50px"><a class="nav-link text-body text-dark fa fa-truck fa-lg" href="<%= ctxPath%>/product/shipping.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" href="<%= ctxPath%>/member/mypage.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-heart fa-lg" href="<%= ctxPath%>/product/wishlist.one"></a></li>
-	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-shopping-bag fa-lg" href="<%= ctxPath%>/product/shoppingBasket.one"></a></li>
+	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-shopping-bag fa-lg" href="<%= ctxPath%>/product/shoppingCart.one"></a></li>
 	   	</ul>	  
 	</nav>
 </div>
