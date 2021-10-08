@@ -11,6 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+
 public class ProductDAO implements InterProductDAO {
 	
 	private DataSource ds; // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool) 이다.
@@ -140,7 +141,89 @@ public class ProductDAO implements InterProductDAO {
 		return categoryList;
 	}
     // end of public List<Map<String, String>> selectCategoryImage()----------------------
-    
+
+
+	// Ajax(JSON)를 사용하여 상품목록을 "더보기" 방식으로 페이징처리 해주기 위해  제품의 전체개수 알아오기 // 
+	@Override
+	public int totalCount() throws SQLException {
+		int totalCount = 0;
+        
+        try {
+            conn = ds.getConnection();
+            
+            String sql = " select count(*) "+
+                         " from tbl_product ";
+            
+            pstmt = conn.prepareStatement(sql);
+            
+            rs = pstmt.executeQuery();
+            
+            rs.next();
+            
+            totalCount = rs.getInt(1);
+            
+        } finally {
+           close();
+        }      
+        
+        return totalCount;
+	} // end of public int totalCount()-------------------
+	
+	// Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 8개씩 잘라서(start ~ end) 조회해오기 
+	@Override
+	public List<ProductVO> selectAllproduct(Map<String, String> paraMap) throws SQLException {
+		List<ProductVO> prodList = new ArrayList<>();
+	       
+        try {
+           conn = ds.getConnection();
+           
+           String sql = " select pnum, pname, color, price, pqty, prodimage, cnum, cname , pinpupdate " + 
+		           		" from " + 
+		           		" ( " + 
+		           		"     select row_number() over(order by pnum asc) as RNO, pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
+		           		"     from tbl_product P " + 
+		           		"     JOIN tbl_category C " + 
+		           		"     ON p.fk_cnum = c.cnum " + 
+		           		" ) " + 
+		           		" where RNO between ? and ? ";
+           
+           pstmt = conn.prepareStatement(sql);
+           pstmt.setString(1, paraMap.get("start"));
+           pstmt.setString(2, paraMap.get("end"));
+           
+           rs = pstmt.executeQuery();
+           
+           while(rs.next()) {
+              
+              ProductVO pvo = new ProductVO();
+              
+              pvo.setPnum(rs.getString(1));     // 제품번호
+              pvo.setPname(rs.getString(2));    // 제품명
+              pvo.setColor(rs.getString(3));	// 색
+              pvo.setPrice(rs.getInt(4));        // 제품 가격
+              pvo.setPqty(rs.getInt(5));         // 제품 재고량
+              pvo.setProdimage(rs.getString(6)); // 제품 이미지
+              
+              CategoryVOwhc categvo = new CategoryVOwhc();
+              categvo.setCnum(rs.getString(7));
+              categvo.setCname(rs.getString(8));
+              pvo.setCategvo(categvo);
+              
+              pvo.setPinpupdate(rs.getString(9)); // 입고일
+              
+              
+               
+              prodList.add(pvo);
+           }// end of while(rs.next())-----------------------------------
+           
+        } finally {
+           close();
+        }
+        
+        return prodList;
+	}
+    // end of public List<ProductVO> selectAllproduct(Map<String, String> paraMap)
+
     
     
 }

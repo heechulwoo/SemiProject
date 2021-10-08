@@ -8,8 +8,110 @@
 
 <jsp:include page="../header.jsp"/>
 
-<script>
+<script type="text/javascript">
 
+	$(document).ready(function(){
+		
+		$("span#totalCount").hide();
+	    $("span#count").hide();
+	      
+		// 상품 게시물을 더보기 위하여 "더보기" 버튼 클릭액션에 대한 초기값 호출하기 
+	    // 즉, 맨처음에는 "더보기" 버튼을 클릭하지 않더라도 클릭한 것 처럼 8개의 상품을 게시해주어야 한다는 말이다. 
+		displayAll(1);
+		
+		// 상품 게시물을 더보기 위하여 "더보기..." 버튼 클릭액션 이벤트 등록하기  
+		$("button#btnMore").click(function(){
+			
+			if($(this).text() == "처음으로") {
+				$("div#displayAll").empty();
+				$("span#end").empty();
+				displayAll(1);
+				$(this).text("더보기");
+			}
+			else {
+				displayAll($(this).val());
+			}
+			
+		});
+		
+		$(document).on("mouseover", "div.product", function(){
+			$(this).children("div.hide").css("visibility","visible");
+		});
+		$(document).on("mouseout", "div.product", function(){
+			$(this).children("div.hide").css("visibility","hidden");
+		});
+	});
+
+	
+	// Function Declaration
+	var len = 8;
+	function displayAll(start){
+		
+		$.ajax({
+			url:"/SemiProject/product/mallDisplayJSON.one",
+		//	type:"GET",
+			data:{"start":start	 // "1"  "9"  "17"
+				 ,"len":len}, //  8	  8    8
+			dataType:"JSON",
+			success:function(json) {
+				var html = "";
+				
+				if( start == "1" && json.length == 0) {
+					// 처음부터 데이터가 존재하지 않는 경우
+	                // !!! 주의 !!!
+	                // if(json == null) 이 아님!!!
+	                // if(json.length == 0) 으로 해야함!!
+	                html += "현재 상품 준비중....";
+					
+					// 상품 결과를 출력하기
+					$("div#displayAll").html(html);
+				}
+				else if( json.length > 0) {
+					// 데이터가 존재하는 경우
+					$.each(json,function(index, item){
+						html += "<div class='col-md-3 col-6 product'>" +
+									"<div class='hide my-2' style='visibility:hidden;'>" +
+						                "<button class='btn btn-outline-danger btn-sm border-0'><i class='icon-link far fa-heart fa-lg'></i></button>" +
+						            "</div>" +
+									"<a href=''>" +
+								        "<img src='<%= ctxPath%>/image_ikea/"+item.prodimage+"' style='width:100%'>" +
+								        "<span>"+item.pname+"<br><b>￦"+(item.price).toLocaleString('en')+"</b></span>" +
+							        "</a>" +
+							        "<div class='hide' style='visibility:hidden;'>" +
+						                "<button class='btn btn-outline-success btn-sm'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
+						            "</div>" +
+								"</div>";
+					}); // end of $.each(json,function(index, item){})---------
+					
+					// 상품 결과를 출력하기
+					$("div#displayAll").append(html);
+					
+					// >>> !!! 중요 !!! 더보기... 버튼의 value 속성에 값을 지정하기 <<< //  
+					$("button#btnMore").val(Number(start)+len);
+					// 더보기... 버튼의 value 값이  9  로 변경된다.
+					// ...
+					// 더보기... 버튼의 value 값이  41  로 변경된다.(존재하지 않는 것)
+					
+					// count 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
+					$("span#count").text( Number($("span#count").text()) + json.length );
+					
+					// 더보기... 버튼을 계속해서 클릭하여 count 값과 totalCount 값이 일치하는 경우 
+					if( $("span#count").text() == $("span#totalCount").text() ) {
+						$("span#end").html("더이상 조회할 제품이 없습니다.");
+						$("button#btnMore").text("처음으로");
+						$("span#count").text("0");
+					}
+					
+				}
+				
+				
+			},
+			error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		});
+		
+	}// end of displayAll(start)---------------------
 </script>
 
 	<div class="container-fluid container-xl">
@@ -114,59 +216,13 @@
 		<hr>
 	</div>
 	<div class="container-fluid container-xl mt-1 mb-5" >
-		<div class="row">
-			<div class="col-md-3 col-6 product">
-				<div class="hidden my-2">
-	                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-	            </div>
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair1.jpg" style="width:100%">
-			        <span>TOBIAS 토비아스<br><b>￦89,900</b></span>
-		        </a>
-		        <div class="hidden">
-	                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-	            </div>
-			</div>
-			<div class="col-md-3 col-6 product">
-				<div class="hidden my-2">
-	                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-	            </div>
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair3.jpg" style="width:100%">
-       				<span>LEIFARNE 레이파르네<br><b>￦49,900</b></span>
-		        </a>
-		        <div class="hidden">
-	                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-	            </div>
-			</div>
-			<div class="col-md-3 col-6 product">
-				<div class="hidden my-2">
-	                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-	            </div>
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair2.jpg" style="width:100%">
-			        	<span>NOLYMYRA 놀뮈라<br><b>￦35,000</b></span>
-		        </a>
-		        <div class="hidden">
-	                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-	            </div>
-			</div>
-			<div class="col-md-3 col-6 product">
-				<div class="hidden my-2">
-	                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-	            </div>
-				<a href="">
-			        <img src="<%= ctxPath%>/images/chair4.jpg" style="width:100%">
-	      				<span>LOBERGET 로베리에트<br><b>￦39,000</b></span>
-		        </a>
-		        <div class="hidden">
-	                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-	            </div>
-			</div>
+		<div class="row" id="displayAll">
 		</div>
 		<hr>
 		<div class="text-center">
-			<button type="button" class="btn btn-light">더보기</button>
+			<button type="button" class="btn btn-light" id="btnMore" value="">더보기</button>
+			<span id="totalCount">${requestScope.totalCount}</span>
+			<span id="count">0</span>
 		</div>
 	</div>
 	

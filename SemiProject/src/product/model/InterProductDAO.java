@@ -10,4 +10,8 @@ public interface InterProductDAO {
 
 	List<Map<String, String>> selectCategoryImage() throws SQLException; // 모든 제품에서 보여줄 카테고리와 해당 카테고리 의자 이미지 1개 얻어오는 메소드
 	
+	int totalCount() throws SQLException; // Ajax(JSON)를 사용하여 상품목록을 "더보기" 방식으로 페이징처리 해주기 위해 제품의 전체개수 알아오기 // 
+	
+	List<ProductVO> selectAllproduct(Map<String, String> paraMap) throws SQLException; // Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 8개씩 잘라서(start ~ end) 조회해오기 
+	
 }

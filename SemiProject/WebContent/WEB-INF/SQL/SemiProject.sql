@@ -960,3 +960,28 @@ from tbl_product
 group by color;
 
 
+rollback;
+
+select *
+from tbl_product P join tbl_imagefile I
+on P.pnum = i.fk_pnum
+where pnum=10009001;
+
+select *
+from tbl_imagefile
+where fk_pnum=10009001;
+
+select pname
+from tbl_product
+group by pname;
+
+select pnum, pname, color, price, prodimage, cnum, cname , pinpupdate
+from
+(
+    select row_number() over(order by pnum asc) as RNO, pnum, pname, color, price, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate 
+    from tbl_product P
+    JOIN tbl_category C
+    ON p.fk_cnum = c.cnum
+)
+where RNO between 1 and 8;
+

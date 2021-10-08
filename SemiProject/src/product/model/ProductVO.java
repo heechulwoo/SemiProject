@@ -13,7 +13,7 @@ public class ProductVO {
 	private String prodimage;
 	
 	private String cname;	   // 카테고리명
-	
+	private CategoryVOwhc categvo;
 	
 	public String getPnum() {
 		return pnum;
@@ -102,5 +102,14 @@ public class ProductVO {
 	public void setCname(String cname) {
 		this.cname = cname;
 	}
+
+	public CategoryVOwhc getCategvo() {
+		return categvo;
+	}
+
+	public void setCategvo(CategoryVOwhc categvo) {
+		this.categvo = categvo;
+	}
+
 	
 }
