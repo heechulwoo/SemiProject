@@ -122,6 +122,37 @@ button#backBtn:hover {
 		$("span.error").hide();
 		
 		
+		<%-- 제품번호 odrcode --%>
+	<%--
+		$("input#odrcode").blur(function(){
+			
+			 	
+			    // var regExp = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g);
+			    // 숫자/문자/특수문자/ 포함 형태의 8~15자리 이내의 암호 정규표현식 객체 생성
+			    
+				var odrcode = $(this).val();
+			    
+				var bool = regExp.test(odrcode);
+			    
+				if(!bool) {
+					// 암호가 정규표현식에 위배된 경우
+					$("table#tblSelfReturn :input").prop("disabled",true);
+					$(this).prop("disabled",false);
+				
+				    $(this).parent().find(".error").show();
+				    $(this).focus();
+				}
+				else {
+					// 암호가 정규표현식에 맞는 경우
+					$("table#tblSelfReturn :input").prop("disabled",false);
+				
+					$(this).parent().find(".error").hide();
+				}
+				
+			});// 아이디가 odrcode 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
+	--%>
+		
+		
 		
 		<%-- 이름 --%>
 		$("input#name").blur(function(){
