@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
-import member.model.InterMemberDAO;
-import member.model.MemberDAO;
+import member.model.InterMemberDAO_jy;
+import member.model.MemberDAO_jy;
 import member.model.MemberVO;
 
 public class LoginStartAction extends AbstractController {
@@ -50,7 +50,7 @@ public class LoginStartAction extends AbstractController {
 		paraMap.put("pwd", pwd);
 		paraMap.put("clientip", clientip);
 
-		InterMemberDAO mdao = new MemberDAO();
+		InterMemberDAO_jy mdao = new MemberDAO_jy();
 		
 		MemberVO loginuser = mdao.selectOneMember(paraMap);
 		
