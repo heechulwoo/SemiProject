@@ -180,7 +180,7 @@ public class ProductDAO implements InterProductDAO {
            String sql = " select pnum, pname, color, price, pqty, prodimage, cnum, cname , pinpupdate " + 
 		           		" from " + 
 		           		" ( " + 
-		           		"     select row_number() over(order by pnum asc) as RNO, pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
+		           		"     select row_number() over(order by " + paraMap.get("range")+") as RNO, pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
 		           		"     from tbl_product P " + 
 		           		"     JOIN tbl_category C " + 
 		           		"     ON p.fk_cnum = c.cnum " + 

@@ -10,6 +10,8 @@
 
 <script type="text/javascript">
 
+	var range = "pname";
+
 	$(document).ready(function(){
 		
 		$("span#totalCount").hide();
@@ -34,6 +36,19 @@
 			
 		});
 		
+		$("input[name=range]").click(function(){
+			range = $(this).val();
+			$("div#displayAll").empty();
+			$("span#end").empty();
+			$("span#count").text("0");
+			displayAll(1);
+			
+		});
+		
+		$("input.filter").click(function(){
+			console.log($(this).val());
+		});
+		
 		$(document).on("mouseover", "div.product", function(){
 			$(this).children("div.hide").css("visibility","visible");
 		});
@@ -44,13 +59,14 @@
 
 	
 	// Function Declaration
-	var len = 8;
+	var len = 24;
 	function displayAll(start){
 		
 		$.ajax({
 			url:"/SemiProject/product/mallDisplayJSON.one",
 		//	type:"GET",
-			data:{"start":start	 // "1"  "9"  "17"
+			data:{"range":range
+				 ,"start":start	 // "1"  "9"  "17"
 				 ,"len":len}, //  8	  8    8
 			dataType:"JSON",
 			success:function(json) {
@@ -140,19 +156,16 @@
 			  </button>
 			  <div class="dropdown-menu">
 				<div class="dropdown-item">			  
-			    	<label for="low-price">낮은가격순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="low-price"/>
+			    	<label for="low-price">낮은가격순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="low-price" value="price"/>
 			    </div>
 				<div class="dropdown-item">			  
-			    	<label for="high-price">높은가격순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="high-price"/>
+			    	<label for="high-price">높은가격순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="high-price" value="price desc"/>
 			    </div>
 				<div class="dropdown-item">			  
-			    	<label for="new">최신&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="new"/>
+			    	<label for="new">최신순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="new" value="pinpupdate desc"/>
 			    </div>
 				<div class="dropdown-item">			  
-			    	<label for="pro_name">이름&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="pro_name"/>
-			    </div>
-				<div class="dropdown-item">			  
-			    	<label for="popular">인기있는&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="popular"/>
+			    	<label for="pro_name">이름순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="pro_name" value="pname"/>
 			    </div>
 			  </div>
 			</div>
@@ -163,7 +176,7 @@
 			  <div class="dropdown-menu">
 				<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
 					<div class="dropdown-item">
-					    <label for="${cvo.cnum}">${cvo.cname}</label> <input type = "checkbox" id="${cvo.cnum}">
+					    <label for="${cvo.cnum}">${cvo.cname}</label> <input type = "checkbox" id="${cvo.cnum}" value="${cvo.cnum}" class="filter category">
 			        </div>
 				</c:forEach>
 			  </div>
@@ -174,19 +187,19 @@
 			  </button>
 			  <div class="dropdown-menu">
 			    <div class="dropdown-item">
-				    <label for="9999">&#8361;0 - 9,999</label> <input type = "checkbox" id="9999">
+				    <label for="9999">&#8361;0 - 9,999</label> <input type = "checkbox" id="9999"  class="filter price">
 		        </div>
 			    <div class="dropdown-item">
-				    <label for="19999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="19999">
+				    <label for="19999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="19999" class="filter price">
 		        </div>
 			    <div class="dropdown-item">
-				    <label for="29999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="29999">
+				    <label for="29999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="29999" class="filter price">
 		        </div>
 			    <div class="dropdown-item">
-				    <label for="39999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="39999">
+				    <label for="39999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="39999" class="filter price">
 		        </div>
 			    <div class="dropdown-item">
-				    <label for="40000">&#8361;40,000+</label> <input type = "checkbox" id="40000">
+				    <label for="40000">&#8361;40,000+</label> <input type = "checkbox" id="40000" class="filter price">
 		        </div>
 			  </div>
 			</div>
@@ -196,19 +209,19 @@
 			  </button>
 			  <div class="dropdown-menu">
 			    <div class="dropdown-item">
-				    <label class="w-75" for="gray">그레이</label> <input type = "checkbox" id="gray">
+				    <label class="w-75" for="gray">그레이</label> <input type = "checkbox" id="gray" class="filter color">
 		        </div>
 			    <div class="dropdown-item">
-				    <label class="w-75" for="beige">베이지</label> <input type = "checkbox" id="beige">
+				    <label class="w-75" for="beige">베이지</label> <input type = "checkbox" id="beige" class="filter color">
 		        </div>
 			    <div class="dropdown-item">
-				    <label class="w-75" for="white">화이트</label> <input type = "checkbox" id="white">
+				    <label class="w-75" for="white">화이트</label> <input type = "checkbox" id="white" class="filter color">
 		        </div>
 			    <div class="dropdown-item">
-				    <label class="w-75" for="black">블랙</label> <input type = "checkbox" id="black">
+				    <label class="w-75" for="black">블랙</label> <input type = "checkbox" id="black" class="filter color">
 		        </div>
 			    <div class="dropdown-item">
-				    <label class="w-75" for="brown">브라운</label> <input type = "checkbox" id="brown">
+				    <label class="w-75" for="brown">브라운</label> <input type = "checkbox" id="brown" class="filter color">
 		        </div>
 			  </div>
 			</div>
@@ -220,6 +233,7 @@
 		</div>
 		<hr>
 		<div class="text-center">
+			<span id="end" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: red;"></span>
 			<button type="button" class="btn btn-light" id="btnMore" value="">더보기</button>
 			<span id="totalCount">${requestScope.totalCount}</span>
 			<span id="count">0</span>
