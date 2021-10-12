@@ -180,7 +180,7 @@ public class ProductDAO implements InterProductDAO {
            String sql = " select pnum, pname, color, price, pqty, prodimage, cnum, cname , pinpupdate " + 
 		           		" from " + 
 		           		" ( " + 
-		           		"     select row_number() over(order by pnum asc) as RNO, pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
+		           		"     select row_number() over(order by " + paraMap.get("range")+") as RNO, pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
 		           		"     from tbl_product P " + 
 		           		"     JOIN tbl_category C " + 
 		           		"     ON p.fk_cnum = c.cnum " + 
@@ -223,6 +223,53 @@ public class ProductDAO implements InterProductDAO {
         return prodList;
 	}
     // end of public List<ProductVO> selectAllproduct(Map<String, String> paraMap)
+
+	// 위시리스트에 있는 pnum 을 통해 제품 select 하기
+	@Override
+	public List<ProductVO> selectProductbyPnum(String localWishList) throws SQLException {
+		List<ProductVO> productList = new ArrayList<>();
+		
+		 try {
+	           conn = ds.getConnection();
+	           
+	           String sql = " select pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
+			           		" from tbl_product P " + 
+			           		" JOIN tbl_category C " + 
+			           		" ON p.fk_cnum = c.cnum ";
+	           
+			           	sql += " where pnum in ("+localWishList+") ";
+	       //    System.out.println(pnums);
+	           pstmt = conn.prepareStatement(sql);
+	           
+	           rs = pstmt.executeQuery();
+	           
+	           while(rs.next()) {
+	              
+	              ProductVO pvo = new ProductVO();
+	              
+	              pvo.setPnum(rs.getString(1));     // 제품번호
+	              pvo.setPname(rs.getString(2));    // 제품명
+	              pvo.setColor(rs.getString(3));	// 색
+	              pvo.setPrice(rs.getInt(4));        // 제품 가격
+	              pvo.setPqty(rs.getInt(5));         // 제품 재고량
+	              pvo.setProdimage(rs.getString(6)); // 제품 이미지
+	              
+	              CategoryVOwhc categvo = new CategoryVOwhc();
+	              categvo.setCnum(rs.getString(7));
+	              categvo.setCname(rs.getString(8));
+	              pvo.setCategvo(categvo);
+	              
+	              pvo.setPinpupdate(rs.getString(9)); // 입고일
+	               
+	              productList.add(pvo);
+	           }// end of while(rs.next())-----------------------------------
+	           
+	        } finally {
+	           close();
+	        }
+		
+		return productList;
+	} // end of public List<ProductVO> selectProductbyPnum(String[] localWishListArr)-------------
 
     
     

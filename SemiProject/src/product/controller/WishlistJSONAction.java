@@ -1,8 +1,6 @@
 package product.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,29 +11,23 @@ import org.json.JSONObject;
 import common.controller.AbstractController;
 import product.model.*;
 
-public class MallDisplayJSONAction extends AbstractController {
+public class WishlistJSONAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		String localWishList = request.getParameter("localWishList");
+		int lastindex = localWishList.length() -1;
+		localWishList = localWishList.substring(1, lastindex);
+		localWishList = localWishList.replaceAll("\"","");
+	//	System.out.println(localWishList);
 		
-		String range = request.getParameter("range");
-		String start = request.getParameter("start");
-	    String len = request.getParameter("len");
-  
-	    InterProductDAO pdao = new ProductDAO();
-	    
-	    Map<String, String> paraMap = new HashMap<>();
-	    paraMap.put("range", range);
-	    paraMap.put("start", start);  // start "1"  "9"   "17"  "25"  "33"
-	    
-	    String end = String.valueOf(Integer.parseInt(start) + Integer.parseInt(len) - 1); 
-	                                   
-	    paraMap.put("end", end);      //  end ==> start + len - 1;
-	                                  //  end   "8"  "16"  "24"  "32"  "40" 
-	    
-	    List<ProductVO> prodList = pdao.selectAllproduct(paraMap);
-	    
-	    JSONArray jsonArr = new JSONArray();  // []
+		InterProductDAO pdao = new ProductDAO();
+		
+		// 위시리스트에 있는 pnum 을 통해 제품 select 하기
+		List<ProductVO> prodList = pdao.selectProductbyPnum(localWishList);
+		
+		JSONArray jsonArr = new JSONArray();  // []
 	    
 	    if( prodList.size() > 0 ) {
 	       
@@ -78,9 +70,7 @@ public class MallDisplayJSONAction extends AbstractController {
 	    	   
 	           super.setViewPage("/WEB-INF/jsonview.jsp");
 	       }
-	       
-	    }
 		
-	
+	}
 
 }
