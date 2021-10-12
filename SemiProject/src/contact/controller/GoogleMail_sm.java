@@ -58,13 +58,14 @@ public class GoogleMail_sm {
     	msg.addRecipient(Message.RecipientType.TO, toAddr);
     	        
     	// 메시지 본문의 내용과 형식, 캐릭터 셋 설정
-    	msg.setContent(" [(semi)IKEA 고객지원] 안녕하세요 요청하신 제품 셀프반품 신청이 완료되었습니다.<br> "
-    			+ " 제품번호 : <span style='font-size:14pt; color:blue;'>"+paraMap.get("odrcode")+"</span><br>"
-    			+ " 신청인 : <span style='font-size:14pt; color:blue;'>"+paraMap.get("name")+"</span><br>"
-    			+ " 구입처 : <span style='font-size:14pt; color:blue;'>"+paraMap.get("wherebuy")+"</span><br>"
-    			+ " 반품사유 : <span style='font-size:14pt; color:blue;'>"+paraMap.get("whyreturn")+"</span><br>"
-    			+ " 추가내용 : <span style='font-size:14pt; color:blue;'>"+paraMap.get("plusReason")+"</span><br>"
-    			+ " 반품에 필요한 정보를 입력한 후 송부된 이메일을 제품, 영수증과 함께 매장 내 교환환불 코너에 오시면 됩니다. IKEA를 이용해주셔서 감사합니다.", "text/html;charset=UTF-8");
+    	msg.setContent(" [ (semi)IKEA 고객지원 ] 안녕하세요 "+paraMap.get("name")+"님! 요청하신 제품의 셀프반품 신청이 완료되었습니다.<br><br> "
+    			+ " 제품번호 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("fk_odrcode")+"</span><br>"
+    			+ " 신청인 아이디 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("fk_userid")+"</span><br>"
+    			+ " 신청인 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("name")+"</span><br>"
+    			+ " 구입처 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("wherebuy")+"</span><br>"
+    			+ " 반품사유 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("whyreturn")+"</span><br>"
+    			+ " 추가내용 : <span style='font-size:14pt; color:black; font-weight: bold;'>"+paraMap.get("plusReason")+"</span><br><br><br>"
+    			+ " <span style='font-size:10pt; color:black; font-weight: bold;'> >>> 반품에 필요한 정보를 입력한 후 송부된 이메일을 제품, 영수증과 함께 매장 내 교환환불 코너에 오시면 됩니다. 저희 IKEA를 이용해주셔서 감사합니다. <<< </span>", "text/html;charset=UTF-8");
     	        
     	// 메일 발송하기
     	Transport.send(msg);
