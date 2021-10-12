@@ -11,7 +11,7 @@
 <script type="text/javascript">
 
 	var range = "pname";
-
+	
 	$(document).ready(function(){
 		
 		$("span#totalCount").hide();
@@ -49,13 +49,44 @@
 			console.log($(this).val());
 		});
 		
+		// 각 제품에 마우스를 올렸을때 위시리스트, 장바구니 버튼 보이게 하기
 		$(document).on("mouseover", "div.product", function(){
 			$(this).children("div.hide").css("visibility","visible");
 		});
 		$(document).on("mouseout", "div.product", function(){
 			$(this).children("div.hide").css("visibility","hidden");
 		});
-	});
+		
+		// 위시리스트 버튼을 눌렀을때 session에 저장하기
+		$(document).on("click", "div.wish", function(){
+			
+			var pnum = $(this).children("span.pnum").text();
+			
+			var localWishList = JSON.parse(localStorage.getItem('wishlist'));
+			// console.log(localWishList);
+			
+			if(localWishList == null) {
+				localWishList = [];
+				localWishList.push(pnum);
+				$(this).removeClass("hide");	// 위시리스트에 저장한 품목은 버튼을 숨기지 않고 보여줌
+			}
+			else{
+				var index = localWishList.indexOf(pnum);
+				if(index >= 0) {
+					localWishList.splice(index, 1);
+					$(this).addClass("hide");
+				}
+				else {
+					localWishList.push(pnum);
+					$(this).removeClass("hide");
+				}
+			}
+			
+			localStorage.setItem('wishlist', JSON.stringify(localWishList));
+			
+		});
+		
+	}); // end of $(document).ready(function(){})---------------------------
 
 	
 	// Function Declaration
@@ -85,8 +116,15 @@
 				else if( json.length > 0) {
 					// 데이터가 존재하는 경우
 					$.each(json,function(index, item){
-						html += "<div class='col-md-3 col-6 product'>" +
-									"<div class='hide my-2' style='visibility:hidden;'>" +
+						html += "<div class='col-md-3 col-6 product'>";
+								if(JSON.parse(localStorage.getItem('wishlist')) !=null && JSON.parse(localStorage.getItem('wishlist')).indexOf(item.pnum)>=0 ){
+									html += "<div class='my-2 wish' style='visibility:visible;'>" 
+								}
+								else {
+									html += "<div class='hide my-2 wish' style='visibility:hidden;'>"; 
+									
+								}
+								html +=	"<span class='pnum' style='display:none'>"+item.pnum+"</span>"+
 						                "<button class='btn btn-outline-danger btn-sm border-0'><i class='icon-link far fa-heart fa-lg'></i></button>" +
 						            "</div>" +
 									"<a href=''>" +
