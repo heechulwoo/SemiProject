@@ -136,18 +136,15 @@ i#arrow {
 		            추가 정보 입력 절차 없이 바로 반품이 가능합니다.<br>
           </p>
           
-          <%-- 임시로 확인하기 위해 로그인/비로그인 c:if문 바꾼 것 / 구현 이후 다시 원상복구 시킬 것 --%>
-          
           <%-- 로그인 하지 않은 경우 로그인 페이지로 넘어감 --%>
-          <c:if test="${not empty sessionScope.loginuser}">
+          <c:if test="${empty sessionScope.loginuser}">
           	<a href="<%= ctxPath %>/login/login.one" role="button" id="returnBtn" class="btn" style="margin-top: 2vw; margin-bottom: 4vw" >셀프 반품 신청하기</a>
           </c:if>
           
           <%-- 로그인 한 경우 환불신청서 작성으로 넘어감 --%>
-          <c:if test="${empty sessionScope.loginuser}">
+          <c:if test="${not empty sessionScope.loginuser}">
           	<a href="javascript:goSelfReturn('${(sessionScope.loginuser).userid}');" role="button" id="returnBtn" class="btn" style="margin-top: 2vw; margin-bottom: 4vw" >셀프 반품 신청하기</a>
           </c:if>
-          
           
           <p>* 플래닝 스튜디오 (천호/신도림)에서는 교환/환불이 불가능합니다.</p>
           <p>

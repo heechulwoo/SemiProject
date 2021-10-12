@@ -110,6 +110,24 @@ button#backBtn:hover {
   opacity: 0.8;
   text-decoration: none;
 }
+
+button#goOrderView {
+  width: 12em;
+  text-align: center;
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.75rem;
+  border-radius: 30px;
+  background-color: black;
+  color: white;
+  justify-content: center;
+}
+
+button#goOrderView:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
 	
 </style>
 
@@ -122,20 +140,14 @@ button#backBtn:hover {
 		$("span.error").hide();
 		
 		
-		<%-- 제품번호 odrcode --%>
-	<%--
-		$("input#odrcode").blur(function(){
-			
-			 	
-			    // var regExp = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g);
-			    // 숫자/문자/특수문자/ 포함 형태의 8~15자리 이내의 암호 정규표현식 객체 생성
-			    
+		<%-- 주문번호 odrcode --%>
+	
+		$("select#odrcode").blur(function(){
+				
 				var odrcode = $(this).val();
-			    
-				var bool = regExp.test(odrcode);
-			    
-				if(!bool) {
-					// 암호가 정규표현식에 위배된 경우
+			
+				if( odrcode != ${requestScope.odrcode} ) {
+					// 주문번호가 제대로 선택되지 않은 경우
 					$("table#tblSelfReturn :input").prop("disabled",true);
 					$(this).prop("disabled",false);
 				
@@ -143,14 +155,14 @@ button#backBtn:hover {
 				    $(this).focus();
 				}
 				else {
-					// 암호가 정규표현식에 맞는 경우
+					// 주문번호가 제대로 선택된 경우
 					$("table#tblSelfReturn :input").prop("disabled",false);
 				
 					$(this).parent().find(".error").hide();
 				}
 				
 			});// 아이디가 odrcode 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
-	--%>
+	
 		
 		
 		
@@ -275,6 +287,15 @@ button#backBtn:hover {
 	
 	// Function Declaration
 	
+	
+	// 주문조회 
+	function goOrder() {
+		
+		location.href="<%= ctxPath%>/product/shipping.one";
+		
+	}// end of goOrder-------------------------------------------
+	
+	
 	// 셀프 반품신청서 작성하기
 	function goReturn() {
 		
@@ -288,7 +309,17 @@ button#backBtn:hover {
 			    boolFlag = true;
 			    return false; // break; 라는 뜻이다.
 		    }
-	    }); 
+	    });// end of $("input.requiredInfo").each(function(){})------------------
+	    
+	    
+	    $("select.requiredInfo").each(function(){
+	    	var data = $(this).val().trim();
+	    	if(data == "") {
+			    alert("*표시된 필수입력사항은 모두 입력해주세요.");
+			    boolFlag = true;
+			    return false; // break; 라는 뜻이다.
+		    }
+		})// end of $("select.requiredInfo").each(function(){})------------------
 	    
 		
 		if(boolFlag) {
@@ -303,19 +334,10 @@ button#backBtn:hover {
 			return; // 종료
 		}
 		
-	
-	    <%--
-			if(!b_flagEmailDuplicateClick) {
-		    	// "이메일중복확인" 을 클릭했는지 클릭안했는지를 알아보기위한 용도임.
-		    	alert("이메일중복확인 클릭하여 이메일중복검사를 하세요!!");
-		    	return; // 종료
-		    }
-	    --%>
-	 	
 		
 	    <%-- 셀프 반품에 대한 이메일을 보내주기 --%>
 		var frm = document.returnFrm;
-		frm.action = "<%= ctxPath%>/contact/selfReturnSend.up";
+		frm.action = "<%= ctxPath%>/contact/selfReturnSend.one";
 		frm.method = "POST";
 		frm.submit();
 		
@@ -372,12 +394,23 @@ button#backBtn:hover {
                 </tr>
                 <tr>
                   <td id="bor" style="width: 20%; font-weight: bold">
-                    	제품번호&nbsp;<span class="star">*</span>
+                    	주문번호&nbsp;<span class="star">*</span>
                   </td>
+                  
                   <td id="detail" style="width: 80%; text-align: left">
-                    <input type="text" name="odrcode" id="odrcode" class="requiredInfo" required />
-                    <span class="error">제품번호는 필수입력 사항입니다.</span>
+                    <%-- <input type="text" name="odrcode" id="odrcode" value="${requestScope.odrcode}" class="requiredInfo" required /> --%>
+                    
+                    <%-- c:forEach 로 주문번호 값 불러오기 --%>
+                    <select name="odrcode" id="odrcode" class="requiredInfo" required >
+	                     <option value="">선택해주세요.</option>
+	                     <c:forEach var="item" items="${requestScope.odrcode}" >
+					          <option>${item}</option>
+					     </c:forEach>
+                    </select>
+                    <span class="notice"><button type="button" id="goOrderView" class="btn" onclick="goOrder();" style="margin-left: 17px;">주문번호 조회하기</button></span>
+                    <span class="error">주문번호는 필수입력 사항입니다.</span>
                   </td>
+                  
                 </tr>
                 <tr>
                   <td id="bor" style="width: 20%; font-weight: bold">
@@ -385,6 +418,7 @@ button#backBtn:hover {
                   </td>
                   <td style="width: 80%; text-align: left">
                     <select id="whyreturn" name="whyreturn" style="margin-left: 2%; width: 70%; padding: 8px" class="requiredInfo" required >
+                      <option value="">선택해주세요.</option>
                       <option id="rw1">원하는 스타일, 색상 또는 크기가 아닙니다.</option>
                       <option id="rw2">필요한 것보다 더 많이 구입했습니다.</option>
                       <option id="rw3">다른 곳에서 더 낮은 가격의 제품을 찾았습니다.</option>
@@ -434,6 +468,7 @@ button#backBtn:hover {
                   </td>
                   <td style="width: 80%; text-align: left">
                     <select id="wherebuy" name="wherebuy" style="margin-left: 2%; width: 200px; padding: 8px" class="requiredInfo" required >
+                      <option value="">선택해주세요.</option>
                       <option id="wb1">IKEA 광명</option>
                       <option id="wb2">IKEA 기흥</option>
                       <option id="wb3">IKEA 고양</option>
