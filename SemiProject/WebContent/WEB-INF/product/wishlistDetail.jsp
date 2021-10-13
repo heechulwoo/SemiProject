@@ -48,7 +48,40 @@
 			
 			totalPrice();
 			
-		});
+		}); // end of $(document).on("change", "select.pqty", function(){})----------------------
+		
+		// 제품별 장바구니 버튼을 눌렀을 경우
+		$(document).on("click", "button.savecart", function(){
+			
+			if (${sessionScope.loginuser != null}) {
+				
+				var pnum = $(this).parent().parent().parent().children().children().children("span.eachpnum").text();
+				var pqty = $(this).parent().children("select.pqty").val();
+				
+				// console.log(pnum);
+				// console.log(pqty);
+				
+				$.ajax({
+					url:"/SemiProject/product/saveCartJSON.one",
+					type:"POST",
+					data:{"pnum":pnum
+						, "pqty":pqty
+						}, 
+					success:function() { // 콜백함수
+						alert("장바구니에 추가했습니다.");
+					},
+					error: function(request, status, error){
+			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			        }
+				});
+			}
+			else {
+				alert("장바구니 기능은 로그인이 필요합니다.");
+			}
+		}); // end of $(document).on("click", "button.savecart", function(){})------------------------------
+		
+		// 장바구니에 모든 제품 추가 버튼을 눌렀을때	
+		//////////////////////////////////
 		
 	});
 
@@ -92,7 +125,7 @@
 											'<div class="mb-2"><b><a href="">'+item.pname+'</a></b></div>' +
 											'<div>'+
 												'<span>'+item.cname+'</span><br>'+
-												'<span><small>'+item.pnum+'</small></span>'+
+												'<span class="eachpnum" style="font-size:small;">'+item.pnum+'</span>'+
 											'</div>'+
 											'<div class="pt-2">'+
 												'<span class="price" style="display:none">'+item.price+'</span>'+
@@ -101,7 +134,7 @@
 														html += '<option value="'+i+'">'+i+'</option>';
 													}	
 										html +=	'</select>'+
-												'<button class="btn btn-outline-success badge-pill mb-1"><i class="fa fa-shopping-cart"></i></button>'+
+												'<button class="btn btn-outline-success badge-pill mb-1 savecart"><i class="fa fa-shopping-cart"></i></button>'+
 											'</div>'+
 										'</div>'+
 										'<div class="col-3">'+
@@ -165,7 +198,7 @@
 				</div>
 				<div class="px-3 py-4 border">
 					<b>위시리스트를 보관하세요!</b>
-					<p>이 위시리스트는 임시로 저장됩니다. <a href="#"><span style="text-decoration: underline;">가입 또는 로그인</span></a> 다시 방문할 때까지 위시리스트를 보관할 수 있어요</p>
+					<p>이 위시리스트는 임시로 저장됩니다. <a href="/SemiProject/login/login.one"><span style="text-decoration: underline;">가입 또는 로그인</span></a> 다시 방문할 때까지 위시리스트를 보관할 수 있어요</p>
 				</div>
 				<div id="deleteAll"></div>
 				<hr>
@@ -180,6 +213,7 @@
 				<div class="text-center mb-3">
 					<div class="mb-2">이 제품을 온라인으로 구매하시겠어요?</div>
 					<button class="btn btn-info btn-lg px-md-3 py-md-5 w-100"><i class="fa fa-shopping-cart"></i>&nbsp;장바구니에 모든 제품 추가</button>
+					<%-- 버튼 눌렀을때 localstorage에 저장된거 => 장바구니 table에 저장 --%>
 				</div>
 			</div>
 		</div>
