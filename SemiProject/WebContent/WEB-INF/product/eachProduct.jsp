@@ -31,10 +31,34 @@
 	
 </style>
 
-<div class="container-fluid">
-	<h6 class="my-3 py-2 ml-3" style="font-size: 10pt;"><a href="#">제품</a> > <a href="#">의자</a> > <a href="#">스툴의자</a> > MARIUS 마리우스 스툴의자</h6>
+<script	type="text/javascript">
+
+	$(document).ready(function() {
+		
+	});
 	
-	<div class="container-fluid mx-2 px-3">
+	// === 제품 색상 선택하기 함수 === //
+	function goEditPersonal() {
+	
+		// 나의 정보 수정하기 팝업창 띄우기 
+	    var url = "<%= request.getContextPath()%>/product/eachProductColor.one";
+	     
+	    // 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
+	    var pop_width = 450;
+	    var pop_height = 700;
+	    var pop_left = Math.ceil( (window.screen.width - pop_width) / 2 ); 		// 정수로 형변환
+	    var pop_top  = Math.ceil( (window.screen.height - pop_height) / 2 );	// 정수로 형변환
+	    
+	    window.open(url, "colorEdit",
+	                "left=" + pop_left + ", top=" + pop_top + ", width=" + pop_width + ", height=" + pop_height);
+	 }
+
+</script>
+
+<div class="container-fluid">
+	<h6 class="my-3 py-2 px-5 ml-3" style="font-size: 10pt;"><a href="#">제품</a> > <a href="#">의자</a> > <a href="#">스툴의자</a> > MARIUS 마리우스 스툴의자</h6>
+	
+	<div class="container-fluid mx-2 px-5">
 		<div class="row my-2">
 			<div class="col-12 col-lg-7 mx-2">
 				<div class="row justify-content-between ">
@@ -57,16 +81,10 @@
 					<span style="font-size: 10pt">스툴의자, 화이트</span>
 					<br>
 					<hr>
-					<span class="my-2"><a href="#" style="font-weight: bold; color: black; font-size: 11pt;">색상</a></span><br>
-					<div class="radio my-2" style="font-size: 10pt;">
+					<a href="javascript:goEditPersonal();" class="btn btn-outline-light btn-lg" style="font-weight: bold;">색상</a><br>
+					<div class="radio mt-3 mb-2" style="font-size: 10pt;">
 					  <label class="mr-1" ><input class="mr-2" type="radio" name="optradio" checked>화이트</label>
 					  <span class="rounded-circle mr-5" id="colorbox" style="background-color: #f2f2f2;"></span><br>
-					  
-					  <label class="mr-1"><input class="mr-2" type="radio" name="optradio">블랙</label>
-					  <span class="rounded-circle mr-5" id="colorbox" style="background-color: #333333;"></span><br>
-					  
-					  <label class="mr-1"><input class="mr-2" type="radio" name="optradio">레드</label>
-					  <span class="rounded-circle mr-5" id="colorbox" style="background-color: #ff1a1a;"></span>
 					</div>
 					<br><br>
 					<button class="btn btn-primary btn-lg" style="width: 300px; height: 50px; font-weight: bold;">구매하기</button>
@@ -149,8 +167,6 @@
 			
 		</div>
 	</div>
-	
-	
 </div>
 
 <jsp:include page="../footer.jsp"/>
