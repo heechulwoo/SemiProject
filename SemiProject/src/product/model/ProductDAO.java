@@ -271,6 +271,52 @@ public class ProductDAO implements InterProductDAO {
 		return productList;
 	} // end of public List<ProductVO> selectProductbyPnum(String[] localWishListArr)-------------
 
+	
+	// 장바구니에 같은 제품일경우에는 update 신규 제품은 insert 하는 메소드
+	@Override
+	public int saveCart(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select cartno " + 
+						 " from tbl_cart " + 
+						 " where fk_userid = ? and fk_pnum = ? ";
+			pstmt = conn.prepareStatement(sql);		
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("pnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) { // 이미 장바구니에 있는 제품일 경우
+				sql = " update tbl_cart set oqty = oqty + ? " + 
+					  " where fk_userid = ? and fk_pnum = ? "; 
+				pstmt = conn.prepareStatement(sql);		
+				pstmt.setString(1, paraMap.get("pqty"));
+				pstmt.setString(2, paraMap.get("userid"));
+				pstmt.setString(3, paraMap.get("pnum"));
+				
+				n = pstmt.executeUpdate();
+				
+			}
+			else { // 장바구니에 없는 제품일 경우
+				sql = " insert into tbl_cart(cartno, fk_userid, fk_pnum, oqty) values(seq_cartno.nextval, ?, ?, ?) ";
+				
+					pstmt = conn.prepareStatement(sql);		
+					pstmt.setString(1, paraMap.get("userid"));
+					pstmt.setString(2, paraMap.get("pnum"));
+					pstmt.setString(3, paraMap.get("pqty"));
+					
+					n = pstmt.executeUpdate();
+			}
+		} finally {
+			close();
+		}
+		return n;
+	} // end of public int saveCart(Map<String, String> paraMap)----------------------------------------------
+
     
     
 }
