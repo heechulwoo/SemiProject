@@ -13,10 +13,9 @@ public class EachProductController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-//		InterProductDAO_kgh pdao = new ProductDAO_kgh();
-//		
-//		
 //		String pnum = request.getParameter("pnum");
+//		
+//		InterProductDAO_kgh pdao = new ProductDAO_kgh();
 //		
 //		// 상품의 이미지를 가져오는 메서드
 //		List<ProductImageVO_kgh> pimgList = pdao.selectProductImage(pnum);
