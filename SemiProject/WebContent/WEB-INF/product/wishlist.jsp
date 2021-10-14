@@ -20,7 +20,7 @@
 			<a href="">위시리스트</a>
 			<div><small class="text-secondary">7개의 제품</small></div>
 		</div>
-		<a class="row justify-content-between mb-5" href="wishListDetail.html">
+		<a class="row justify-content-between mb-5" href="<%= ctxPath%>/product/wishlistDetail.one">
 			<div class="col-md-3 col-6">
 			    <img src="<%= ctxPath%>/images/chair1.jpg" style="width:100%">
 			</div>
