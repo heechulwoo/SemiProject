@@ -17,5 +17,9 @@ public interface InterProductDAO {
 	List<ProductVO> selectProductbyPnum(String localWishList) throws SQLException; // 위시리스트에 있는 pnum 을 통해 제품 select 하기
 
 	int saveCart(Map<String, String> paraMap) throws SQLException; // 장바구니에 같은 제품일경우에는 update 신규 제품은 insert 하는 메소드
+
+	List<ProductVO> selectCartList(String userid) throws SQLException;	// 회원이 장바구니에 저장한 제품 select 하기
+
+	int deleteOneCart(String userid, String pnum) throws SQLException; // 장바구니 delete
 	
 }

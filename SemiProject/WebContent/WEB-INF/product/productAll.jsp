@@ -84,7 +84,38 @@
 			
 			localStorage.setItem('wishlist', JSON.stringify(localWishList));
 			
-		});
+		});// end of $(document).on("click", "div.wish", function(){})---------------------
+		
+		// 장바구니에 저장 버튼을 눌렀을때
+		$(document).on("click", "button.savecart", function(){
+			var loginuser = "${sessionScope.loginuser}";
+			if (loginuser != "") {
+				
+				var pnum = $(this).parent().children(".pnum").text();
+				var pqty = "1";
+				
+				// console.log(pnum);
+				// console.log(pqty);
+				
+				$.ajax({
+					url:"/SemiProject/product/saveCartJSON.one",
+					type:"POST",
+					data:{"pnum":pnum
+						, "pqty":pqty
+						}, 
+					success:function() { // 콜백함수
+						alert("장바구니에 추가했습니다.");
+					},
+					error: function(request, status, error){
+			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			        }
+				});
+			}
+			else {
+				alert("장바구니 기능은 로그인이 필요합니다.");
+				location.href="<%=ctxPath%>/login/login.one";
+			}
+		}); // end of $(document).on("click", "button.savecart", function(){})------------------------------
 		
 	}); // end of $(document).ready(function(){})---------------------------
 
@@ -132,7 +163,8 @@
 								        "<span>"+item.pname+"<br><span class='w3-opacity' style='font-size:12px'>"+item.cname+"</span><br><b>￦"+(item.price).toLocaleString('en')+"</b></span>" +
 							        "</a>" +
 							        "<div class='hide' style='visibility:hidden;'>" +
-						                "<button class='btn btn-outline-success btn-sm'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
+						                "<button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
+						                '<span class="pnum" style="display:none;">'+item.pnum+'</span>'+
 						            "</div>" +
 								"</div>";
 					}); // end of $.each(json,function(index, item){})---------
