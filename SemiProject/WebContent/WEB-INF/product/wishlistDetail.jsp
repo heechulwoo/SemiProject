@@ -80,10 +80,53 @@
 			}
 		}); // end of $(document).on("click", "button.savecart", function(){})------------------------------
 		
-		// 장바구니에 모든 제품 추가 버튼을 눌렀을때	
+		// 장바구니에 모든 제품 추가 버튼을 눌렀을때	saveAllcart
 		//////////////////////////////////
+		$(document).on("click", "button#saveAllcart", function(){
+			var localWishList = JSON.parse(localStorage.getItem('wishlist'));
+			
+			if(localWishList != null && localWishList.length > 0) {
+			
+				if (${sessionScope.loginuser != null}) {
+					
+					$("button.savecart").each(function(index,item){
+						
+						var pnum = $(this).parent().parent().parent().children().children().children("span.eachpnum").text();
+						var pqty = $(this).parent().children("select.pqty").val();
+						
+						// console.log(pnum);
+						// console.log(pqty);
+						
+						$.ajax({
+							url:"/SemiProject/product/saveCartJSON.one",
+							type:"POST",
+							data:{"pnum":pnum
+								, "pqty":pqty
+								}, 
+							success:function() { // 콜백함수
+								if(index == 0){
+									alert("장바구니에 추가했습니다.");
+								}
+							},
+							error: function(request, status, error){
+					            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					        }
+						});
+						
+					});
+					
+				}
+				else{
+					alert("장바구니 기능은 로그인이 필요합니다.");
+				}
+			} else {
+					alert("위시리스트가 비었습니다.");
+			}
+		}); // end of $(document).on("click", "button.savecart", function(){})-------------------
 		
-	});
+		
+		
+	}); // end of $(document).ready(function(){})-------------------------
 
 	// Function Declaration
 	function showWishList() {
@@ -156,7 +199,7 @@
 						$("span#totalPrice").html('￦'+totalPrice.toLocaleString("en"));
 					}
 					
-					
+				//	$("div#rightside").show();
 				},
 				error: function(request, status, error){
 		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -164,6 +207,7 @@
 			});
 		}
 		else {
+	//		$("div#rightside").hide();
 			$("div#displayAll").html("위시리스트가 비었습니다.");
 			$("span#totalPrice").html('￦0');
 			$("div#deleteAll").empty();
@@ -207,13 +251,12 @@
 				</div>
 				
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-4" id="rightside">
 				<div class="h5 pb-3" id="summary" style="border-bottom: 2px solid black;"><b>위시리스트 요약</b></div>
 				<h5 style="font-weight:bold;">합계&nbsp;&nbsp;&nbsp;&nbsp;<span id="totalPrice">￦0</span></h5>
 				<div class="text-center mb-3">
 					<div class="mb-2">이 제품을 온라인으로 구매하시겠어요?</div>
-					<button class="btn btn-info btn-lg px-md-3 py-md-5 w-100"><i class="fa fa-shopping-cart"></i>&nbsp;장바구니에 모든 제품 추가</button>
-					<%-- 버튼 눌렀을때 localstorage에 저장된거 => 장바구니 table에 저장 --%>
+					<button class="btn btn-info btn-lg px-md-3 py-md-5 w-100" id="saveAllcart"><i class="fa fa-shopping-cart"></i>&nbsp;장바구니에 모든 제품 추가</button>
 				</div>
 			</div>
 		</div>
