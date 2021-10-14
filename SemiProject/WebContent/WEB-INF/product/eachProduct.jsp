@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
   
 <%
 	String ctxPath = request.getContextPath();
@@ -42,8 +43,16 @@
 	// === 제품 색상 선택하기 함수 === //
 	function goEditPersonal() {
 		
-		// 나의 정보 수정하기 팝업창 띄우기 
-	    var url = "<%= request.getContextPath()%>/product/eachProductColor.one";
+		var pname = $("h5#pname").text();
+		
+		// 상품 이름의 " " 위치 추출하기
+		var index = pname.indexOf(" ");
+		
+		// 상품 이름의 한글 부분만 추출하기
+		var pname_kor = pname.substring(index+1);
+		
+		// 제품 색상 선택 팝업창 띄우기 
+	    var url = "<%= request.getContextPath()%>/product/eachProductColor.one?pname=" + pname_kor;
 	     
 	    // 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
 	    var pop_width = 450;
@@ -53,6 +62,13 @@
 	    
 	    window.open(url, "colorEdit",
 	                "left=" + pop_left + ", top=" + pop_top + ", width=" + pop_width + ", height=" + pop_height);
+	 }
+	
+	 
+	 function goProductPage(pnum) {
+		// 개별 상품 페이지로 이동
+		// alert("확인용 " + pnum);
+		location.href = "<%= request.getContextPath()%>/product/eachProduct.one?pnum=" + pnum;
 	 }
 
 </script>
@@ -80,7 +96,7 @@
 			<div class="col-9 col-lg-4 ml-5 pl-4 my-4" style="float: right; width: 30%;">
 				<div class="row justify-content-between">
 					<div class="col-7"><h5 id="pname" style="font-weight: bold;">${requestScope.pvo.pname}</h5></div>
-					<div class="col-4"><h5 id="price" style="font-weight: bold;">${requestScope.pvo.price}원</h5></div>
+					<div class="col-4"><h5 id="price" style="font-weight: bold;"><fmt:formatNumber value="${requestScope.pvo.price}"/>&nbsp;원</h5></div>
 				</div>
 				<div>
 					<span style="font-size: 10pt">${requestScope.pvo.categvo.cname}, ${requestScope.pvo.color}</span>
@@ -96,7 +112,7 @@
 					<button class="ml-2 btn btn-primary btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart"></i></button>
 					<br><br><br>
 					<i class="mr-2 fas fa-truck"></i>
-					<span style="font-size: 11pt;">결제시 배송 옵션보기</span>
+					<span style="font-size: 11pt;">배송 옵션은 결제 단계에서 확인 가능합니다</span>
 					<br>
 					<hr>
 					<i class="mr-2 fas fa-store"></i>
@@ -193,7 +209,7 @@
 							<div class="col-6 col-lg-2 px-0 my-3">
 								<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${sameProductVO.pnum}"><img class="my-1" src="<%= ctxPath%>/image_ikea/${sameProductVO.prodimage}" style="width: 90%;"/></a><br>
 								<a href="#" style="font-weight: bold; color: black; text-align: center;">${sameProductVO.pname}</a><br>
-								<span>${sameProductVO.price}</span>
+								<fmt:formatNumber value="${sameProductVO.price}"/><span>원</span>
 							</div>
 						</c:forEach>
 					</c:if>
