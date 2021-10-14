@@ -1,16 +1,17 @@
 package product.model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.sql.*;
+import java.util.*;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import util.security.AES256;
+import util.security.SecretMyKey;
 
 public class ProductDAO_kgh implements InterProductDAO_kgh {
 
@@ -18,6 +19,8 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
+	
+	private AES256 aes;
 	
 	// 기본생성자
 	public ProductDAO_kgh() {
@@ -27,7 +30,12 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			Context envContext  = (Context)initContext.lookup("java:/comp/env");
 			ds = (DataSource)envContext.lookup("jdbc/semioracle");		// import javax.sql.DataSource;
 			
+			aes = new AES256(SecretMyKey.KEY);
+		    // SecretMyKey.KEY 는 우리가 만든 비밀키이다. 
+			
 		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		
@@ -116,5 +124,120 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		}
 		
 		return pvo;
+	}
+
+	
+	// 주문번호 확인하는 메서드
+	@Override
+	public boolean shippingNoCheck(String shippingNo, String shippingEmail) throws SQLException {
+		
+		boolean isExists = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select odrcode, M.userid, email " + 
+						 " from " + 
+						 " ( " + 
+						 "     select odrcode, fk_userid " + 
+						 "     from tbl_order " + 
+						 " ) V " + 
+						 " JOIN tbl_member M " + 
+						 " ON V.fk_userid = M.userid " + 
+						 " where odrcode = ? and M.email = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, shippingNo);
+			pstmt.setString(2, aes.encrypt(shippingEmail));
+			
+			rs = pstmt.executeQuery();
+			
+			isExists = rs.next();
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}  finally {
+			close();
+		}
+		
+		return isExists;
+	}
+
+	
+	// 주문번호와 이메일을 통해 주문과 주문 상세를 select 하는 메서드
+	@Override
+	public List<ProductOrderDetailVO_kgh> selectOrderConfirmation(String shippingNo, String shippingEmail) throws SQLException {
+		List<ProductOrderDetailVO_kgh> orderList = new ArrayList<>();;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select cnum, cname, pnum, pname, prodimage, price, odrcode, " + 
+						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate " + 
+						 " from " + 
+						 " ( " + 
+						 "     select cnum , cname, pnum, pname, prodimage, price, fk_odrcode AS odrcode, " + 
+						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate " + 
+						 "     from " + 
+						 "     ( " + 
+						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice " + 
+						 "         from " + 
+						 "         ( " + 
+						 "             select cnum , cname, pnum, pname, prodimage, price " + 
+						 "             from tbl_category G " + 
+						 "             JOIN tbl_product P " + 
+						 "             ON G.cnum = P.fk_cnum " + 
+						 "         ) A " + 
+						 "         JOIN tbl_order_detail D " + 
+						 "         ON A.pnum = D.fk_pnum " + 
+						 "     ) B " + 
+						 "     JOIN tbl_order O " + 
+						 "     ON O.odrcode = B.fk_odrcode " + 
+						 " ) C " + 
+						 " JOIN tbl_member M " + 
+						 " ON C.fk_userid = M.userid " + 
+						 " where odrcode = ? and email = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, shippingNo);
+			pstmt.setString(2, aes.encrypt(shippingEmail));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductOrderDetailVO_kgh podvo = new ProductOrderDetailVO_kgh();
+				
+				ProductCategoryVO_kgh pcvo = new ProductCategoryVO_kgh();	//카테고리
+				pcvo.setCnum(rs.getString("cnum"));
+				pcvo.setCname(rs.getString("cname"));
+				podvo.setPcvo(pcvo);
+				
+				ProductVO_kgh pdvo = new ProductVO_kgh();	// 제품 정보
+				pdvo.setPnum(rs.getString("pnum"));
+				pdvo.setPname(rs.getString("pname"));
+				pdvo.setProdimage(rs.getString("prodimage"));
+				pdvo.setPrice(rs.getInt("price"));
+				podvo.setPvo(pdvo);
+				
+				ProductOrderVO_kgh povo = new ProductOrderVO_kgh();	// 주문
+				povo.setOdrcode(rs.getString("odrcode"));
+				povo.setOdrtotalprice(rs.getInt("odrtotalprice"));
+				povo.setOdrdate(rs.getString("odrdate"));
+				podvo.setPovo(povo);
+					
+				podvo.setOqty(rs.getInt("oqty"));				// 주문상세
+				podvo.setOdrprice(rs.getInt("odrprice"));
+				
+				orderList.add(podvo);
+				
+			}
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}  finally {
+			close();
+		}
+		
+		return orderList;
 	}
 }

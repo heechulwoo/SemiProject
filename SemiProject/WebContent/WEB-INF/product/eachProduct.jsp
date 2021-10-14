@@ -31,10 +31,34 @@
 	
 </style>
 
-<div class="container-fluid">
-	<h6 class="my-3 py-2 ml-3" style="font-size: 10pt;"><a href="#">제품</a> > <a href="#">의자</a> > <a href="#">스툴의자</a> > MARIUS 마리우스 스툴의자</h6>
+<script	type="text/javascript">
+
+	$(document).ready(function() {
+		
+	});
 	
-	<div class="container-fluid mx-2 px-3">
+	// === 제품 색상 선택하기 함수 === //
+	function goEditPersonal() {
+		
+		// 나의 정보 수정하기 팝업창 띄우기 
+	    var url = "<%= request.getContextPath()%>/product/eachProductColor.one";
+	     
+	    // 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
+	    var pop_width = 450;
+	    var pop_height = 700;
+	    var pop_left = Math.ceil( (window.screen.width - pop_width) / 2 ); 		// 정수로 형변환
+	    var pop_top  = Math.ceil( (window.screen.height - pop_height) / 2 );	// 정수로 형변환
+	    
+	    window.open(url, "colorEdit",
+	                "left=" + pop_left + ", top=" + pop_top + ", width=" + pop_width + ", height=" + pop_height);
+	 }
+
+</script>
+
+<div class="container-fluid">
+	<h6 class="my-3 py-2 px-5 ml-3" style="font-size: 10pt;"><a href="#">제품</a> > <a href="#">의자</a> > <a href="#">스툴의자</a> > MARIUS 마리우스 스툴의자</h6>
+	
+	<div class="container-fluid mx-2 px-5">
 		<div class="row my-2">
 			<div class="col-12 col-lg-7 mx-2">
 				<div class="row justify-content-between ">
@@ -50,26 +74,20 @@
 			</div>
 			<div class="col-9 col-lg-4 ml-5 pl-4 my-4" style="float: right; width: 30%;">
 				<div class="row justify-content-between">
-					<div class="col-7"><h5 style="font-weight: bold;">MARIUS 마리우스 스툴의자</h5></div>
-					<div class="col-4"><h5 style="font-weight: bold;">5,000원</h5></div>
+					<div class="col-7"><h5 id="pname" style="font-weight: bold;">MARIUS 마리우스 스툴의자</h5></div>
+					<div class="col-4"><h5 id="price" style="font-weight: bold;">5,000원</h5></div>
 				</div>
 				<div>
 					<span style="font-size: 10pt">스툴의자, 화이트</span>
 					<br>
 					<hr>
-					<span class="my-2"><a href="#" style="font-weight: bold; color: black; font-size: 11pt;">색상</a></span><br>
-					<div class="radio my-2" style="font-size: 10pt;">
+					<a href="javascript:goEditPersonal();" class="btn btn-outline-light btn-lg" style="font-weight: bold;">색상</a><br>
+					<div class="radio mt-3 mb-2" style="font-size: 10pt;">
 					  <label class="mr-1" ><input class="mr-2" type="radio" name="optradio" checked>화이트</label>
 					  <span class="rounded-circle mr-5" id="colorbox" style="background-color: #f2f2f2;"></span><br>
-					  
-					  <label class="mr-1"><input class="mr-2" type="radio" name="optradio">블랙</label>
-					  <span class="rounded-circle mr-5" id="colorbox" style="background-color: #333333;"></span><br>
-					  
-					  <label class="mr-1"><input class="mr-2" type="radio" name="optradio">레드</label>
-					  <span class="rounded-circle mr-5" id="colorbox" style="background-color: #ff1a1a;"></span>
 					</div>
 					<br><br>
-					<button class="btn btn-primary btn-lg" style="width: 300px; height: 50px; font-weight: bold;">구매하기</button>
+					<button class="btn btn-primary btn-lg" style="width: 300px; height: 50px; font-weight: bold;" >구매하기</button>
 					<button class="ml-2 btn btn-primary btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart"></i></button>
 					<br><br><br>
 					<i class="mr-2 fas fa-truck"></i>
@@ -77,8 +95,45 @@
 					<br>
 					<hr>
 					<i class="mr-2 fas fa-store"></i>
-					<a href="#" style="font-size: 11pt; font-weight: bold; text-decoration: underline;">매장 재고 및 재입고 날짜 확인</a>
-				</div>
+					<a href="#" data-toggle="modal" data-target="#myModal" style="font-size: 11pt; font-weight: bold; text-decoration: underline;">매장 재고 확인</a>
+						<div class="container">
+						
+						  <!-- The Modal -->
+						  <div class="modal" id="myModal">
+						    <div class="modal-dialog">
+						      <div class="modal-content">
+						      
+						        <!-- Modal Header -->
+						        <div class="modal-header">
+						          <h5 class="modal-title" style="font-weight: bold;">지점별 현재 제품 보유 현황</h5>
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						        </div>
+						        
+						        <!-- Modal body -->
+						        <div class="modal-body my-3">
+						          	<span style="font-weight: bold;">고양점</span><br>
+						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
+						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
+						          	<hr class="my-3">
+						          	<span style="font-weight: bold;">고양점</span><br>
+						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
+						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
+						          	<hr class="my-3">
+						          	<span style="font-weight: bold;">고양점</span><br>
+						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
+						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
+						        </div>
+						        
+						        <!-- Modal footer -->
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						        </div>
+						        
+						      </div>
+						    </div>
+						  </div>
+						  
+						</div>				</div>
 			</div>
 		</div>
 		
@@ -149,8 +204,6 @@
 			
 		</div>
 	</div>
-	
-	
 </div>
 
 <jsp:include page="../footer.jsp"/>
