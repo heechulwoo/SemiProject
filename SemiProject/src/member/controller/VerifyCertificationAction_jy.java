@@ -11,7 +11,7 @@ import common.controller.AbstractController;
 import member.model.InterMemberDAO_jy;
 import member.model.MemberDAO_jy;
 
-public class VerifyCertificationAction extends AbstractController {
+public class VerifyCertificationAction_jy extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
