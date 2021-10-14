@@ -83,7 +83,7 @@
 					<div class="col-4"><h5 id="price" style="font-weight: bold;">${requestScope.pvo.price}원</h5></div>
 				</div>
 				<div>
-					<span style="font-size: 10pt">스툴의자, ${requestScope.pvo.color}</span>
+					<span style="font-size: 10pt">${requestScope.pvo.categvo.cname}, ${requestScope.pvo.color}</span>
 					<br>
 					<hr>
 					<a href="javascript:goEditPersonal();" class="btn btn-outline-light btn-lg" style="font-weight: bold;">색상</a><br>
@@ -226,5 +226,5 @@
 		</div>
 	</div>
 </div>
-
+</div>
 <jsp:include page="../footer.jsp"/>

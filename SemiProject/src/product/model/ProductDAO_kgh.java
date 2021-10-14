@@ -97,8 +97,10 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select pnum, fk_cnum, pname, price, color, pinpupdate, pqty, psummary, pcontent " + 
-						 " from tbl_product " + 
+			String sql = " select cname, pnum, fk_cnum, pname, price, color, pinpupdate, pqty, psummary, pcontent " + 
+						 " from tbl_product P " + 
+						 " JOIN tbl_category G " + 
+						 " ON P.fk_cnum = G.cnum " + 
 						 " where pnum = ? ";
 			
 			pstmt = conn.prepareCall(sql);
@@ -108,15 +110,20 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			
 			if (rs.next()) {
 				pvo = new ProductVO_kgh();
-				pvo.setPnum(rs.getString(1));
-				pvo.setFk_cnum(rs.getString(2));
-				pvo.setPname(rs.getString(3));
-				pvo.setPrice(rs.getInt(4));
-				pvo.setColor(rs.getString(5));
+				
+				ProductCategoryVO_kgh pcvo = new ProductCategoryVO_kgh();
+				pcvo.setCname(rs.getString(1));
+				pvo.setCategvo(pcvo);
+				
+				pvo.setPnum(rs.getString(2));
+				pvo.setFk_cnum(rs.getString(3));
+				pvo.setPname(rs.getString(4));
+				pvo.setPrice(rs.getInt(5));
+				pvo.setColor(rs.getString(6));
 				pvo.setPinpupdate(rs.getString(6));
-				pvo.setPqty(rs.getInt(7));
-				pvo.setPsummary(rs.getString(8));
-				pvo.setPcontent(rs.getString(9));
+				pvo.setPqty(rs.getInt(8));
+				pvo.setPsummary(rs.getString(9));
+				pvo.setPcontent(rs.getString(10));
 			}
 			
 		} finally {
