@@ -97,8 +97,10 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select pnum, fk_cnum, pname, price, color, pinpupdate, pqty, psummary, pcontent " + 
-						 " from tbl_product " + 
+			String sql = " select cname, pnum, fk_cnum, pname, price, color, pinpupdate, pqty, psummary, pcontent " + 
+						 " from tbl_product P " + 
+						 " JOIN tbl_category G " + 
+						 " ON P.fk_cnum = G.cnum " + 
 						 " where pnum = ? ";
 			
 			pstmt = conn.prepareCall(sql);
@@ -108,15 +110,20 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			
 			if (rs.next()) {
 				pvo = new ProductVO_kgh();
-				pvo.setPnum(rs.getString(1));
-				pvo.setFk_cnum(rs.getString(2));
-				pvo.setPname(rs.getString(3));
-				pvo.setPrice(rs.getInt(4));
-				pvo.setColor(rs.getString(5));
+				
+				ProductCategoryVO_kgh pcvo = new ProductCategoryVO_kgh();
+				pcvo.setCname(rs.getString(1));
+				pvo.setCategvo(pcvo);
+				
+				pvo.setPnum(rs.getString(2));
+				pvo.setFk_cnum(rs.getString(3));
+				pvo.setPname(rs.getString(4));
+				pvo.setPrice(rs.getInt(5));
+				pvo.setColor(rs.getString(6));
 				pvo.setPinpupdate(rs.getString(6));
-				pvo.setPqty(rs.getInt(7));
-				pvo.setPsummary(rs.getString(8));
-				pvo.setPcontent(rs.getString(9));
+				pvo.setPqty(rs.getInt(8));
+				pvo.setPsummary(rs.getString(9));
+				pvo.setPcontent(rs.getString(10));
 			}
 			
 		} finally {
@@ -239,5 +246,43 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		}
 		
 		return orderList;
+	}
+
+	// 제품의 카테고리와 일치하는 유사한 제품을 불러오는 메서드
+	@Override
+	public List<ProductVO_kgh> SameCategoryProduct(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductVO_kgh> sameProductList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select pnum, pname, price, prodimage " + 
+						 " from  (select * " + 
+						 "        from tbl_product " + 
+						 "        order by dbms_random.value) " + 
+						 " where pnum != ? and fk_cnum = ? and rownum <= 4 ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("pnum"));
+			pstmt.setString(2, paraMap.get("cnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductVO_kgh pvo = new ProductVO_kgh();
+				pvo.setPnum(rs.getString(1));
+				pvo.setPname(rs.getString(2));
+				pvo.setPrice(rs.getInt(3));
+				pvo.setProdimage(rs.getString(4));
+				
+				sameProductList.add(pvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return sameProductList;
 	}
 }

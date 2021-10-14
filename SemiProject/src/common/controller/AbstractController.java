@@ -1,5 +1,9 @@
 package common.controller;
 
+import javax.servlet.http.*;
+
+import member.model.MemberVO;
+
 public abstract class AbstractController implements InterCommand {
 
 	private boolean isRedirect = false;
@@ -27,6 +31,25 @@ public abstract class AbstractController implements InterCommand {
 		this.viewPage = viewPage;
 	}
 	
+
+	////////////////////////////////////////////
+	// 로그인 유무를 검사해서 로그인 했으면 true를 리턴해주고
+	// 로그인 안 했으면 false를 리턴해주도록 한다.
+	public boolean checkLogin(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		if(loginuser != null) {
+			// 로그인한 경우
+			return true;
+		}
+		else {
+			// 로그인 안 한 경우
+			return false;
+		}
+	
+	}
 
 	
 }
