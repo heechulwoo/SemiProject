@@ -127,7 +127,7 @@
 								html +=	"<span class='pnum' style='display:none'>"+item.pnum+"</span>"+
 						                "<button class='btn btn-outline-danger btn-sm border-0'><i class='icon-link far fa-heart fa-lg'></i></button>" +
 						            "</div>" +
-									"<a href=''>" +
+									"<a href='<%= ctxPath%>/product/eachProduct.one?pnum="+item.pnum+"'>" +
 								        "<img src='<%= ctxPath%>/image_ikea/"+item.prodimage+"' style='width:100%'>" +
 								        "<span>"+item.pname+"<br><span class='w3-opacity' style='font-size:12px'>"+item.cname+"</span><br><b>￦"+(item.price).toLocaleString('en')+"</b></span>" +
 							        "</a>" +
