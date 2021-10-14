@@ -123,13 +123,15 @@
 	// Function Declaration
 	var len = 24;
 	function displayAll(start){
-		
+		var cnum = "${requestScope.cnum}";
+	//	console.log(cnum);
 		$.ajax({
 			url:"/SemiProject/product/mallDisplayJSON.one",
 		//	type:"GET",
 			data:{"range":range
 				 ,"start":start	 // "1"  "9"  "17"
-				 ,"len":len}, //  8	  8    8
+				 ,"len":len
+				 ,"cnum":cnum}, 
 			dataType:"JSON",
 			success:function(json) {
 				var html = "";
@@ -201,19 +203,9 @@
 </script>
 
 	<div class="container-fluid container-xl">
-		<h6 class="my-3 py-2" style="font-size: 10pt;"><a href="#">제품</a> &gt; 의자</a></h6>
-		<h2 class="mb-4"><b>모든제품</b></h2>
-		<div class="row justify-content-between mb-5">
-			<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
-				<div class="col-md-2 col-6">
-					<a href="<%= ctxPath%>/product/productByCategory.one?cnum=${cvo.cnum}">
-				        <img src="<%= ctxPath%>/image_ikea/${cvo.prodimage}" style="width:100%">
-				        <span>${cvo.cname}</span>
-			        </a>
-				</div>
-			</c:forEach>
-			
-		</div>
+		<h6 class="my-3 py-2" style="font-size: 10pt;"><a href="<%= ctxPath%>/product/productAll.one">제품</a> &gt; <a href="<%= ctxPath%>/product/productAll.one">의자</a> &gt; ${requestScope.cname} </h6>
+		<h2 class="mb-4"><b>${requestScope.cname}</b></h2>
+		
 		<div class="row my-2">
 			<p class="col-md-7">
 					의자를 찾고 계신가요? IKEA에는 다양한 의자가 준비되어 있어서 집안에 필요한 의자를 쉽게 찾으실 수 있어요. 포인트를 줄 수 있는 특이한 의자, 편안한 식탁의자, 공간을 많이 차지하지 않는 접이식 의자, 인체공학적 사무용 의자... 어떤 의자를 원하시든 맞는 의자를 만나실 수 있을 거예요.
@@ -237,18 +229,6 @@
 				<div class="dropdown-item">			  
 			    	<label for="pro_name">이름순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="pro_name" value="pname"/>
 			    </div>
-			  </div>
-			</div>
-			<div class="btn-group">
-			  <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  	카테고리
-			  </button>
-			  <div class="dropdown-menu">
-				<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
-					<div class="dropdown-item">
-					    <label for="${cvo.cnum}">${cvo.cname}</label> <input type = "checkbox" id="${cvo.cnum}" value="${cvo.cnum}" class="filter category">
-			        </div>
-				</c:forEach>
 			  </div>
 			</div>
 			<div class="btn-group">

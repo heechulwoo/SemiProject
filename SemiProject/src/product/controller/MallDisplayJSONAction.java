@@ -21,12 +21,14 @@ public class MallDisplayJSONAction extends AbstractController {
 		String range = request.getParameter("range");
 		String start = request.getParameter("start");
 	    String len = request.getParameter("len");
-  
+	    String cnum = request.getParameter("cnum");
+	    
 	    InterProductDAO pdao = new ProductDAO();
 	    
 	    Map<String, String> paraMap = new HashMap<>();
 	    paraMap.put("range", range);
 	    paraMap.put("start", start);  // start "1"  "9"   "17"  "25"  "33"
+	    paraMap.put("cnum", cnum);
 	    
 	    String end = String.valueOf(Integer.parseInt(start) + Integer.parseInt(len) - 1); 
 	                                   

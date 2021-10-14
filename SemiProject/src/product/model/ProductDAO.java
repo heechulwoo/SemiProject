@@ -169,7 +169,7 @@ public class ProductDAO implements InterProductDAO {
         return totalCount;
 	} // end of public int totalCount()-------------------
 	
-	// Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 8개씩 잘라서(start ~ end) 조회해오기 
+	// Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 잘라서(start ~ end) 조회해오기 
 	@Override
 	public List<ProductVO> selectAllproduct(Map<String, String> paraMap) throws SQLException {
 		List<ProductVO> prodList = new ArrayList<>();
@@ -183,13 +183,23 @@ public class ProductDAO implements InterProductDAO {
 		           		"     select row_number() over(order by " + paraMap.get("range")+") as RNO, pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
 		           		"     from tbl_product P " + 
 		           		"     JOIN tbl_category C " + 
-		           		"     ON p.fk_cnum = c.cnum " + 
-		           		" ) " + 
+		           		"     ON p.fk_cnum = c.cnum "; 
+		           		if(paraMap.get("cnum") != null) {
+		           			sql += " where cnum = ? ";
+		           		}
+		          sql += " ) " + 
 		           		" where RNO between ? and ? ";
            
            pstmt = conn.prepareStatement(sql);
-           pstmt.setString(1, paraMap.get("start"));
-           pstmt.setString(2, paraMap.get("end"));
+           if(paraMap.get("cnum") != null) {
+        	   pstmt.setString(1, paraMap.get("cnum"));
+        	   pstmt.setString(2, paraMap.get("start"));
+               pstmt.setString(3, paraMap.get("end"));
+           }
+           else {
+        	   pstmt.setString(1, paraMap.get("start"));
+        	   pstmt.setString(2, paraMap.get("end"));
+           }
            
            rs = pstmt.executeQuery();
            
@@ -393,6 +403,60 @@ public class ProductDAO implements InterProductDAO {
 	           close();
         }
 		return result;
+	}
+
+	// 카테고리에 해당하는 제품수 얻어오기
+	@Override
+	public int totalCount(String cnum) throws SQLException {
+		int totalCount = 0;
+        
+        try {
+            conn = ds.getConnection();
+            
+            String sql = " select count(*) "+
+                         " from tbl_product " +
+                         " where fk_cnum = ? ";
+            
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, cnum);
+            rs = pstmt.executeQuery();
+            
+            rs.next();
+            
+            totalCount = rs.getInt(1);
+            
+        } finally {
+           close();
+        }      
+        
+        return totalCount;
+	}// end of public int totalCount(String cnum)
+
+	
+	// 카테고리번호에 해당하는 카테고리 이름 얻어오기
+	@Override
+	public String selectCname(String cnum) throws SQLException {
+		String cname = "";
+		
+		try {
+            conn = ds.getConnection();
+            
+            String sql = " select cname " + 
+	            		 " from tbl_category " + 
+	            		 " where cnum = ? ";
+            
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, cnum);
+            rs = pstmt.executeQuery();
+            
+            rs.next();
+            
+            cname = rs.getString(1);
+            
+        } finally {
+           close();
+        }      
+		return cname;
 	}
 
     

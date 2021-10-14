@@ -166,10 +166,10 @@
 						$.each(json,function(index, item){
 							html += '<div class="row">' +
 										'<div class="col-3">' +
-											'<a href=""><img src="<%= ctxPath%>/image_ikea/'+item.prodimage+'" style="width:100%"></a>' +
+											'<a href="<%= ctxPath%>/product/eachProduct.one?pnum='+item.pnum+'"><img src="<%= ctxPath%>/image_ikea/'+item.prodimage+'" style="width:100%"></a>' +
 										'</div>' +
 										'<div class="col-6">' +
-											'<div class="mb-2"><b><a href="">'+item.pname+'</a></b></div>' +
+											'<div class="mb-2"><b><a href="<%= ctxPath%>/product/eachProduct.one?pnum='+item.pnum+'">'+item.pname+'</a></b></div>' +
 											'<div>'+
 												'<span>'+item.cname+'</span><br>'+
 												'<span class="eachpnum" style="font-size:small;">'+item.pnum+'</span>'+

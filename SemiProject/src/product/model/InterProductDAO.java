@@ -21,5 +21,9 @@ public interface InterProductDAO {
 	List<ProductVO> selectCartList(String userid) throws SQLException;	// 회원이 장바구니에 저장한 제품 select 하기
 
 	int deleteOneCart(String userid, String pnum) throws SQLException; // 장바구니 delete
+
+	int totalCount(String cnum) throws SQLException; // 카테고리에 해당하는 제품수 얻어오기
+
+	String selectCname(String cnum) throws SQLException; // 카테고리번호에 해당하는 카테고리 이름 얻어오기
 	
 }
