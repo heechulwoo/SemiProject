@@ -25,6 +25,88 @@ create table tbl_member
 );
 
 
+
+update tbl_member set idle = '0'
+where userid = 'leess'; 
+
+-- 휴면아이디 만들기
+update tbl_loginhistory set logindate = add_months(sysdate, -28)
+where FK_userid = 'jubar2222'; 
+commit;
+
+
+update tbl_loginhistory set logindate = sysdate
+where FK_userid = 'jubar2222';
+rollback;
+
+
+
+
+select *
+from tbl_loginhistory
+where FK_userid = 'jubar2222';
+
+
+commit;
+
+select email
+from tbl_member
+where idle = '1' and userid = 'kimhm' and pwd = '9695b88a59a1610320897fa84cb7e144cc51f2984520efb77111d94b402a8382';
+
+
+select count(*)
+from tbl_member
+where userid != 'admin';
+
+select *
+from tbl_member
+
+
+
+select userid
+from tbl_member
+where userid = 'eomjh' and idle = '0' and  status = '0'
+
+
+select *
+from tbl_loginhistory
+where FK_userid = 'kimhm';
+
+
+select rno, userid, name, email, gender
+from 
+(
+    select rownum AS rno, userid, name, email, gender
+    from
+    (
+     select userid, name, email, gender
+     from tbl_member
+     where userid != 'admin'
+     order by registerday desc
+    )V  -- 이 전체를 V라는 테이블로 간주한다.
+) T
+where rno between 1 and 10;
+
+
+
+select rno, userid, name, email, gender
+from 
+(
+    select rownum AS rno, userid, name, email, gender
+    from
+    (
+     select userid, name, email, gender
+     from tbl_member
+     where userid NOT IN('leess','admin') 
+     order by registerday desc
+    )V  -- 이 전체를 V라는 테이블로 간주한다.
+) T
+where rno between 1 and 10;
+
+
+
+
+
 -- **** 회원로그인 테이블 생성하기 **** --
 create table tbl_loginhistory
 (fk_userid   varchar2(40) not null  -- 회원아이디
@@ -279,6 +361,24 @@ alter table tbl_member modify birthday not null;
 select *
 from user_constraints
 where table_name = 'TBL_MEMBER';
+
+
+select rno, userid, name, email, gender
+from 
+(
+    select rownum AS rno, userid, name, email, gender
+    from
+    (
+     select userid, name, email, gender
+     from tbl_member
+     where userid != 'admin'
+     and name like '%'|| '유' ||'%'  -- 검색어가 없으면 이 줄을 없애버리면 끝
+     order by registerday desc
+    )V  -- 이 전체를 V라는 테이블로 간주한다.
+) T
+where rno between 1 and 10;
+
+
 
 -- **** 회원로그인 테이블 생성하기 **** --
 create table tbl_loginhistory
@@ -958,5 +1058,7 @@ from tbl_product;
 select color
 from tbl_product
 group by color;
+
+
 
 

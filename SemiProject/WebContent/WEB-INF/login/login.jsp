@@ -18,6 +18,14 @@
 	$(document).ready(function(){
 	 
 		
+		var loginUserid = localStorage.getItem('remember');
+		
+		if(loginUserid != null ) {
+			$("input#loginUserid").val(loginUserid);
+			$("input:checkbox[id=remember]").prop("checked",true);
+		}
+		
+		
 	 	<!-- 사이드바 function 시작-->  
 	 	function w3_open() {
 		  	document.getElementById("mySidebar").style.display = "block";
@@ -52,10 +60,7 @@
 	 	var loginUserid = $("input#loginUserid").val().trim();
 		var loginPwd = $("input#loginPwd").val().trim();
 		
-		console.log(loginUserid);
-		
 
-	
 		if(loginUserid == "") {
 			alert("아이디를 입력하세요!!");
 			$("input#loginUserid").val("");
@@ -74,7 +79,7 @@
 		if( $("input:checkbox[id=remember]").prop("checked") ) {
 		//	alert("아이디저장 체크를 하셨네요");	
 			
-		//	console.log($("input#loginUserid").val());
+			console.log($("input#loginUserid").val());
 			
 			localStorage.setItem('remember', $("input#loginUserid").val());
 		
@@ -109,7 +114,7 @@
 		<h2 ><b>로그인</b></h2>
 		<p style="font-size: 9pt;  margin-top:40px">IKEA 계정이 없으신가요?<br> 지금 바로 만들어보세요</p>
 		<span class="card-text"><i class="fa fa-pen"></i></span>
-		<a href="memberRegister.html" style="font-size:14px"><b>회원가입</b></a> 
+		<a href="<%= ctxPath%>/member/register.one" style="font-size:14px"><b>회원가입</b></a> 
 	</div>
 	<div class="col-md-9">
 		<img src="<%= ctxPath%>/images/loginpage.jpg" class="img-fluid"	alt="반응형 로그인 이미지" width="750" height="300">
@@ -159,8 +164,8 @@
 			</div>
 			
 			<div class="form-group"  style="margin-left:24px">
-				<label for="user_remember_me" style="width: 20%">아이디 기억하기</label>
-				<input type="checkbox" id="user_remember_me" name="remember" value="1" />
+				<label for="remember" style="width: 20%">아이디 기억하기</label>
+				<input type="checkbox" id="remember" name="remember" />
 			
 	
 		<!-- 아이디 찾기 시작 -->
@@ -236,8 +241,6 @@
 <!-- row 끝 -->
 <!-- 중앙 컨텐츠 끝 -->
 </div><hr>
-
-
 
 
 </body>
