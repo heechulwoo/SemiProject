@@ -17,4 +17,7 @@ public interface InterProductDAO_kgh {
 
 	// 주문번호와 이메일을 통해 주문과 주문 상세를 select 하는 메서드
 	List<ProductOrderDetailVO_kgh> selectOrderConfirmation(String shippingNo, String shippingEmail) throws SQLException;
+
+	// 제품의 카테고리와 일치하는 유사한 제품을 불러오는 메서드 
+	List<ProductVO_kgh> SameCategoryProduct(Map<String, String> paraMap) throws SQLException;
 }
