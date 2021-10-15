@@ -95,29 +95,36 @@
 <script>
 	$(document).ready(function(){
 	
-	$("div.product").hover(function(){
+		$("div.product").hover(function(){
+			
+			$(this).children("div.hidden").css("visibility","visible");
+			
+		},function(){
+			$(this).children("div.hidden").css("visibility","hidden");
+		})
 		
-		$(this).children("div.hidden").css("visibility","visible");
 		
-	},function(){
-		$(this).children("div.hidden").css("visibility","hidden");
-	})
-	
-	/* 관리자메뉴 드롭다운 반응형   */
-	$(window).resize(function() { // 창 사이즈 변화감지
-		var widthnow = window.innerWidth;
-		var element = document.getElementById("sidedropdown");
-		// console.log(widthnow)
-		if(widthnow < 1200) {
-		//창 가로 크기가 1200 미만일 경우
-	    element.classList.remove("dropright"); // 오른쪽으로 열리는 드롭다운 속성 삭제			
+		var loginuser = "${sessionScope.loginuser}";
+		var loginuser_id = "${sessionScope.loginuser.userid}";
+		console.log(loginuser);
+		console.log(loginuser_id);
+		/* 관리자메뉴 드롭다운 반응형   */
+		if (loginuser != null && loginuser_id == "admin"){
+			$(window).resize(function() { // 창 사이즈 변화감지
+				var widthnow = window.innerWidth;
+				var element = document.getElementById("sidedropdown");
+				// console.log(widthnow)
+				if(widthnow < 1200) {
+				//창 가로 크기가 1200 미만일 경우
+			    element.classList.remove("dropright"); // 오른쪽으로 열리는 드롭다운 속성 삭제			
+				}
+				
+				if(widthnow > 1200) {
+					//창 가로 크기가 1200 초과일 경우
+				element.classList.add("dropright"); // 오른쪽으로 열리는 드롭다운 속성 추가			
+					}
+			});
 		}
-		
-		if(widthnow > 1200) {
-			//창 가로 크기가 1200 초과일 경우
-		element.classList.add("dropright"); // 오른쪽으로 열리는 드롭다운 속성 추가			
-			}
-	});
 	
 	}); // end of $(document).ready(function(){}----------------------
 
