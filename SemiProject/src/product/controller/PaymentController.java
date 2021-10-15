@@ -24,6 +24,9 @@ public class PaymentController extends AbstractController {
 				String pnum = request.getParameter("pnum");
 				String pqty = request.getParameter("pqty");
 
+				// 
+				
+				
 			//	super.setRedirect(false);
 				super.setViewPage("/WEB-INF/product/payment.jsp");
 			}
