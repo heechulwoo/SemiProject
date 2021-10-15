@@ -106,8 +106,8 @@
 		
 		var loginuser = "${sessionScope.loginuser}";
 		var loginuser_id = "${sessionScope.loginuser.userid}";
-		console.log(loginuser);
-		console.log(loginuser_id);
+		// console.log(loginuser);
+		// console.log(loginuser_id);
 		/* 관리자메뉴 드롭다운 반응형   */
 		if (loginuser != null && loginuser_id == "admin"){
 			$(window).resize(function() { // 창 사이즈 변화감지

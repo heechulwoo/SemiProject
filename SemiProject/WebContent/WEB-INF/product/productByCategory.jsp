@@ -92,7 +92,7 @@
 			if (loginuser != "") {
 				
 				var pnum = $(this).parent().children(".pnum").text();
-				var pqty = "1";
+				var pqty = 1;
 				
 				// console.log(pnum);
 				// console.log(pqty);

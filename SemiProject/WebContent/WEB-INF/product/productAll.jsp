@@ -92,7 +92,7 @@
 			if (loginuser != "") {
 				
 				var pnum = $(this).parent().children(".pnum").text();
-				var pqty = "1";
+				var pqty = 1;
 				
 				// console.log(pnum);
 				// console.log(pqty);
@@ -201,7 +201,7 @@
 </script>
 
 	<div class="container-fluid container-xl">
-		<h6 class="my-3 py-2" style="font-size: 10pt;"><a href="#">제품</a> &gt; 의자</a></h6>
+		<h6 class="my-3 py-2" style="font-size: 10pt;"><a href="#">제품</a> &gt; 의자</h6>
 		<h2 class="mb-4"><b>모든제품</b></h2>
 		<div class="row justify-content-between mb-5">
 			<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
