@@ -97,15 +97,90 @@
 			
 			localStorage.setItem("wishlist", JSON.stringify(localWishList));
 			
-		});
+		});// end of $("button#prdWishList").click(function() {})
 		
 		// 장바구니 추가하기 함수
 		$("button#shopBasketList").click(function() {
+			var loginuser = "${sessionScope.loginuser}";
+	        if (loginuser != "") {
+	            
+	            var pnum = ${requestScope.pvo.pnum};
+	            var pqty = $("input#spinnerPqty").val();
+	            
+	            var regExp = /^[0-9]+$/;
+	            var bool = regExp.test(pqty);
+	            
+	            if(!bool) {
+	            	alert("주문 개수는 1개 이상이어야 합니다.");
+	            	return;
+	            }
+	            
+	            if(pqty < 1) {
+	            	alert("주문 개수는 1개 이상이어야 합니다.");
+	            	return;
+	            }
+	            
+	            $.ajax({
+	               url:"/SemiProject/product/saveCartJSON.one",
+	               type:"POST",
+	               data:{"pnum":pnum
+	                  , "pqty":pqty
+	                  }, 
+	               success:function() { // 콜백함수
+	                  alert("장바구니에 추가했습니다.");
+	               },
+	               error: function(request, status, error){
+	                     alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	                 }
+	            });
+	         }
+	         else {
+	            alert("장바구니 기능은 로그인이 필요합니다.");
+	            location.href="<%=ctxPath%>/login/login.one";
+	         }
+
+		});// end of $("button#shopBasketList").click(function() {})
+		
+		// 구매하기 버튼을 클릭할 때 구매창으로 넘어가는 함수
+		$("button#buyButton").click(function() {
 			
+			// alert("구매버튼 확인용");
+			
+			var loginuser = "${sessionScope.loginuser}";
+	        if (loginuser != "") {
+	            
+	        	var frm = document.orderFrm;
+	            var pnum = ${requestScope.pvo.pnum};
+	            var pqty = $("input#spinnerPqty").val();
+	            
+	            var regExp = /^[0-9]+$/;
+	            var bool = regExp.test(pqty);
+	            
+	            if(!bool) {
+	            	alert("주문 개수는 1개 이상이어야 합니다.");
+	            	return;
+	            }
+	            
+	            if(pqty < 1) {
+	            	alert("주문 개수는 1개 이상이어야 합니다.");
+	            	return;
+	            }
+	            
+	        	// 주문개수가 1개 이상인 경우
+	            frm.method = "POST";
+	            frm.action = "<%= request.getContextPath()%>/product/payment.one";
+	            frm.submit();
+	            
+	        }
+	        else {
+	        	alert("구매를 이용할 때 로그인이 필요합니다.");
+	            location.href="<%=ctxPath%>/login/login.one";
+	        }
 		});
 		
-	});
+	});// end of $(document).ready(function() {})
 	
+	// == Function Declaration == //
 	// === 제품 색상 선택하기 함수 === //
 	function goEditPersonal() {
 		
@@ -167,16 +242,20 @@
 					<div class="col-5"><h5 id="price" class="text-left" style="font-weight: bold;"><fmt:formatNumber value="${requestScope.pvo.price}"/>&nbsp;원</h5></div>
 				</div>
 				<div>
+				<form name="orderFrm">
 					<span style="font-size: 10pt">${requestScope.pvo.categvo.cname}, ${requestScope.pvo.color}</span>
 					<br>
 					<hr>
+					<input name="pnum" type="hidden" value="${requestScope.pvo.pnum}"/>
 					<a href="javascript:goEditPersonal();" class="btn btn-outline-light btn-lg" style="font-weight: bold;">색상</a><br>
 					<div class="radio mt-3 mb-2" style="font-size: 10pt;">
-					  <label class="mr-1" ><input class="mr-2" type="radio" name="optradio" checked>${requestScope.pvo.color}</label>
+					  <label class="mr-1"><input class="mr-2" type="radio" name="optradio" checked>${requestScope.pvo.color}</label>
 					</div>
-					<input class="mb-2 mt-1" id="spinnerPqty" name="pqty" value="1" style="width: 30px; height: 20px;"> 개<br>
+					<input class="mb-2 mt-1" id="spinnerPqty" name="pqty" value="1" style="width: 40px; height: 20px;"> 개<br>
 					<br>
-					<button id="shopBasketList" class="btn btn-primary btn-lg" style="width: 300px; height: 50px; font-weight: bold;" >구매하기</button>
+				</form>
+					<button id="buyButton" class="btn btn-primary btn-lg" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
+					<button id="shopBasketList" class='ml-2 btn btn-outline-success btn-sm savecart' style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
 					<button id="prdWishList" class="ml-2 btn btn-outline-danger btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
 					<br><br><br>
 					<i class="mr-2 fas fa-truck"></i>
