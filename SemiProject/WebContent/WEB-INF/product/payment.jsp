@@ -137,7 +137,7 @@
 						    	<input class="form-check-input ml-1" id="agreeCheckbox" name="agreeCheckbox" type="checkbox"/><label for="agreeCheckbox" class="ml-4">결제확인에 동의합니다.</label>
 						    </div>
 						    <div class="col-10 col-lg-9 my-4">
-						    	<button class="btn" style="background-color: #004d99; color: white; width: 100%; height: 70px; font-weight: bold; border-radius: 50px; font-size: 16pt;">결제하기</button>
+						    	<button class="btn" style="background-color: #004d99; color: white; width: 250px; height: 70px; font-weight: bold; border-radius: 50px; font-size: 16pt;">결제하기</button>
 						    </div>
 					    </div>
 				    </div>
