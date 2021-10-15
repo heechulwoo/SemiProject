@@ -20,4 +20,7 @@ public interface InterProductDAO_kgh {
 
 	// 제품의 카테고리와 일치하는 유사한 제품을 불러오는 메서드 
 	List<ProductVO_kgh> SameCategoryProduct(Map<String, String> paraMap) throws SQLException;
+
+	// 해당하는 제품 이름과 일치하는 상품의 색상 이미지 가져오기
+	List<ProductVO_kgh> selectProductColor(String pname) throws SQLException;
 }

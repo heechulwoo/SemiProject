@@ -2,13 +2,14 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
   
 <%
 	String ctxPath = request.getContextPath();
 %>  
 
     
-<jsp:include page="../header.jsp"/>
+<jsp:include page="../header_kgh.jsp"/>
 
 <style type="text/css">
 
@@ -31,19 +32,93 @@
 		  text-decoration: underline;
 	}
 	
+	.buttonClick {
+		background-color: #ff1a1a;
+		color: white;
+	}
+	
 </style>
 
 <script	type="text/javascript">
 
 	$(document).ready(function() {
 		
+		var pnum = ${requestScope.pvo.pnum}
+		
+		var localWishList = JSON.parse(localStorage.getItem('wishlist'));
+		
+		if(JSON.parse(localStorage.getItem('wishlist')) != null && JSON.parse(localStorage.getItem('wishlist')).indexOf(pnum)>=0 ){
+			   $("button#prdWishList").addClass("buttonClick");
+		}
+		
+		// 제품 수량에 spinner 달아주기
+		$("input#spinnerPqty").spinner({
+			spin:function(event,ui){
+	            if(ui.value > 100) {
+	               $(this).spinner("value", 100);
+	               return false;
+	            }
+	            else if(ui.value < 1) {
+	               $(this).spinner("value", 1);
+	               return false;
+	            }
+			}
+		});// end of $("input#spinnerPqty").spinner({ })
+		
+		// 위시리스트 추가하기 함수
+		$("button#prdWishList").click(function() {
+			
+			var pnum = ${requestScope.pvo.pnum}
+			
+			var localWishList = JSON.parse(localStorage.getItem('wishlist'));
+			
+			if(localWishList == null) {
+				alert("위시리스트에 저장되었습니다.");
+				localWishList = [];
+				localWishList.push(pnum);
+			//	("button#prdWishList").addClass("buttonClick");
+				$("button#prdWishList").addClass("buttonClick");
+			}
+			else {
+				var index = localWishList.indexOf(pnum);
+				if(index >= 0) {
+					localWishList.splice(index, 1);
+					alert("위시리스트를 제거합니다.");
+				//	("button#prdWishList").removeClass("buttonClick");
+					$("button#prdWishList").removeClass("buttonClick");
+				}
+				else {
+					alert("위시리스트에 저장되었습니다.");
+					localWishList.push(pnum);
+				//	("button#prdWishList").addClass("buttonClick");
+					$("button#prdWishList").addClass("buttonClick");
+				}
+			}
+			
+			localStorage.setItem("wishlist", JSON.stringify(localWishList));
+			
+		});
+		
+		// 장바구니 추가하기 함수
+		$("button#shopBasketList").click(function() {
+			
+		});
+		
 	});
 	
 	// === 제품 색상 선택하기 함수 === //
 	function goEditPersonal() {
 		
-		// 나의 정보 수정하기 팝업창 띄우기 
-	    var url = "<%= request.getContextPath()%>/product/eachProductColor.one";
+		var pname = $("h5#pname").text();
+		
+		// 상품 이름의 " " 위치 추출하기
+		var index = pname.indexOf(" ");
+		
+		// 상품 이름의 한글 부분만 추출하기
+		var pname_kor = pname.substring(index+1);
+		
+		// 제품 색상 선택 팝업창 띄우기 
+	    var url = "<%= request.getContextPath()%>/product/eachProductColor.one?pname=" + pname_kor;
 	     
 	    // 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
 	    var pop_width = 450;
@@ -53,6 +128,13 @@
 	    
 	    window.open(url, "colorEdit",
 	                "left=" + pop_left + ", top=" + pop_top + ", width=" + pop_width + ", height=" + pop_height);
+	 }
+	
+	 
+	 function goProductPage(pnum) {
+		// 개별 상품 페이지로 이동
+		// alert("확인용 " + pnum);
+		location.href = "<%= request.getContextPath()%>/product/eachProduct.one?pnum=" + pnum;
 	 }
 
 </script>
@@ -66,7 +148,9 @@
 				<div class="row justify-content-between ">
 					<c:if test="${not empty pimgList}">
 						<c:forEach var="pimgList" items="${requestScope.pimgList}">
-							<div class="col-6 col-md-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 95%;"/></div>
+							<c:if test="${not empty pimgList.imgfilename}">
+								<div class="col-6 col-md-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 95%;"/></div>
+							</c:if>
 						</c:forEach>
 					</c:if>
 				<%-- 
@@ -80,7 +164,7 @@
 			<div class="col-9 col-lg-4 ml-5 pl-4 my-4" style="float: right; width: 30%;">
 				<div class="row justify-content-between">
 					<div class="col-7"><h5 id="pname" style="font-weight: bold;">${requestScope.pvo.pname}</h5></div>
-					<div class="col-4"><h5 id="price" style="font-weight: bold;">${requestScope.pvo.price}원</h5></div>
+					<div class="col-5"><h5 id="price" class="text-left" style="font-weight: bold;"><fmt:formatNumber value="${requestScope.pvo.price}"/>&nbsp;원</h5></div>
 				</div>
 				<div>
 					<span style="font-size: 10pt">${requestScope.pvo.categvo.cname}, ${requestScope.pvo.color}</span>
@@ -89,14 +173,14 @@
 					<a href="javascript:goEditPersonal();" class="btn btn-outline-light btn-lg" style="font-weight: bold;">색상</a><br>
 					<div class="radio mt-3 mb-2" style="font-size: 10pt;">
 					  <label class="mr-1" ><input class="mr-2" type="radio" name="optradio" checked>${requestScope.pvo.color}</label>
-					  <span class="rounded-circle mr-5" id="colorbox" style="background-color: #f2f2f2;"></span><br>
 					</div>
-					<br><br>
-					<button class="btn btn-primary btn-lg" style="width: 300px; height: 50px; font-weight: bold;" >구매하기</button>
-					<button class="ml-2 btn btn-primary btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart"></i></button>
+					<input class="mb-2 mt-1" id="spinnerPqty" name="pqty" value="1" style="width: 30px; height: 20px;"> 개<br>
+					<br>
+					<button id="shopBasketList" class="btn btn-primary btn-lg" style="width: 300px; height: 50px; font-weight: bold;" >구매하기</button>
+					<button id="prdWishList" class="ml-2 btn btn-outline-danger btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
 					<br><br><br>
 					<i class="mr-2 fas fa-truck"></i>
-					<span style="font-size: 11pt;">결제시 배송 옵션보기</span>
+					<span style="font-size: 11pt;">배송 옵션은 결제 단계에서 확인 가능합니다</span>
 					<br>
 					<hr>
 					<i class="mr-2 fas fa-store"></i>
@@ -193,7 +277,7 @@
 							<div class="col-6 col-lg-2 px-0 my-3">
 								<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${sameProductVO.pnum}"><img class="my-1" src="<%= ctxPath%>/image_ikea/${sameProductVO.prodimage}" style="width: 90%;"/></a><br>
 								<a href="#" style="font-weight: bold; color: black; text-align: center;">${sameProductVO.pname}</a><br>
-								<span>${sameProductVO.price}</span>
+								<fmt:formatNumber value="${sameProductVO.price}"/><span>원</span>
 							</div>
 						</c:forEach>
 					</c:if>

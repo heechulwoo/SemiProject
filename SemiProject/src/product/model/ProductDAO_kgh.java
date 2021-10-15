@@ -285,4 +285,41 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		
 		return sameProductList;
 	}
+
+	
+	// 해당하는 제품 이름과 일치하는 상품의 색상 이미지 가져오기
+	@Override
+	public List<ProductVO_kgh> selectProductColor(String pname) throws SQLException {
+		
+		List<ProductVO_kgh> productColorList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select pnum, pname, color, pqty, prodimage " + 
+						 " from tbl_product " + 
+						 " where pname like '%'|| ? ||'%' ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pname);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductVO_kgh pvo = new ProductVO_kgh();
+				pvo.setPnum(rs.getString(1));
+				pvo.setPname(rs.getString(2));
+				pvo.setColor(rs.getString(3));
+				pvo.setPqty(rs.getInt(4));
+				pvo.setProdimage(rs.getString(5));
+				
+				productColorList.add(pvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return productColorList;
+	}
 }
