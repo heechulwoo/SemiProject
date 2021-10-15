@@ -66,6 +66,10 @@
 			
 		});
 		
+		$(document).on("click", "button.goPurchase", function(){
+			
+		});
+		
 	});// end of $(document).ready(function(){})
 	
 	//Function Declaration
@@ -88,6 +92,7 @@
 					else if( json.length > 0) {
 						// 데이터가 존재하는 경우
 						$("div#deleteAll").html('<button class="btn btn-outline-danger btn-sm badge-pill my-3 deleteAllcart">장바구니 삭제하기</button>');
+						var cartno = "";
 						$.each(json,function(index, item){
 							html += '<div class="row">' +
 										'<div class="col-3">' +
@@ -125,7 +130,13 @@
 									'<hr>';
 							
 									totalPrice += (item.price * item.oqty);
-									
+									if(index == 0){
+										cartno += item.cartno;
+									}
+									else {
+										cartno += "," + item.cartno;
+									}
+								
 						}); // end of $.each(json,function(index, item){})---------
 						
 						// 상품 결과를 출력하기
@@ -133,6 +144,12 @@
 						
 						// 합계
 						$("span#totalPrice").html('￦'+totalPrice.toLocaleString("en"));
+						
+						// 카트번호 리스트를 input에 저장
+						$("input#cartNum").val(cartno);
+					//	console.log(cartno);
+					//	console.log(typeof cartno);
+						
 					}
 					
 				//	$("div#rightside").show();
@@ -198,7 +215,10 @@
 				<div class="h5 pb-3 mt-lg-3" id="summary" style="border-bottom: 2px solid black;"><b>주문 내역</b></div>
 				<h5 style="font-weight:bold;">총 주문금액&nbsp;&nbsp;&nbsp;&nbsp;<span id="totalPrice">￦0</span></h5>
 				<div class="text-center">
-					<button class="btn btn-info btn-lg px-md-3 py-md-5 btn-block goPurchase">결제하기</button>
+					<form name="">
+						<input type="hidden" value="" name="cartNum" id="cartNum"/>
+						<button class="btn btn-info btn-lg px-md-3 py-md-5 btn-block goPurchase">결제하기</button>
+					</form>
 				</div>
 				<hr class="my-5">
 		    <%--     
