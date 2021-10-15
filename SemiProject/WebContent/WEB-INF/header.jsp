@@ -141,13 +141,14 @@
 <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
   <div class="container">
 	  <a href="javascript:void(0)" onclick="w3_close()"class=" w3-button" style="border-radius: 70px; margin:30px"><i class="fas fa-times"></i></a>
-	  <a class="navbar-brand" href="index.html" style="margin-left:30px"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="35"/></a>
+	  <a class="navbar-brand" href="<%= ctxPath%>/index.one" style="margin-left:30px"><img src="<%= ctxPath%>/images/logo.png" alt="IKEA_logo" width="90" height="35"/></a>
   </div>
   <div class="container text-dark" style="margin:30px 130px; font-size:14px">
       <h2><a href="<%= ctxPath%>/product/productAll.one"><b>모든 제품</b></a></h2><br>
       <c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
 	  	<a href="<%= ctxPath%>/product/productByCategory.one?cnum=${cvo.cnum}" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>${cvo.cname}</b></a>
 	  </c:forEach>
+	  <br><br>
 	  <a href="<%= ctxPath%>/service/support.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
 	  <a href="<%= ctxPath%>/product/shipping.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
 
