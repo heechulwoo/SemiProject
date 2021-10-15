@@ -6,6 +6,7 @@
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
 <title>조립 서비스 온라인 신청</title>
@@ -13,6 +14,14 @@
 <!-- 직접 만든 CSS -->
 <link rel="stylesheet" href="../css/assemble_form.css" />
 
+<style>
+
+td{
+padding: 0 0 0 3%;
+border-bottom: 2px solid #F7F7F8;
+}
+
+</style>
 
 <!-- 제이쿼리  -->
 <script
@@ -31,7 +40,7 @@ let regcheck1 = true; // 정규표현식 위배 확인하는 용도
 let regcheck2 = true; // 정규표현식 위배 확인하는 용도
 
 	$(document).ready(function(){
-		
+	
 	$("span.error").hide();
 
 	$("input[name=name]").blur(function(){
@@ -108,7 +117,7 @@ let regcheck2 = true; // 정규표현식 위배 확인하는 용도
 	});
 	
 	// 조립서비스 희망일 검사
-	$("input[name=hopeful]").blur(function(){
+	$("input[name=hopedate]").blur(function(){
 		let hopeful = $(this).val().trim();
 		if(hopeful == ""){
 			$(this).next().show();
@@ -156,29 +165,40 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 		
 		$("input.requiredInfo").each(function(){
 			let val = $(this).val().trim();
-			
+
 			if(val == ""){ 
 				$(this).focus();
 				$(this).parent().find(".error").show();
 				$(this).parent().find(".detailerror").hide();
 				$(this).parent().find(".pherror").hide();
 				
+				// return false; 여기서 return false를 해도 submit이 되었던 것은 submit의 리턴값이 아니라 현재 이 함수의 리턴값으로 인식하기 때문이다.
 				boolFlag = false; // 입력하지 않으면 않으면 false
-				return false; // submit 취소
 			}
 			
 		}); // end of $("input.requiredInfo").each(function()-------
 		
+		if(!boolFlag){
+			return false; // submit 취소
+		}
+				
+				
 		if(!regcheck1 || !regcheck2){ // 하나라도 정규표현식에 위배되면
 			alert("올바르게 입력해주세요😫 ");
 			return false; // submit 취소
 		}
+		
+		let agreeCheck = $("input:checkbox[id=agree]:checked").length; // 이용약관 체크 여부
+		if(agreeCheck == 0){ // 체크안한경우
+			alert("이용약관에 동의해주세요.");
+			return; // 종료
+		}
+			
+	var frm = document.assembleFrm;
+	frm.action = "assemble_apply.one";
+	frm.method = "post";
+	frm.submit();
 				
-	let agreeCheck = $("input:checkbox[id=agree]:checked").length; // 이용약관 체크 여부
-	if(agreeCheck == 0){ // 체크안한경우
-		alert("이용약관에 동의해주세요.");
-		return; // 종료
-	}
 		
 }// end of function goApply(){}---------------------
 
@@ -234,7 +254,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 					});
 
 	//초기값을 오늘 날짜로 설정
-	$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후) 
+	$('#datepicker').datepicker('setDate', '+7D'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, +1M:한달후, +1Y:일년후) 
 	/////////////////////////////////////////////////////
 
 	// === 전체 datepicker 옵션 일괄 설정하기 ===  
@@ -348,20 +368,21 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 	<h1 class="main-title">조립 서비스 온라인 신청</h1>
 	<hr />
 	<div class="wrapper">
-	<form name="assembleapply">
+	<form name="assembleFrm" id="assembleFrm">
 		<table class="formtable">
 			<tbody>
+
 				<tr>
-					<th>신청인 성명 *</th>
-					<td><input type="text" name="name" value size="20"
-						placeholder="김철수" class="forminput requiredInfo">
+					<th style="border-top: 2px solid #0058AB;">신청인 성명 *</th>
+					<td style="border-top: 2px solid lightgray;"><input type="text" name="name" value="${(sessionScope.loginuser).name}" size="20"
+						class="forminput requiredInfo">
 						<span class="error">성명은 필수입력 필드입니다.</span></td>
 				</tr>
 
 				<tr>
 					<th>신청인 이메일 *</th>
-					<td><input type="text" class="forminput requiredInfo" name="email" value
-						size="20" placeholder="kim@email.com">
+					<td><input type="text" class="forminput requiredInfo" name="email" value="${(sessionScope.loginuser).email}"
+						size="20">
 						<span class="error">이메일은 필수입력 필드입니다.</span>
 						<span class="error detailerror">이메일 형식에 맞지 않습니다.</span>
 						</td>
@@ -376,10 +397,11 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 							<option value="010">017</option>
 							<option value="010">018</option>
 							<option value="010">019</option>
-					</select> - <input type="text" name="phone_2" class="forminput requiredInfo"
-						maxlength="4" size="5" placeholder="1234"> - <input
-						type="text" name="phone_3" class="forminput requiredInfo" maxlength="4" value
-						size="5" placeholder="5678">
+					</select> 
+					- <input type="text" name="phone_2" class="forminput requiredInfo"
+						maxlength="4" size="5" value="${fn:substring(sessionScope.loginuser.mobile ,3,7) }"> 
+					- <input type="text" name="phone_3" class="forminput requiredInfo" maxlength="4" 
+						value="${fn:substring(sessionScope.loginuser.mobile ,3,7) }" size="5" >
 						<span class="error">연락처는 필수입력 필드입니다.</span>
 						<span class="error pherror">숫자 4자리를 올바르게 입력해주세요.</span>
 						</td>
@@ -387,16 +409,11 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 
 				<tr>
 					<th>주문번호 *</th>
-					<td><select name="ordercode" class="forminput requiredInfo">
-						<option value="choose" selected>주문번호</option> 
-					     <%-- 
-					     <c:forEach var="~~~vo" items="${requestScope.~~~~List}"> 
-					     <!-- dao에서 처리가 다 끝난 orderList를 변수 mvo에 넣기   -->
-					     
-					     <option value="">${vo.odrcode}</option>
-					     
+					<td><select name="fk_odrcode" class="forminput requiredInfo">
+					     <c:forEach var="odrcode" items="${requestScope.odrcodeList}"> 
+					     <!-- dao에서 처리가 다 끝난 orderList를 변수 odrcode에 넣기   -->
+					     	<option><c:out value="${odrcode}" /></option>
 					     </c:forEach>
-					  --%>
 					 </select> 
 						<a href="<%= ctxPath%>/product/shipping.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
 						</td>
@@ -404,11 +421,10 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 				
 				<tr>
 					<th>조립서비스 희망일 *</th>
-					<td><input type="text" name="hopeful" class="forminput requiredInfo"
-						id="hopeful" value size="33" placeholder="예약 희망일을 클릭해주세요"
-						style="max-width: 250px; width: 80%;" class="hasDatepicker">
+					<td><input type="text" name="hopedate" class="forminput requiredInfo" id="hopeful" value size="33" placeholder="예약 희망일을 클릭해주세요"
+						style="max-width: 250px; width: 80%;" class="hasDatepicker" readonly>
 						<span class="error">조립서비스 희망일은 필수입력 필드입니다.</span>
-						<small>- 조립 서비스 직원이 고객님의 희망일을 참고하여 일정을 조율하고 연락을 드려요.</small>
+						<small>- 고객님의 희망일을 참고하여 일정을 조율하고 연락을 드려요.</small>
 						</td>
 				</tr>
 
@@ -423,13 +439,13 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 				<tr>
 					<th>설치 장소 *</th>
 					<td>
-					<input type="text" id="postcode" name="address" class="forminput requiredInfo" placeholder="우편번호" readonly> 
-					<input type="button" class="mybtn" name="address" onclick="execDaumPostcode()" value="우편번호 찾기">
+					<input type="text" id="postcode" name="postcode" class="forminput requiredInfo" value="${(sessionScope.loginuser).postcode}" readonly> 
+					<input type="button" class="mybtn" name="searchpost" onclick="execDaumPostcode()" value="우편번호 찾기">
 					<span class="error">설치장소는 필수입력 필드입니다.</span><br>
-					<input type="text" id="address" name="address" class="forminput" placeholder="주소" readonly>
+					<input type="text" id="address" name="address" class="forminput" value="${(sessionScope.loginuser).address}" readonly>
 					<small> - 우편번호 찾기로 주소를 입력해주세요. </small> <br>
-					<input type="text" id="detailAddress" name="address" class="forminput"placeholder="상세주소" readonly> 
-					<input type="text" id="extraAddress" class="forminput" placeholder="참고항목">
+					<input type="text" id="detailAddress" name="detailAddress" class="forminput" value="${(sessionScope.loginuser).detailaddress}" readonly> 
+					<input type="text" id="extraAddress"  name="extraAddress" class="forminput" value="${(sessionScope.loginuser).extraaddress}">
 					
 					</td>
 				</tr>
@@ -438,7 +454,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 					<th>요청사항</th>
 					<td>
 						<div>
-							<textarea name="requested" class="forminput" cols="60"
+							<textarea name="demand" class="forminput" cols="60"
 								style="width: 80%; height: 100px" class="textarea"
 								placeholder="원하는 위치 요청이나 전달할 사항이 있다면 적어주세요."></textarea>
 						</div>
@@ -453,7 +469,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 				<a href="<%= ctxPath%>/service/privacy_policy.one" class="another" style="margin-left: 2px;" target="_blank">이용약관</a> <br>
 			</div>
 			<button type="button" id="btnAssemble" class="mybtn_black"
-				style="margin-top: 0.5vw; margin-bottom: 4vw;" onClick="goApply();" ">서비스 신청하기</button>
+				style="margin-top: 0.5vw; margin-bottom: 4vw;" onClick="goApply();">서비스 신청하기</button>
 			</div>
 		</form>
 	</div>
