@@ -169,7 +169,7 @@ public class ProductDAO implements InterProductDAO {
         return totalCount;
 	} // end of public int totalCount()-------------------
 	
-	// Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 8개씩 잘라서(start ~ end) 조회해오기 
+	// Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 잘라서(start ~ end) 조회해오기 
 	@Override
 	public List<ProductVO> selectAllproduct(Map<String, String> paraMap) throws SQLException {
 		List<ProductVO> prodList = new ArrayList<>();
@@ -180,16 +180,26 @@ public class ProductDAO implements InterProductDAO {
            String sql = " select pnum, pname, color, price, pqty, prodimage, cnum, cname , pinpupdate " + 
 		           		" from " + 
 		           		" ( " + 
-		           		"     select row_number() over(order by pnum asc) as RNO, pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
+		           		"     select row_number() over(order by " + paraMap.get("range")+") as RNO, pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
 		           		"     from tbl_product P " + 
 		           		"     JOIN tbl_category C " + 
-		           		"     ON p.fk_cnum = c.cnum " + 
-		           		" ) " + 
+		           		"     ON p.fk_cnum = c.cnum "; 
+		           		if(paraMap.get("cnum") != null) {
+		           			sql += " where cnum = ? ";
+		           		}
+		          sql += " ) " + 
 		           		" where RNO between ? and ? ";
            
            pstmt = conn.prepareStatement(sql);
-           pstmt.setString(1, paraMap.get("start"));
-           pstmt.setString(2, paraMap.get("end"));
+           if(paraMap.get("cnum") != null) {
+        	   pstmt.setString(1, paraMap.get("cnum"));
+        	   pstmt.setString(2, paraMap.get("start"));
+               pstmt.setString(3, paraMap.get("end"));
+           }
+           else {
+        	   pstmt.setString(1, paraMap.get("start"));
+        	   pstmt.setString(2, paraMap.get("end"));
+           }
            
            rs = pstmt.executeQuery();
            
@@ -223,6 +233,231 @@ public class ProductDAO implements InterProductDAO {
         return prodList;
 	}
     // end of public List<ProductVO> selectAllproduct(Map<String, String> paraMap)
+
+	// 위시리스트에 있는 pnum 을 통해 제품 select 하기
+	@Override
+	public List<ProductVO> selectProductbyPnum(String localWishList) throws SQLException {
+		List<ProductVO> productList = new ArrayList<>();
+		
+		 try {
+	           conn = ds.getConnection();
+	           
+	           String sql = " select pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate " + 
+			           		" from tbl_product P " + 
+			           		" JOIN tbl_category C " + 
+			           		" ON p.fk_cnum = c.cnum ";
+	           
+			           	sql += " where pnum in ("+localWishList+") ";
+	       //    System.out.println(pnums);
+	           pstmt = conn.prepareStatement(sql);
+	           
+	           rs = pstmt.executeQuery();
+	           
+	           while(rs.next()) {
+	              
+	              ProductVO pvo = new ProductVO();
+	              
+	              pvo.setPnum(rs.getString(1));     // 제품번호
+	              pvo.setPname(rs.getString(2));    // 제품명
+	              pvo.setColor(rs.getString(3));	// 색
+	              pvo.setPrice(rs.getInt(4));        // 제품 가격
+	              pvo.setPqty(rs.getInt(5));         // 제품 재고량
+	              pvo.setProdimage(rs.getString(6)); // 제품 이미지
+	              
+	              CategoryVOwhc categvo = new CategoryVOwhc();
+	              categvo.setCnum(rs.getString(7));
+	              categvo.setCname(rs.getString(8));
+	              pvo.setCategvo(categvo);
+	              
+	              pvo.setPinpupdate(rs.getString(9)); // 입고일
+	               
+	              productList.add(pvo);
+	           }// end of while(rs.next())-----------------------------------
+	           
+	        } finally {
+	           close();
+	        }
+		
+		return productList;
+	} // end of public List<ProductVO> selectProductbyPnum(String[] localWishListArr)-------------
+
+	
+	// 장바구니에 같은 제품일경우에는 update 신규 제품은 insert 하는 메소드
+	@Override
+	public int saveCart(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select cartno " + 
+						 " from tbl_cart " + 
+						 " where fk_userid = ? and fk_pnum = ? ";
+			pstmt = conn.prepareStatement(sql);		
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, paraMap.get("pnum"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) { // 이미 장바구니에 있는 제품일 경우
+				sql = " update tbl_cart set oqty = oqty + ? " + 
+					  " where fk_userid = ? and fk_pnum = ? "; 
+				pstmt = conn.prepareStatement(sql);		
+				pstmt.setString(1, paraMap.get("pqty"));
+				pstmt.setString(2, paraMap.get("userid"));
+				pstmt.setString(3, paraMap.get("pnum"));
+				
+				n = pstmt.executeUpdate();
+				
+			}
+			else { // 장바구니에 없는 제품일 경우
+				sql = " insert into tbl_cart(cartno, fk_userid, fk_pnum, oqty) values(seq_cartno.nextval, ?, ?, ?) ";
+				
+					pstmt = conn.prepareStatement(sql);		
+					pstmt.setString(1, paraMap.get("userid"));
+					pstmt.setString(2, paraMap.get("pnum"));
+					pstmt.setString(3, paraMap.get("pqty"));
+					
+					n = pstmt.executeUpdate();
+			}
+		} finally {
+			close();
+		}
+		return n;
+	} // end of public int saveCart(Map<String, String> paraMap)----------------------------------------------
+
+	
+	// 회원이 장바구니에 저장한 제품 select 하기
+	@Override
+	public List<ProductVO> selectCartList(String userid) throws SQLException {
+		
+		List<ProductVO> productList = new ArrayList<>();
+		
+		 try {
+	           conn = ds.getConnection();
+	           
+	           String sql = " select pnum, pname, color, price, pqty, prodimage, c.cnum, c.cname , to_char(pinpupdate, 'yyyy-mm-dd') as pinpupdate, cartno, oqty " + 
+		           	   	    " from tbl_product P " + 
+		           	   	    " join tbl_cart S " + 
+		           	   	    " on s.fk_pnum = p.pnum " + 
+		           	   	    " join tbl_category C " + 
+		           	   	    " on p.fk_cnum = c.cnum " + 
+		           	   	    " where fk_userid = ? ";
+	           pstmt = conn.prepareStatement(sql);
+	           pstmt.setString(1, userid);
+	           
+	           rs = pstmt.executeQuery();
+	           
+	           while(rs.next()) {
+	              
+	              ProductVO pvo = new ProductVO();
+	              
+	              pvo.setPnum(rs.getString(1));     // 제품번호
+	              pvo.setPname(rs.getString(2));    // 제품명
+	              pvo.setColor(rs.getString(3));	// 색
+	              pvo.setPrice(rs.getInt(4));        // 제품 가격
+	              pvo.setPqty(rs.getInt(5));         // 제품 재고량
+	              pvo.setProdimage(rs.getString(6)); // 제품 이미지
+	              
+	              CategoryVOwhc categvo = new CategoryVOwhc();
+	              categvo.setCnum(rs.getString(7));
+	              categvo.setCname(rs.getString(8));
+	              pvo.setCategvo(categvo);
+	              
+	              pvo.setPinpupdate(rs.getString(9)); // 입고일
+	              
+	              CartVO cartvo = new CartVO();
+	              cartvo.setCartno(rs.getString(10));
+	              cartvo.setOqty(rs.getInt(11));
+	              pvo.setCartvo(cartvo);
+	              
+	              productList.add(pvo);
+	           }// end of while(rs.next())-----------------------------------
+	           
+	        } finally {
+	           close();
+	        }
+		
+		return productList;
+	}
+
+	
+	// 장바구니 delete
+	@Override
+	public int deleteOneCart(String userid, String pnum) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " delete from tbl_cart where fk_userid = ? and fk_pnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);		
+			pstmt.setString(1, userid);
+			pstmt.setString(2, pnum);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+	           close();
+        }
+		return result;
+	}
+
+	// 카테고리에 해당하는 제품수 얻어오기
+	@Override
+	public int totalCount(String cnum) throws SQLException {
+		int totalCount = 0;
+        
+        try {
+            conn = ds.getConnection();
+            
+            String sql = " select count(*) "+
+                         " from tbl_product " +
+                         " where fk_cnum = ? ";
+            
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, cnum);
+            rs = pstmt.executeQuery();
+            
+            rs.next();
+            
+            totalCount = rs.getInt(1);
+            
+        } finally {
+           close();
+        }      
+        
+        return totalCount;
+	}// end of public int totalCount(String cnum)
+
+	
+	// 카테고리번호에 해당하는 카테고리 이름 얻어오기
+	@Override
+	public String selectCname(String cnum) throws SQLException {
+		String cname = "";
+		
+		try {
+            conn = ds.getConnection();
+            
+            String sql = " select cname " + 
+	            		 " from tbl_category " + 
+	            		 " where cnum = ? ";
+            
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, cnum);
+            rs = pstmt.executeQuery();
+            
+            rs.next();
+            
+            cname = rs.getString(1);
+            
+        } finally {
+           close();
+        }      
+		return cname;
+	}
 
     
     

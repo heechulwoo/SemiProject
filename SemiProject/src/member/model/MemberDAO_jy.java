@@ -266,8 +266,283 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 
 	      return n;
 	   }// end of public int registerMember(MemberVO member)-------------------
+
+	   
+	   
+	   
+	// 페이징 처리를 한 회원목록의 조회를 해주는 메소드
+	@Override
+	public List<MemberVO> selectPagingMember(Map<String, String> paraMap) throws SQLException {
+		
+		List<MemberVO> memberList = new ArrayList<>();
+			
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select userid, name, email, gender " + 
+					     " from " + 
+				 	     " ( " + 
+					     "    select rownum AS rno, userid, name, email, gender " + 
+					     "    from " + 
+					     "    ( " + 
+					     "     select userid, name, email, gender " + 
+				 	     "     from tbl_member " + 
+					     "     where userid != 'admin' ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+		
+			
+			if("email".equals(colname)) {
+				searchWord = aes.encrypt(searchWord);
+			}
+		
+			
+			if( searchWord != null && !searchWord.trim().isEmpty() ) {
+				sql += " and " + colname + " like '%'|| ? || '%' ";
+				
+			}
+			
+			sql +=  "     order by registerday desc " + 
+					"    )V " + 
+					" ) T " + 
+					" where rno between ? and ? ";
 	
+			
+			pstmt = conn.prepareStatement(sql);
+
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+			
+			
+			
+			if( searchWord != null && !searchWord.trim().isEmpty()) {
+				pstmt.setString(1, searchWord);
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));  // 공식
+				pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+			}
+			
+			else {
+				pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));  // 공식
+				pstmt.setInt(2, (currentShowPageNo * sizePerPage)); // 공식
+			}
+
+			rs = pstmt.executeQuery();
+			
+			
+			while(rs.next()) {
+				
+				MemberVO mvo = new MemberVO();
+				mvo.setUserid(rs.getString(1));
+				mvo.setName(rs.getString(2));
+				mvo.setEmail(aes.decrypt(rs.getString(3))); // 복호화
+				mvo.setGender(rs.getString(4));
+				
+				memberList.add(mvo);
+				
+			}// end of while-----------------------
+
+			
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+			
+		return memberList;
+	}
+
+
+
+	// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 전체회원에 대한 총페이지 알아오기  
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select ceil(count(*)/?) " + 
+	                      " from tbl_member " + 
+	                      " where userid != 'admin' ";
+	         
+	         String colname = paraMap.get("searchType");
+	         String searchWord = paraMap.get("searchWord");
+	         
+	         if( "email".equals(colname) ) {
+	            // 검색대상이 email 인 경우
+	            searchWord = aes.encrypt(searchWord);
+	         }
+	         
+	         if( searchWord != null && !searchWord.trim().isEmpty() ) {
+	            sql += " and "+colname+" like '%'|| ? ||'%' ";
+	         }
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, paraMap.get("sizePerPage"));
+	         
+	         if( searchWord != null && !searchWord.trim().isEmpty() ) {
+	            pstmt.setString(2, searchWord);
+	         }
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         rs.next();
+	         
+	         totalPage = rs.getInt(1);
+	         
+	      } catch(GeneralSecurityException | UnsupportedEncodingException e) {   
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
+	      
+	      return totalPage;
 	
+	}
 
 	
+	
+	// userid 값을 입력을받아서 회원 1명에 대한 상세정보를 알아오기 (select)
+	@Override
+	public MemberVO memberOneDetail(String userid) throws SQLException {
+		
+		MemberVO mvo = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender "+
+					 	 "      , substr(birthday,1,4) AS birthyyyy, substr(birthday,6,2) AS birthmm, substr(birthday,9) AS birthdd "+
+						 "      , to_char(registerday, 'yyyy-mm-dd') AS registerday "+
+						 " from tbl_member  "+
+						 " where userid = ? ";
+		
+			pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, userid);
+	                  
+	        rs = pstmt.executeQuery();
+	         
+	        if(rs.next()) {  
+	               
+	            mvo = new MemberVO();
+	            mvo.setUserid(rs.getString(1));
+	            mvo.setName(rs.getString(2));
+	            mvo.setEmail(aes.decrypt(rs.getString(3))); // 복호화 
+	            mvo.setMobile( aes.decrypt(rs.getString(4)) ); // 복호화 
+	            mvo.setPostcode(rs.getString(5));
+	            mvo.setAddress(rs.getString(6));
+	            mvo.setDetailaddress(rs.getString(7));
+	            mvo.setExtraaddress(rs.getString(8));
+	            mvo.setGender(rs.getString(9));
+	            mvo.setBirthday(rs.getString(10) + rs.getString(11) + rs.getString(12));
+	            mvo.setRegisterday(rs.getString(13));
+	         }			
+		
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) {   
+	         e.printStackTrace();
+	    } finally {
+			close();
+		}
+		
+		return mvo;
+	}// end of public MemberVO memberOneDetail(String userid)------------------
+
+	
+	// 휴면 해제전 인증하는 메소드 (아이디, 비밀번호, 이메일을 입력받아서 해당 사용자가 존재하는지 유무를 알려준다)
+	@Override
+	public boolean isUserRestart(Map<String, String> paraMap) throws SQLException {
+		
+		boolean isUserRestart = false; 
+
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select email "
+					   + " from tbl_member "
+					   + " where idle = 1 and userid = ? and pwd = ? and email = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")) );
+			pstmt.setString(3, aes.encrypt(paraMap.get("email")) ); 
+			
+			rs = pstmt.executeQuery();
+			
+			
+			isUserRestart = rs.next();
+			
+			
+			
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) {   
+	         e.printStackTrace();
+	    } finally {
+			close();
+		}
+		
+
+		return isUserRestart;
+
+		
+	}// end of public boolean isUserRestart(Map<String, String> paraMap)--------------
+
+	
+	
+	// 마지막 로그인 값을 업데이트 해주는 메소드 (마지막 로그인 값을 업데이트 해주는 메소드)
+	@Override
+	public int loginUpdate(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_loginhistory set logindate = sysdate "+
+						 " where FK_userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			
+			n = pstmt.executeUpdate();
+			
+	    } finally {
+			close();
+		}
+		
+		
+		return n;
+	}
+
+	
+
+	@Override
+	public int idleUdate(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_member set idle = '0' "+
+						 " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			
+			n = pstmt.executeUpdate();
+			
+	    } finally {
+			close();
+		}
+		
+		return n;
+	}
+	
 }
+	
+
