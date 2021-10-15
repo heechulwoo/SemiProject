@@ -68,6 +68,28 @@
       width: 100%;
       text-align: center;
     }
+    
+    .sidetoggle{
+    width: 120px !important;
+    
+    }
+    
+    .sidedropdownmenu{
+    font-family: Verdana, sans-serif;
+    font-size: 14px;
+    }
+    
+    .sidetoggle{
+    color: #0058AB !important;
+    }
+    
+   .sidedropdownitem{
+   color: #0058AB !important;
+   }
+   
+   .sidedropdownitem:active {
+	background-color: #FBD92F;
+   }
 </style>
 
 <script>
@@ -81,6 +103,23 @@
 		$(this).children("div.hidden").css("visibility","hidden");
 	})
 	
+	/* 관리자메뉴 드롭다운 반응형   */
+	$(window).resize(function() { // 창 사이즈 변화감지
+		var widthnow = window.innerWidth;
+		var element = document.getElementById("dropdown");
+		// console.log(widthnow)
+		if(widthnow < 1200) {
+		//창 가로 크기가 1200 미만일 경우
+	    element.classList.remove("dropright"); // 오른쪽으로 열리는 드롭다운 속성 삭제			
+		}
+		
+		if(widthnow > 1200) {
+			//창 가로 크기가 1200 초과일 경우
+		element.classList.add("dropright"); // 오른쪽으로 열리는 드롭다운 속성 추가			
+			}
+	});
+	
+	}); // end of $(document).ready(function(){}----------------------
 });
 </script>
 
@@ -106,20 +145,35 @@
   </div>
   <div class="container text-dark" style="margin:30px 130px; font-size:14px">
       <h2><a href="<%= ctxPath%>/product/productAll.one"><b>모든 제품</b></a></h2><br>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>암케어/카우치</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>사무용의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>식탁의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>스툴/벤치</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>바의자</b></a>
-	  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>어린이의자</b></a><br><br>
-	  <a href="#고객지원" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
-	  <a href="#배송조회" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
+      <c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
+	  	<a href="<%= ctxPath%>/product/productByCategory.one?cnum=${cvo.cnum}" onclick="w3_close()" class="w3-bar-item w3-button text-dark"><b>${cvo.cname}</b></a>
+	  </c:forEach>
+	  <a href="<%= ctxPath%>/service/support.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
+	  <a href="<%= ctxPath%>/product/shipping.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
 
 	  <a href="<%= ctxPath%>/member/mypage.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>	  
  	  <c:if test="${loginuser == null}"><div style="margin:40px 0 0 15px"><a href="<%= ctxPath %>/login/login.one" class="text-dark">로그인</a></div></c:if>
  	  <c:if test="${loginuser == null}"><div style="margin:15px 0 0 15px"><a href="<%= ctxPath %>/member/register.one" class="text-dark">회원가입</a></div></c:if>
 	  <c:if test="${loginuser != null}"><div style="margin:40px 0 0 15px; font-weight: bolder; " >${loginuser.name}님</div></c:if>
-	  <c:if test="${loginuser != null}"><div style="margin:15px 0 0 15px"><a href="<%= ctxPath %>/login/logout.one" >로그아웃</a></div></c:if>	
+	  
+	  <c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid == 'admin'}">
+		<li style="list-style: none;" class="nav-item dropdown dropright" id="dropdown">
+			<a class="nav-link dropdown-toggle menufont_size sidetoggle" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+			   	관리자 메뉴		                            
+			</a>
+		<div class="dropdown-menu sidedropdownmenu" aria-labelledby="navbarDropdown">
+		    <a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/memberList.one">회원 목록</a>
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="<%= ctxPath %>/product/admin/productRegister.one">제품 등록</a>
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="<%= ctxPath %>/contact/consultList.one">문의글 조회</a>
+			<a class="dropdown-item" href="<%= ctxPath %>/service/assembleList.one">조립 서비스 신청 조회</a>
+			<a class="dropdown-item" href="<%= ctxPath %>/contact/selfReturnList.one">셀프 반품 신청 조회</a>
+		 </div>
+		</li>
+      </c:if>
+
+	  <c:if test="${loginuser != null}"><div style="margin:15px 0 0 15px"><a href="<%= ctxPath %>/login/logout.one" >로그아웃</a></div></c:if>		
 
  </div>
 </nav>
@@ -137,7 +191,7 @@
 		      <a class="nav-link text-body" href="<%= ctxPath %>/product/productAll.one"><b>모든 제품</b></a>
 		    </li>
 		    <li class="nav-item ml-2 mr-2" >
-		      <a class="nav-link text-body" href="#고객지원"><b>고객지원</b></a>
+		      <a class="nav-link text-body" href="<%= ctxPath%>/service/support.one"><b>고객지원</b></a>
 		    </li>
 		  </ul>
 		 
