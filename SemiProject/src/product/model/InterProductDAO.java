@@ -25,5 +25,7 @@ public interface InterProductDAO {
 	int totalCount(String cnum) throws SQLException; // 카테고리에 해당하는 제품수 얻어오기
 
 	String selectCname(String cnum) throws SQLException; // 카테고리번호에 해당하는 카테고리 이름 얻어오기
+
+	int editCart(String cartno, String oqty) throws SQLException; // 장바구니 수정
 	
 }
