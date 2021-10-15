@@ -106,7 +106,7 @@
 	/* 관리자메뉴 드롭다운 반응형   */
 	$(window).resize(function() { // 창 사이즈 변화감지
 		var widthnow = window.innerWidth;
-		var element = document.getElementById("dropdown");
+		var element = document.getElementById("sidedropdown");
 		// console.log(widthnow)
 		if(widthnow < 1200) {
 		//창 가로 크기가 1200 미만일 경우
@@ -120,7 +120,7 @@
 	});
 	
 	}); // end of $(document).ready(function(){}----------------------
-});
+
 </script>
 
 <!-- 사이드바 function -->    
@@ -158,18 +158,18 @@
 	  <c:if test="${loginuser != null}"><div style="margin:40px 0 0 15px; font-weight: bolder; " >${loginuser.name}님</div></c:if>
 	  
 	  <c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid == 'admin'}">
-		<li style="list-style: none;" class="nav-item dropdown dropright" id="dropdown">
+		<li style="list-style: none;" class="nav-item dropdown dropright" id="sidedropdown">
 			<a class="nav-link dropdown-toggle menufont_size sidetoggle" href="#" id="navbarDropdown" data-toggle="dropdown"> 
 			   	관리자 메뉴		                            
 			</a>
 		<div class="dropdown-menu sidedropdownmenu" aria-labelledby="navbarDropdown">
 		    <a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/memberList.one">회원 목록</a>
 			<div class="dropdown-divider"></div>
-			<a class="dropdown-item" href="<%= ctxPath %>/product/admin/productRegister.one">제품 등록</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/product/admin/productRegister.one">제품 등록</a>
 			<div class="dropdown-divider"></div>
-			<a class="dropdown-item" href="<%= ctxPath %>/contact/consultList.one">문의글 조회</a>
-			<a class="dropdown-item" href="<%= ctxPath %>/service/assembleList.one">조립 서비스 신청 조회</a>
-			<a class="dropdown-item" href="<%= ctxPath %>/contact/selfReturnList.one">셀프 반품 신청 조회</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/consultList.one">문의글 조회</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/assembleList.one">조립 서비스 신청 조회</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/selfReturnList.one">셀프 반품 신청 조회</a>
 		 </div>
 		</li>
       </c:if>
