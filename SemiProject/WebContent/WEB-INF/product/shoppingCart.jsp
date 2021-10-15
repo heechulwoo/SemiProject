@@ -147,8 +147,8 @@
 						
 						// 카트번호 리스트를 input에 저장
 						$("input#cartNum").val(cartno);
-						console.log(cartno);
-						console.log(typeof cartno);
+					//	console.log(cartno);
+					//	console.log(typeof cartno);
 						
 					}
 					
