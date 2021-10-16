@@ -10,7 +10,7 @@
 <jsp:include page="../header.jsp"/>
 
 <script type="text/javascript">
-
+	
 	$(document).ready(function(){
 		showWishList();
 		
@@ -52,8 +52,8 @@
 		
 		// 제품별 장바구니 버튼을 눌렀을 경우
 		$(document).on("click", "button.savecart", function(){
-			
-			if (${sessionScope.loginuser != null}) {
+			var loginuser = "${sessionScope.loginuser}";
+			if (loginuser != "") {
 				
 				var pnum = $(this).parent().parent().parent().children().children().children("span.eachpnum").text();
 				var pqty = $(this).parent().children("select.pqty").val();
@@ -77,6 +77,7 @@
 			}
 			else {
 				alert("장바구니 기능은 로그인이 필요합니다.");
+				location.href="<%=ctxPath%>/login/login.one";
 			}
 		}); // end of $(document).on("click", "button.savecart", function(){})------------------------------
 		
@@ -86,8 +87,9 @@
 			var localWishList = JSON.parse(localStorage.getItem('wishlist'));
 			
 			if(localWishList != null && localWishList.length > 0) {
-			
-				if (${sessionScope.loginuser != null}) {
+				var loginuser = "${sessionScope.loginuser}";
+				// console.log(loginuser);
+				if ( loginuser != "" ) {
 					
 					$("button.savecart").each(function(index,item){
 						
@@ -116,9 +118,11 @@
 					});
 					
 				}
-				else{
+				else {
 					alert("장바구니 기능은 로그인이 필요합니다.");
+					location.href="<%=ctxPath%>/login/login.one";
 				}
+				
 			} else {
 					alert("위시리스트가 비었습니다.");
 			}
@@ -127,7 +131,7 @@
 		
 		
 	}); // end of $(document).ready(function(){})-------------------------
-
+	
 	// Function Declaration
 	function showWishList() {
 		
@@ -162,10 +166,10 @@
 						$.each(json,function(index, item){
 							html += '<div class="row">' +
 										'<div class="col-3">' +
-											'<a href=""><img src="<%= ctxPath%>/image_ikea/'+item.prodimage+'" style="width:100%"></a>' +
+											'<a href="<%= ctxPath%>/product/eachProduct.one?pnum='+item.pnum+'"><img src="<%= ctxPath%>/image_ikea/'+item.prodimage+'" style="width:100%"></a>' +
 										'</div>' +
 										'<div class="col-6">' +
-											'<div class="mb-2"><b><a href="">'+item.pname+'</a></b></div>' +
+											'<div class="mb-2"><b><a href="<%= ctxPath%>/product/eachProduct.one?pnum='+item.pnum+'">'+item.pname+'</a></b></div>' +
 											'<div>'+
 												'<span>'+item.cname+'</span><br>'+
 												'<span class="eachpnum" style="font-size:small;">'+item.pnum+'</span>'+
@@ -262,3 +266,4 @@
 		</div>
 	</div>
 <jsp:include page="../footer.jsp"/>	
+
