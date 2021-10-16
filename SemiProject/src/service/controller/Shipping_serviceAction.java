@@ -10,6 +10,9 @@ public class Shipping_serviceAction extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		// 카테고리 목록 얻어오기 
+		super.getCategoryList(request);
+		
 		// super.setRedirect(false); 
 		super.setViewPage("/WEB-INF/service/shipping_service.jsp");
 
