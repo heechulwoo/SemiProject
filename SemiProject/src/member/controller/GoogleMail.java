@@ -44,7 +44,7 @@ public class GoogleMail {
     	MimeMessage msg = new MimeMessage(ses);
 
     	// 제목 설정
-    	String subject = "localhost:9090/SemiProject/index.one 회원님의 비밀번호를 찾기위한 인증코드 발송";
+    	String subject = "[IKEA Semi] 비밀번호 찾기를 위한 인증코드 발송";
     	msg.setSubject(subject);
     	        
     	// 보내는 사람의 메일주소

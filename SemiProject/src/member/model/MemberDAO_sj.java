@@ -97,6 +97,50 @@ public class MemberDAO_sj implements InterMemberDAO_sj {
 	}// end of public int updateMember(MemberVO member) throws SQLException {})--------------------
 
 	
+	// 마이페이지에서 개인정보 수정하기(기존의 암호와 동일한 경우 최근암호변경일은 업데이트 하지 않는다.)
+		@Override
+		public int updateMember_2(MemberVO member) throws SQLException {
+			int n = 0;
+			
+			try {		
+				conn = ds.getConnection();
+				
+				String sql = " update tbl_member set name = ? "
+						   + "                     , pwd = ? "
+						   + "                     , email = ? "
+						   + "                     , mobile = ? "
+						   + "                     , postcode = ? "
+						   + "                     , address = ? "
+						   + "                     , detailaddress = ? "
+						   + "                     , extraaddress = ? "
+						   + " where userid = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, member.getName()); 
+		        pstmt.setString(2, Sha256.encrypt(member.getPwd()) );
+		        pstmt.setString(3, aes.encrypt(member.getEmail()) );
+		        pstmt.setString(4, aes.encrypt(member.getMobile()) );
+		        pstmt.setString(5, member.getPostcode() );
+		        pstmt.setString(6, member.getAddress() );
+		        pstmt.setString(7, member.getDetailaddress() );
+		        pstmt.setString(8, member.getExtraaddress() );
+		        pstmt.setString(9, member.getUserid() );
+				
+				n = pstmt.executeUpdate();
+			
+			} catch(GeneralSecurityException | UnsupportedEncodingException e) {   
+		         e.printStackTrace();
+		    } finally {
+				close();
+			}
+			
+			
+			return n;
+		}// end of public int updateMember_2(MemberVO member)--------------------
+	
+	
+	
 	// 아이디 찾기(성명, 이메일을 입력 받아서 해당 사용자의 아이디를 알려준다)
 	@Override
 	public String findUserid(Map<String, String> paraMap) throws SQLException {
@@ -172,11 +216,12 @@ public class MemberDAO_sj implements InterMemberDAO_sj {
 			conn = ds.getConnection();
 			
 			String sql = " update tbl_member set pwd = ? "
-					   + "                     , lastpwdchagedate = sysdate "
+					   + "                     , lastpwdchangedate = sysdate "
 					   + " where userid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			
+			System.out.println(paraMap.get("pwd"));
+			System.out.println(paraMap.get("userid"));
 			pstmt.setString(1, Sha256.encrypt(paraMap.get("pwd")));
 			pstmt.setString(2, paraMap.get("userid"));
 			
@@ -189,6 +234,9 @@ public class MemberDAO_sj implements InterMemberDAO_sj {
 		
 		return n;
 	}// end of public int pwdUpdate(Map<String, String> paraMap)-----------
+
+	
+	
 
 
 }

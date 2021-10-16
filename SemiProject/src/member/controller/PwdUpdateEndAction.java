@@ -17,9 +17,13 @@ public class PwdUpdateEndAction extends AbstractController {
 		
 		String method = request.getMethod();
 		// "GET" or "POST"
-		
+
 		if("POST".equalsIgnoreCase(method)) {
 			String pwd = request.getParameter("pwd");
+			
+			System.out.println("확인용 action => " + userid);
+			System.out.println("확인용 action => " + pwd);
+			
 			
 			Map<String,String> paraMap = new HashMap<>();
 			paraMap.put("userid", userid);

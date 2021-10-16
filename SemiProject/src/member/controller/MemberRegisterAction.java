@@ -45,8 +45,8 @@ public class MemberRegisterAction extends AbstractController {
 			MemberVO member = new MemberVO(userid, pwd, name, email, mobile, postcode, address, detailAddress, extraAddress, gender, birthday);
 	        // VO는 DTO처럼 계층간 데이터 교환을 위한 자바객체를 뜻하지만 읽기만 가능한 read only 속성을 가진다.
 		
-			
-			
+		/*	
+			=== 가입 후 자동로그인 없이 메인페이지로 돌아가도록 처리한 것 ===
 			String message = "";
 	        String loc = "";
 	         
@@ -68,6 +68,29 @@ public class MemberRegisterAction extends AbstractController {
 	         
 	      // super.setRedirect(false);
 	         super.setViewPage("/WEB-INF/msg.jsp");
+	       */
+			
+		//	=== 회원가입 후 가입 성공이라면 자동 로그인되도록 처리 ===
+			
+			try {
+				InterMemberDAO_jy mdao = new MemberDAO_jy();
+				int n = mdao.registerMember(member);
+				
+				if(n==1) { // 가입되었다면
+					request.setAttribute("userid", userid);
+					request.setAttribute("pwd", pwd);
+				
+					super.setViewPage("/WEB-INF/login/registerAfterAutoLogin.jsp");
+				}
+			} catch (SQLException e) {
+				String message = "SQL구문 에러발생"; // msg.jsp
+				String loc = "javascript:history.back()";// 자바스크립트를 이용하여 이전 페이지로 돌아간다.
+				
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
+				
+				super.setViewPage("/WEB-INF/msg.jsp");
+			}
 		}
 	
 	}

@@ -103,7 +103,7 @@
 		});// end of $("input#pwd2").blur(function(){})-----------
 		
 		
-		 // === 새 비밀번호로 업데이트 === 
+		 // === 새 비밀번호 저장 클릭 === 
 		 $("button#btnUpdate").click(function(){ 
 		    	
 		 	var pwd = $("input#pwd").val().trim();
@@ -129,12 +129,12 @@
 
 <form name="pwdUpdateEndFrm" class="mt-3">
    <div id="div_pwd">
-      <input type="password" id="pwd" size="46" style="height: 40px; margin:40px 0 0 7px; font-size: 12pt" placeholder="새로운 비밀번호" required />
+      <input type="password" name="pwd" id="pwd" size="46" style="height: 40px; margin:40px 0 0 7px; font-size: 12pt" placeholder="새로운 비밀번호" required />
    	  <span style="font-size:9pt; white-space : nowrap; color:#cc0014" class="error1 ml-2">암호는 영문자, 숫자, 특수기호가 혼합된 8~15 글자로 입력하세요.</span>
    </div>
    
    <div id="div_pwd2">
-      <input type="password" id="pwd2" size="46" style="height: 40px; margin:30px 0 0 7px; font-size: 12pt" placeholder="새로운 비밀번호 확인" required />
+      <input type="password" name="pwd2" id="pwd2" size="46" style="height: 40px; margin:30px 0 0 7px; font-size: 12pt" placeholder="새로운 비밀번호 확인" required />
    	  <br><span style="font-size:9pt; color:#cc0014" class="error2 ml-2">암호가 일치하지 않습니다.</span>
    </div>
    
@@ -148,8 +148,7 @@
 	</c:if>	
 	
 	<c:if test="${requestScope.method == 'POST' && requestScope.n == 1}">
-		<div id="div_updateResult" align="center">
-           	${requestScope.userid}님의 비밀번호가 변경되었습니다.<br>
+		<div id="div_updateResult" align="center" class="mt-2"><b>${requestScope.userid}님의 비밀번호가 변경되었습니다.</b><br>
         </div> 
 	</c:if>
 	
