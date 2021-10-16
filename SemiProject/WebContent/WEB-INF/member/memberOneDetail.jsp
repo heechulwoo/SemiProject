@@ -89,10 +89,10 @@ function goMemberList() {
 
 <body>
 		<!-- <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none; z-index:2; width:240%; min-width:300px" id="sidebarId"> -->
-   <div class="container" style="float:left; color:white; background-color:#00579c; max-width:800px; height:750px; width: 1300px "> 
+   <div class="container" style="float:left; color:white; background-color:#00579c; max-width:700px; height:750px; width: 1000px "> 
 	  <a class="navbar-brand" href="#"><img src="<%= ctxPath%>/images/logo2.jpg" alt="IKEA_logo" width="87" height="36" style="margin-top: 50px; margin-left: 30px"/></a>			  
 	  <div style="margin-top:120px; margin-left:150px; margin-right:100px">
-		  	<span style="font-size:80px; margin-left:30px; margin-right:150px;"><b>${requestScope.mvo.name}</b></span>
+		  	<span style="font-size:60px; margin-left:30px; margin-right:150px;"><b>${requestScope.mvo.name}</b></span>
 		  	<span style="font-size:30px; margin-left:130px;" >님의 상세정보</span>
 		  	
 	  </div>
@@ -110,7 +110,7 @@ function goMemberList() {
 			<c:set var="birthday" value="${requestScope.mvo.birthday}" />
 			
 	
-			<div id="mvoInfo" style="padding-left: 500px; padding-top:100px; " >  
+			<div id="mvoInfo" style="padding-left: 450px; padding-top:100px; " >  
 			<%-- 
 				<ol>
 					<li style="font-size:25px; margin-left:100px;"><span  class="myli"><b>아이디 :</b> </span>${requestScope.mvo.userid}</li>
@@ -126,7 +126,7 @@ function goMemberList() {
 				</ol>	
 				 --%>
 
-					<table class="table table-borderless" style="font-size:22px; margin-left:250px;">
+					<table class="table table-borderless" style="font-size:20px; margin-left:200px;">
 					  
 					  <thead>
 					    <tr>
@@ -198,7 +198,7 @@ function goMemberList() {
 					
 			</div>
 		</c:if>
-		<button type="button" class="btn btn-info" onclick="goMemberList();" style="margin-left: 350px; margin-top: 110px;">목록으로</button>
+		<button type="button" class="btn btn-info" onclick="goMemberList();" style="margin-left: 390px; margin-top: 120px;">목록으로</button>
 </div>
              
 

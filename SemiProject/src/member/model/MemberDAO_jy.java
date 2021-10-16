@@ -8,6 +8,10 @@ import java.util.*;
 import javax.naming.*;
 import javax.sql.DataSource;
 
+import product.model.ProductOrderDetailVO_kgh;
+import product.model.ProductOrderVO_kgh;
+import product.model.ProductVO;
+import product.model.ProductVO_kgh;
 import util.security.AES256;
 import util.security.SecretMyKey;
 import util.security.Sha256;
@@ -519,7 +523,7 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 	}
 
 	
-
+	// idle(휴면상태)를 활동중으로 바꿔주는 메소드
 	@Override
 	public int idleUdate(Map<String, String> paraMap) throws SQLException {
 		
@@ -542,6 +546,138 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 		
 		return n;
 	}
+
+	
+	// 로그인된 회원의 주문목록을 띄워주는 메소드
+	@Override
+	public List<ProductOrderVO_kgh> selectMyPageOderList(String userid) throws SQLException {
+		
+		List<ProductOrderVO_kgh> productList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select odrcode, odrdate ,odrtotalprice " + 
+						 " from tbl_order " + 
+					     " where fk_userid = ? ";
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userid);
+
+			rs = pstmt.executeQuery();
+			
+			
+			while(rs.next()) {
+				
+				ProductOrderVO_kgh pvo = new ProductOrderVO_kgh();
+				pvo.setOdrcode(rs.getString(1));
+				pvo.setOdrdate(rs.getString(2));
+				pvo.setOdrtotalprice(rs.getInt(3));
+				
+				productList.add(pvo);
+				
+			}// end of while-----------------------
+			
+		
+		} finally {
+			close();
+		}
+			
+		return productList;
+		
+	} // end of public List<ProductVO> selectMyPageOderList(String userid)-------------
+
+	
+	// 클릭한 주문번호를 가지고 주문상세정보를 띄워주는 메소드
+	@Override
+	public List<ProductOrderDetailVO_kgh> selectBySpecName(String odrcode) throws SQLException {
+		
+		List<ProductOrderDetailVO_kgh> odrDetail = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select pname, price, oqty, odrprice, deliverstatus, fk_odrcode, deliverdate, odrtotalprice " + 
+						 " from tbl_order_detail O join tbl_product P " + 
+						 " on P.pnum = O.fk_pnum " + 
+						 " join tbl_order R " + 
+						 " on O.fk_odrcode = R.odrcode " + 
+						 " where fk_odrcode = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, odrcode);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				// ProductOrderVO_kgh (tbl_order) --주문
+				
+				// ProductOrderDetailVO_kgh (tbl_order_detail) --주문상세
+				// private ProductVO_kgh pvo;				// 제품 VO 주문상세에 포함
+				// private ProductOrderVO_kgh povo;		    // 주문 VO	 주문상세에 포함
+				
+				// ProductVO_kgh (tbl_product) -- 제품
+				
+				
+				String pname = rs.getString(1); // 제품명
+				int price = rs.getInt(2); // 제품금액
+				int oqty = rs.getInt(3); // 주문개수
+				int odrprice = rs.getInt(4); // 상품금액
+				int deliverstatus = rs.getInt(5); // 배송상태 
+				String fk_odrcode = rs.getString(6); // 주문코드
+				String deliverdate = rs.getString(7); // 배송일자
+				int odrtotalprice = rs.getInt(8);
+				
+				System.out.println(pname +"확인용입니다");
+				System.out.println(price +"확인용입니다");
+				System.out.println(oqty +"확인용입니다");
+				System.out.println(odrprice +"확인용입니다");
+						
+				
+				ProductVO_kgh pvo = new ProductVO_kgh();
+				 // pname, price
+				
+				pvo.setPname(pname);
+				pvo.setPrice(price);
+				
+				
+				
+				ProductOrderDetailVO_kgh pdvo = new ProductOrderDetailVO_kgh();  // 기본값
+				
+				pdvo.setPvo(pvo);// 다른 테이블값을 넣어준다
+				
+				// oqty, odrprice, deliverstatus, fk_odrcode, deliverdate
+				pdvo.setOqty(oqty);
+				pdvo.setOdrprice(odrprice);
+				pdvo.setDeliverstatus(deliverstatus);
+				pdvo.setFk_odrcode(fk_odrcode);
+				pdvo.setDeliverdate(deliverdate);
+				
+				
+				ProductOrderVO_kgh povo = new ProductOrderVO_kgh();
+				// odrtotalprice
+				povo.setOdrtotalprice(odrtotalprice);
+				
+				pdvo.setPovo(povo);// 다른 테이블의 값을 넣어준다 22
+				
+				odrDetail.add(pdvo);
+
+				
+			}// end of while-------------
+			
+		} finally {
+			close();
+		}
+		
+		
+		return odrDetail;
+		
+	}// end of public List<ProductOrderDetailVO_kgh> selectBySpecName(String odrcode)---------
 	
 }
 	

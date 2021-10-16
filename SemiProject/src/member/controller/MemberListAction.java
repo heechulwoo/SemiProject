@@ -22,10 +22,8 @@ public class MemberListAction extends AbstractController {
 		
 		
 		if(loginuser != null && "admin".equals(loginuser.getUserid()) ) {
+			
 
-			
-			super.setViewPage("/WEB-INF/member/memberList.jsp");
-			
 			InterMemberDAO_jy mdao = new MemberDAO_jy();
 			
 			Map<String, String> paraMap = new HashMap<>();

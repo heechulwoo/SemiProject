@@ -13,10 +13,10 @@
 
 <style type="text/css"> 
 
- tr.memberInfo:hover {
-		background-color: #3385ff;
+ tr.orderInfo:hover {
+		background-color: #ffff99;
         cursor: pointer;
-        color: white;
+        color: black;
         
 	 }
 
@@ -29,7 +29,7 @@
 
 	$(document).ready(function(){
 		
-		
+		/*
 		if("${requestScope.searchWord}" != "") {
 			$("select#searchType").val("${requestScope.searchType}");
 			$("input#searchWord").val("${requestScope.searchWord}");
@@ -50,16 +50,16 @@
 			}
 			
 		});
+*/
 		
-		
-		$("tr.memberInfo").bind("click", function(){
+		$("tr.orderInfo").bind("click", function(){
 			
 				var $target = $(event.target);	
-		//		console.log( $target.parent().find(".userid").html());
+				console.log( $target.parent().find(".odrcode").html());
 		
-				var userid =  $target.parent().find(".userid").html();		
+				var odrcode =  $target.parent().find(".odrcode").html();		
 				
-				 goDetail(userid);	 
+				 goDetail(odrcode);	 
 				
 			/* 
 				var frmd = document.memberDetail;
@@ -77,16 +77,19 @@
 	
 	// Function Declaration
 	
+/*
 	function goSearch(){  // sizePerPage가 넘어간다.
 		var frm = document.memberFrm;
 		frm.action = "memberList.one"
 		frm.method = "GET";
 		frm.submit();
 	}
+*/
 
-	function goDetail(userid){
+
+	function goDetail(odrcode){
 		
-		location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid;
+		location.href="<%= ctxPath%>/member/mypageOderDetail.one?odrcode="+odrcode;
 
 	}
 	
@@ -94,64 +97,36 @@
 </script>
 
 <div  style="height: 850px;">
-<div class="container" style="max-width:1300px; margin-top:40px">
-<h2 style="margin: 20px;">회원전체 목록</h2>
+<div class="container" style="max-width:1300px; margin-top:80px">
+<h2 style="margin: 2px; font-size: 26pt">주문목록</h2>
+	<img class="w1-image" width="1140" height="20" src="<%= ctxPath%>/images/yellow.PNG" style="margin-top:20px">	
 
-	<form name="memberFrm">
-	  <select id="searchType" name="searchType">
-         <option value="name">회원명</option>
-         <option value="userid">아이디</option>
-         <option value="email">이메일</option>
-      </select>
-      <input type="text" id="searchWord" name="searchWord" />
-	  
-	  <button type="button" class="btn btn-dark" onclick="goSearch();" style="margin-right: 30px; margin-bottom: 8px; border-radius: 12px">검색</button>
-	  
-	  <span style="color: black; font-weight: bold; font-size: 12pt;">페이지당 회원명수</span>
-      <select id="sizePerPage" name="sizePerPage">
-         <option value="10">10</option>
-         <option value="5">5</option>
-         <option value="3">3</option>
-      </select>
-	</form>
-	
-	
-	<table id="memberTbl" class="table table-bordered" style="width: 90%; margin-top: 20px;">
+	<table id="orderTbl" class="table table-bordered" style="width: 90%; margin-top: 40px;">
         <thead>
            <tr >
-              <th>아이디</th>
-              <th>회원명</th>
-              <th>이메일</th>
-              <th>성별</th>
+              <th>주문번호</th>
+              <th>주문일자</th>
+              <th>주문총액</th>
            </tr>
         </thead>
         
         <tbody>
-    		<c:forEach var="mvo" items="${requestScope.memberList}">
-    			<tr class="memberInfo" data-toggle="modal" data-target="#userInfo">
-    				<td class="userid">${mvo.userid}</td>
-    				<td>${mvo.name}</td>
-    				<td>${mvo.email}</td>
-    				<td>
-    					<c:choose>
-    						<c:when test="${mvo.gender eq '1'}">
-    							남
-    						</c:when>
-    						<c:otherwise>
-    							여
-    						</c:otherwise>
-    					</c:choose>
-    				</td>
+    		<c:forEach var="pvo" items="${requestScope.ProductList}">
+    			<tr class="orderInfo" >
+    				<td class="odrcode">${pvo.odrcode}</td>
+    				<td>${pvo.odrdate}</td>
+    				<td>${pvo.odrtotalprice}원</td>
     			</tr>
     		</c:forEach>    
 		</tbody>
 	</table>
-
+<%-- 
 	<nav>
 		<div style="display: flex; width:80;">
 			<ul class="pagination" style="margin: auto;">${requestScope.pageBar}</ul>
 		</div>
 	</nav>
+	 --%>
 </div>
 </div>
 
