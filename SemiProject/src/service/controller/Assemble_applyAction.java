@@ -17,6 +17,7 @@ public class Assemble_applyAction extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 				
+		String ctxPath = request.getContextPath();
 		String method  = request.getMethod();
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
@@ -24,6 +25,9 @@ public class Assemble_applyAction extends AbstractController {
 		 if("get".equalsIgnoreCase(method)) {
 			 super.setViewPage("/WEB-INF/service/assemble_apply.jsp");
 			
+		// 카테고리 목록 얻어오기 
+		super.getCategoryList(request);
+			 
 		 // 조립 서비스를 신청하려면 로그인 먼저 해야 함
 			if(loginuser != null) {
 				// 로그인을 한 경우
@@ -55,7 +59,13 @@ public class Assemble_applyAction extends AbstractController {
 			} // end of if(loginuser != null)-----------
 			else {
 				// 로그인을 안한 경우
-				super.setViewPage("/WEB-INF/login/login.jsp"); // 로그인 페이지로 이동
+				String loc = ctxPath+"/login/login.one"; // 로그인 페이지로 이동
+				
+				request.setAttribute("loc", loc);
+		   
+			    //  super.setRedirect(false);
+			        super.setViewPage("/WEB-INF/loc.jsp");
+				
 	 		}
 
 		
