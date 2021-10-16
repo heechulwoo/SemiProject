@@ -39,13 +39,14 @@ public class MemberEditEndAction extends AbstractController {
 	         
 	         InterMemberDAO_sj mdao = new MemberDAO_sj();
 				
-			// !!! session 에 저장된 loginuser 를 변경된 사용자의 정보값으로 변경해주어야 한다. !!! //
-       	 	HttpSession session = request.getSession();
-       	 	MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+			 // !!! session 에 저장된 loginuser 를 변경된 사용자의 정보값으로 변경해주어야 한다. !!! //
+       	 	 HttpSession session = request.getSession();
+       	 	 MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
        	 
-       	 	System.out.println("~~~ 확인용 userpwd ==> " + loginuser.getPwd() );
-       	 	System.out.println("확인용 pwd " + pwd );
-			if("pwd".equals(loginuser.getPwd())) {
+       	 	 System.out.println("~~~ 확인용 userpwd ==> " + loginuser.getPwd());
+       	 	 System.out.println("확인용 pwd " + pwd );
+			 
+       	 	if("pwd".equals(loginuser.getPwd())) {
 				// 마이페이지에 입력한 암호와 기존의 암호가 일치한다면
 				// '최근비밀번호변경일'을 업데이트에서 제외시킨다.
 				
