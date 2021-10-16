@@ -15,6 +15,8 @@ public class MypageAction extends AbstractController {
 		    super.getCategoryList(request);
 			super.setViewPage("/WEB-INF/member/mypage.jsp");
 		
+			
+			
 	}
 
 }
