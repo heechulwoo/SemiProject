@@ -79,6 +79,19 @@ button#backBtn:hover {
 		$("span.error").hide();
 		
 		
+		
+		<%-- DB category 값을 가져다가  해당 option 값 selected시키기 --%>
+		$("select#category option").each(function(){
+
+		    if($(this).val()=="${requestScope.cvo.category}"){
+
+		      $(this).attr("selected","selected"); // attr적용안될경우 prop으로 
+				
+		    }
+
+		  });
+		
+		
 		<%-- 이름 --%>
 		$("input#name").blur(function(){
 			
@@ -303,8 +316,8 @@ button#backBtn:hover {
 	
 	
 	
-	// --- 작성하기 버튼 클릭 시 --- //
-	function goConsult() {
+	// --- 수정하기 버튼 클릭 시 --- //
+	function reUpdateConsult() {
 		
 		// *** 필수입력사항에 모두 입력이 되었는지 검사한다. *** //
 		var boolFlag = false;
@@ -332,9 +345,9 @@ button#backBtn:hover {
 		}
 		
 		
-		<%-- 문의 게시글에 대한 업로드 --%>
-		var frm = document.consultFrm;
-		frm.action = "uploadConsult.one";
+		<%-- 문의게시글 수정에 대한 업로드 --%>
+		var frm = document.editConsultFrm;
+		frm.action = "<%= ctxPath%>/contact/editConsultEnd.one";
 		frm.method = "post";
 		frm.submit();
 		
@@ -349,23 +362,38 @@ button#backBtn:hover {
 	
     <div class="container">
     
-     <!-- 이케아 상담 글쓰기 시작 -->
+     <!-- 이케아 수정하기 시작 -->
       <div id="consultWrite" class="col-md-auto">
-        <h1 style="font-weight: bold">문의글 작성</h1>
+        <h1 style="font-weight: bold">문의글 수정</h1>
         <br>
         <p>
-		          궁금한 점이 있으세요?<br>
-			 신청서를 통해 IKEA에 대한 궁금한 점을 문의해주세요.
+		          수정할 내용이 있나요?<br>
+			 수정 후 수정 버튼을 누르는 걸 잊지마세요! :-) .
         </p>
         <br>
       </div>
-      <!-- 이케아 상담 글쓰기 끝 -->
+      <!-- 이케아 수정하기 끝 -->
+      
+      
     
-      <!-- 상담 글쓰기 폼 시작 -->
+      <!-- 수정하기 폼 시작 --> <!-- 기존 정보를 불러와서 값으로 넣어준다. -->
       <div class="row justify-content-center" id="divConsultFrm">
         <div class="col-md-12" align="center">
-          <form name="consultFrm" enctype="multipart/form-data"> 
+          <form name="editConsultFrm" enctype="multipart/form-data" > 
           <!-- form 태그안에      enctype="multipart/form-data" 추가하기 -->
+          
+          
+          	<c:set var="fk_userid" value="${requestScope.cvo.fk_userid}" />
+			<c:set var="name" value="${requestScope.cvo.name}" />
+			<c:set var="email" value="${requestScope.cvo.email}" />
+			<c:set var="mobile" value="${requestScope.cvo.mobile}" />
+			<c:set var="asktitle" value="${requestScope.cvo.asktitle}" />
+			<c:set var="category" value="${requestScope.cvo.category}" />
+			<c:set var="askcontent" value="${requestScope.cvo.askcontent}" />
+			<c:set var="askdate" value="${requestScope.cvo.askdate}" />
+			<c:set var="ask_orginFileName" value="${requestScope.cvo.ask_orginFileName}" />
+          
+          
           
             <table id="tblConsultWrite">
               <thead>
@@ -387,14 +415,14 @@ button#backBtn:hover {
                 <tr>
                   <td colspan="2" style="border-bottom: solid 1px gray">
                     <label for="agree" style="width: 20%">이용약관에 동의합니다</label>&nbsp;&nbsp;
-                    <input type="checkbox" id="agree" />
+                    <input type="checkbox" id="agree" value="value" checked="checked"/>
                   </td>
                 </tr>
                 <tr>
                   <td
                     colspan="2"
                     style="border-bottom: solid 1px gray; color: red">
-                    &nbsp;&nbsp;※ 문의 카테고리에서 해당 되는 사항을 1개 선택해주세요.
+                    &nbsp;&nbsp;※ 수정할 내용을 적어주세요
                   </td>
                 </tr>
 				
@@ -419,8 +447,9 @@ button#backBtn:hover {
                 <tr>
                   <td id="bor" style="width: 20%; font-weight: bold">성명&nbsp;<span class="star">*</span></td>
                   <td id="detail" style="width: 80%; text-align: left">
-                  	<input type="hidden" name="userid" value="${sessionScope.loginuser.userid}" />
-                    <input type="text" name="name" id="name" value="${sessionScope.loginuser.name}" class="requiredInfo" required />
+                  	<input type="hidden" name="fk_userid" value="${requestScope.cvo.fk_userid}" /> <!-- fk_userid 값 넣어놓기 -->
+                  	<input type="hidden" name="askno" value="${requestScope.cvo.askno}" />		<!-- askno 값 넣어놓기 -->
+                    <input type="text" name="name" id="name" value="${requestScope.cvo.name}" class="requiredInfo" required />
                     <span class="error">이름은 필수입력 사항입니다.</span>
                   </td>
                 </tr>
@@ -429,7 +458,7 @@ button#backBtn:hover {
                     	이메일&nbsp;<span class="star">*</span>
                   </td>
                   <td id="detail" style="width: 80%; text-align: left">
-                    <input type="text" name="email" id="email" value="${sessionScope.loginuser.email}" class="requiredInfo" required />
+                    <input type="text" name="email" id="email" value="${requestScope.cvo.email}" class="requiredInfo" required />
                     <span class="error">이메일 형식에 맞지 않습니다. 다시 입력해주세요!</span>
                     
                     <%-- 
@@ -444,8 +473,8 @@ button#backBtn:hover {
                   </td>
                   <td id="detail" style="width: 80%; text-align: left">
                     <input type="text" id="hp1" name="hp1" size="6" maxlength="3" value="010" readonly/>&nbsp;-&nbsp;
-                    <input type="text" id="hp2" name="hp2" size="6" maxlength="4" value="${ fn:substring(sessionScope.loginuser.mobile, 3, 7) }" />&nbsp;-&nbsp;
-                    <input type="text" id="hp3" name="hp3" size="6" maxlength="4" value="${ fn:substring(sessionScope.loginuser.mobile, 7, 11) }" />
+                    <input type="text" id="hp2" name="hp2" size="6" maxlength="4" value="${ fn:substring(requestScope.cvo.mobile, 3, 7) }" />&nbsp;-&nbsp;
+                    <input type="text" id="hp3" name="hp3" size="6" maxlength="4" value="${ fn:substring(requestScope.cvo.mobile, 7, 11) }" />
                     <span class="error">휴대폰 형식이 아닙니다.</span>
                   </td>
                 </tr>
@@ -456,7 +485,7 @@ button#backBtn:hover {
                     </label>
                   </td>
                   <td id="detail" style="width: 80%;">
-                    <input type="text" id="asktitle" name="asktitle" placeholder="제목을 입력해주세요." class="requiredInfo" required style="width: 450px;" maxlength="25"/>
+                    <input type="text" id="asktitle" name="asktitle" value="${requestScope.cvo.asktitle}" class="requiredInfo" required style="width: 450px;" maxlength="25"/>
                   	<span class="error">제목은 필수입력 사항입니다.</span>
                   </td>
                 </tr>
@@ -467,22 +496,22 @@ button#backBtn:hover {
                     </label>
                   </td>
                   <td id="detail" style="width: 80%;">
-                    <textarea rows="7" cols="50" id="askcontent" name="askcontent" onKeyUp="javascript:fnChkByte(this,'1000')" placeholder="내용을 입력해주세요." class="requiredInfo" required></textarea>
+                    <textarea rows="7" cols="50" id="askcontent" name="askcontent" onKeyUp="javascript:fnChkByte(this,'1000')" class="requiredInfo" required> ${requestScope.cvo.askcontent} </textarea>
                   	<span class="error">내용은 필수입력 사항입니다.</span>
                   </td>
                 </tr>
             
-            <%-- 파일첨부 --%>
+            <%-- 이미지 파일 첨부 --%>
                 <tr>
 			      <td width="20%" id="bor">이미지 파일첨부(선택)</td>
 			      <td width="80%" align="left" style="border-top: hidden; border-bottom: hidden;">
 			         <input type="file" id="cImgFile" name="cImgFile" />
 			      </td>
 			   </tr>
-           
+			   
                 <tr>
                   <td colspan="2" style="line-height: 90px;" class="text-center">
-                    <button type="button" id="writeBtn" class="btn" onClick="goConsult();">작성하기</button>
+                    <button type="button" id="writeBtn" class="btn" onClick="reUpdateConsult();">수정하기</button>
                     <button type="button" id="backBtn" class="btn" onClick="goBack()">취소</button> <!-- 뒤로가기 수정하기 -->
                   </td>
                 </tr>
@@ -493,7 +522,7 @@ button#backBtn:hover {
           </form>
         </div>
       </div>
-      <!-- 상담 글쓰기 폼 시작 -->
+      <!-- 수정하기 폼 끝 -->
 
       <hr>
 
