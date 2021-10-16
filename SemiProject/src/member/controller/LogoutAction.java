@@ -35,7 +35,6 @@ public class LogoutAction extends AbstractController {
 		session.invalidate();
 		
 	    super.setRedirect(true);
-		//	super.setViewPage(request.getContextPath()+"/index.up");
 	    
 	    
 	    ////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +45,7 @@ public class LogoutAction extends AbstractController {
 		
 		// 돌아갈 페이지가 없거나 또는  관리자로 로그아웃을 하면 무조건 /MyMVC/index.up 페이지로 돌아간다. 
 		else {
-			super.setViewPage(request.getContextPath()+"/index.up");
+			super.setViewPage(request.getContextPath()+"/index.one");
 		}
 		////////////////////////////////////////////////////////////////////////////////////////
 		
