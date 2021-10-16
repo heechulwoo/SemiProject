@@ -56,7 +56,7 @@ public class ProductRegisterAction extends AbstractController {
 			  
 			 // 1. 첨부되어진 파일을 디스크의 어느경로에 업로드 할 것인지 그 경로를 설정해야 한다. 
 			  ServletContext svlCtx = session.getServletContext(); 
-			  String uploadFileDir = svlCtx.getRealPath("/images"); // 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir
+			  String uploadFileDir = svlCtx.getRealPath("/image_ikea"); // 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir
 			  
 			  // C:\git\SemiProject\ ??.metadata\.plugins\org...
 			  
