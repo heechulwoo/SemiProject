@@ -117,14 +117,26 @@
 	            for(var i=0; i<totalPriceArr.length; i++) {
 	               sumtotalPrice += parseInt(totalPriceArr[i]);
 	            }
- 	          console.log("확인용 pnumjoin : " + pnumjoin);             // 확인용 pnumjoin : 3,56,59
-	          console.log("확인용 oqtyjoin : " + oqtyjoin);             // 확인용 oqtyjoin : 3,2,3
-	          console.log("확인용 cartnojoin : " + cartnojoin);         // 확인용 cartnojoin : 14,13,11
-	          console.log("확인용 totalPricejoin : " + totalPricejoin); // 확인용 totalPricejoin : 30000,2000000,30000
-	          console.log("확인용 sumtotalPrice : " + sumtotalPrice);   // 확인용 sumtotalPrice : 2060000
+ 	         	console.log("확인용 pnumjoin : " + pnumjoin);             // 확인용 pnumjoin : 3,56,59
+	         	console.log("확인용 oqtyjoin : " + oqtyjoin);             // 확인용 oqtyjoin : 3,2,3
+	          	console.log("확인용 cartnojoin : " + cartnojoin);         // 확인용 cartnojoin : 14,13,11
+	          	console.log("확인용 totalPricejoin : " + totalPricejoin); // 확인용 totalPricejoin : 30000,2000000,30000
+	          	console.log("확인용 sumtotalPrice : " + sumtotalPrice);   // 확인용 sumtotalPrice : 2060000
 	            
 	            var bool = confirm("결제페이지로 이동하시겠습니까?");
-	            
+ 	          
+ 	         	if(bool){
+ 	          		var frm = document.orderFrm;
+	 	          	frm.odpnum.value = pnumjoin;
+	 	          	frm.odoqty.value = oqtyjoin;
+	 	          	frm.odcartno.value = cartnojoin;
+	 	          	frm.odtotalprice.value = totalPricejoin;
+	 	          	
+	 				frm.action="<%= ctxPath%>/product/payment.one";
+	 				frm.method="POST";
+	 				frm.submit();
+ 	         	}
+	        <%--    
 	            if(bool){
 	            	$.ajax({
 	                     url:"<%= request.getContextPath()%>/product/payment.one",
@@ -136,19 +148,19 @@
 	                          "sumtotalPrice":sumtotalPrice},
 	                     dataType:"JSON",     
 	                     success:function(json){
-                  	 <%--    if(json.isSuccess == 1) {
+                  	    if(json.isSuccess == 1) {
 	                           location.href="<%= request.getContextPath()%>/shop/orderList.up"; 
 	                        }
 	                        else {
                                location.href="<%= request.getContextPath()%>/shop/orderError.up"; 
-	                        }  --%>
+	                        }  
 	                     },
 	                     error: function(request, status, error){
 	                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 	                     }
 	                  });
 	            }
-	            
+	            --%>
 			}
 			else {
 				alert("장바구니에 제품을 담아주세요!");
@@ -296,7 +308,13 @@
 				<h5 style="font-weight:bold;">총 주문금액&nbsp;&nbsp;&nbsp;&nbsp;<span id="SumtotalPrice">￦0</span></h5>
 				<div class="text-center">
 					<button class="btn btn-info btn-lg px-md-3 py-md-5 btn-block goPurchase">결제하기</button>
-					<input type="hidden" value="" name="totalAllPrice" id="totalAllPrice"/>
+					<form name="orderFrm">
+						<input type="hidden" value="" name="odpnum" id="odpnum"/>
+						<input type="hidden" value="" name="odoqty" id="odoqty"/>
+						<input type="hidden" value="" name="odcartno" id="odcartno"/>
+						<input type="hidden" value="" name="odtotalprice" id="odtotalprice"/>
+						<input type="hidden" value="" name="odsumtotalprice" id="totalAllPrice"/>
+					</form>
 				</div>
 				<hr class="my-5">
 		    <%--     
