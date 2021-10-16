@@ -19,6 +19,8 @@ public class MemberRegisterAction extends AbstractController {
 		
 		if("GET".equalsIgnoreCase(method)) {
 //			super.setRedirect(false); // 기본값이 false 이므로 forward로 페이지를 보여주고 싶을때는 생략가능
+			// 카테고리 목록 얻어오기 
+		    super.getCategoryList(request);
 			super.setViewPage("/WEB-INF/member/memberRegister.jsp");
 		}
 		else {
@@ -79,7 +81,8 @@ public class MemberRegisterAction extends AbstractController {
 				if(n==1) { // 가입되었다면
 					request.setAttribute("userid", userid);
 					request.setAttribute("pwd", pwd);
-				
+					// 카테고리 목록 얻어오기 
+				    super.getCategoryList(request);
 					super.setViewPage("/WEB-INF/login/registerAfterAutoLogin.jsp");
 				}
 			} catch (SQLException e) {
@@ -88,7 +91,8 @@ public class MemberRegisterAction extends AbstractController {
 				
 				request.setAttribute("message", message);
 				request.setAttribute("loc", loc);
-				
+				// 카테고리 목록 얻어오기 
+			    super.getCategoryList(request);
 				super.setViewPage("/WEB-INF/msg.jsp");
 			}
 		}
