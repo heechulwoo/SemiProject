@@ -1,8 +1,14 @@
 package common.controller;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.*;
 
 import member.model.MemberVO;
+import my.util.MyUtil_jy;
+import product.model.*;
 
 public abstract class AbstractController implements InterCommand {
 
@@ -51,5 +57,22 @@ public abstract class AbstractController implements InterCommand {
 	
 	}
 
+	/////////////////////////////////////////////////////////////
+	// ***** 제품목록(Category)을 보여줄 메소드 생성하기 ***** //
+	// VO를 사용하지 않고 Map 으로 처리
+	public void getCategoryList(HttpServletRequest request) throws SQLException {
+	
+		InterProductDAO pdao = new ProductDAO();
+		
+		List<Map<String,String>> categoryList = pdao.selectCategoryImage();
+		request.setAttribute("categoryList", categoryList);
+	
+	}
+	
+	// 로그인 또는 로그아웃을 하면 시작페이지로 가는 것이 아니라 방금 보았던 그 페이지로 그대로 가기 위한 것임. 
+    public void goBackURL(HttpServletRequest request) {
+    	HttpSession session = request.getSession();
+    	session.setAttribute("goBackURL", MyUtil_jy.getCurrentURL(request));
+    }
 	
 }

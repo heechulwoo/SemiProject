@@ -16,14 +16,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="<%= ctxPath%>/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" >
 
 <!-- Font Awesome 5 Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.3.1.min.js"></script>
 
-<script type="text/javascript" src="<%= ctxPath%>/js/bootstrap.bundle.min.js" ></script> 
+<script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script> 
 
 <style type="text/css">
 
@@ -42,12 +42,17 @@
 
 </style>
 
+<script type="text/javascript">
+
+
+</script>
+
 </head>
 <body>
 
 	<div id="main" class="container-fluid my-4">
 	
-		<img src="<%= ctxPath%>/image_ikea/IKEA.svg"/>
+		<a href="<%= ctxPath %>/index.one"><img src="<%= ctxPath%>/image_ikea/IKEA.svg"/></a>
 		<hr>
 		<br>
 		<div id="payCheckList" class="container-fluid mx-3 mb-4">
@@ -124,9 +129,8 @@
 			  
 			  	<div class="col-12 col-lg-12" id="payCheckList3" class="container mx-3 mb-4">
 				  	<div id="payment2" class="collapse row no-gutters">
-						<hr class="pb-5" style="width: 850px;" >
-						<div></div>
-					  	<div class="col-1 pl-2 mx-2 "><h3 style="font-weight: bold; text-decoration: underline;">3</h3></div>
+						<hr class="pb-5" style="width: 850px;" ><div class="w-100"></div>
+					  	<div class="col-1 pl-2 mx-2 float-left"><h3 style="font-weight: bold; text-decoration: underline;">3</h3></div>
 					  	<div class="col-10">
 						  	<div class="col-12 col-lg-10 mt-1 mb-4"><h3 style="font-weight: bold;">어떤 방법으로 결제하시겠어요?</h3></div>
 						    <div class="col-12 col-lg-10">

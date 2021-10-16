@@ -14,6 +14,7 @@ public class ProductVO {
 	
 	private String cname;	   // 카테고리명
 	private CategoryVOwhc categvo;
+	private CartVO cartvo;
 	
 	public String getPnum() {
 		return pnum;
@@ -109,6 +110,14 @@ public class ProductVO {
 
 	public void setCategvo(CategoryVOwhc categvo) {
 		this.categvo = categvo;
+	}
+
+	public CartVO getCartvo() {
+		return cartvo;
+	}
+
+	public void setCartvo(CartVO cartvo) {
+		this.cartvo = cartvo;
 	}
 
 	

@@ -49,7 +49,7 @@ public class SaveCartJSONAction extends AbstractController {
 				InterProductDAO pdao = new ProductDAO();
 				
 				// 장바구니에 같은 제품일경우에는 update 신규 제품은 insert 하는 메소드
-				int n = pdao.saveCart(paraMap);
+				pdao.saveCart(paraMap);
 				
 				
 			}

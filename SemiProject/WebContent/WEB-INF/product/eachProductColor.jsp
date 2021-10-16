@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
 	String ctxPath = request.getContextPath();
 %>    
@@ -44,13 +46,39 @@
 
 	$(document).ready(function() {
 		
+		
 	});
 
+	function goProductPage() {
+		
+		var pnum = $("input:checked").val();
+		
+		window.opener.goProductPage(pnum);
+		
+		self.close();
+		
+	}
+	
 </script>
 </head>
 <body>
 	<h3 class="justify-content-center ml-5 my-4 pt-2 pl-3" style="font-weight: bold;">색상 선택</h3>
 	<div class="container-fluid my-2">
+		
+		<c:if test="${not empty requestScope.productColorList}">
+			<c:forEach var="prodColorVO" items="${requestScope.productColorList}">
+				<div class="row justify-content-center my-2">
+					<div class="col-6 col-lg-6">
+						<label for="color${prodColorVO.pnum}"><img class="float-right"  src="<%= ctxPath%>/image_ikea/${prodColorVO.prodimage}" style="width: 60%;"/></label>
+					</div>
+					<div class="col-6 col-lg-6 align-self-center">
+						<label for="color${prodColorVO.pnum}">${prodColorVO.color}</label>
+						<input type="radio" id="color${prodColorVO.pnum}" name="productColor" value="${prodColorVO.pnum}"/>
+					</div>
+				</div>
+			</c:forEach>
+		</c:if>
+	<%--
 		<div class="row justify-content-center my-1">
 			<div class="col-6 col-lg-6">
 				<img class="float-right" src="<%= ctxPath%>/image_ikea/레이파르네_다크옐로1.webp" style="width: 60%;"/>
@@ -87,9 +115,11 @@
 				<input type="radio" id="color4" name="productColor" value="다크옐로"/>
 			</div>
 		</div>
+		 --%>
+		
 		<br>
 		<div class="d-flex justify-content-center" style="display: inline-block;">
-			<button class="btn btn-info btn-lg">선택</button>
+			<button class="btn btn-info btn-lg" onclick="goProductPage();">선택</button>
 		</div>
 	</div>
 </body>
