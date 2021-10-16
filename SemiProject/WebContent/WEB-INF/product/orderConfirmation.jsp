@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
 <%
 	String ctxPath = request.getContextPath();
@@ -46,7 +47,7 @@
 				    <c:forEach begin="1" end="1" var="odrDetailVO" items="${requestScope.orderList}">
 						<span class="mx-1 my-2">구매 날짜 : ${odrDetailVO.povo.odrdate} </span><br>
 						<span class="mx-1 my-2">주문 번호 : ${odrDetailVO.povo.odrcode}</span><br>
-						<span class="mx-1 my-2">합계 : ${odrDetailVO.povo.odrtotalprice}</span>
+						<span class="mx-1 my-2">합계 : <fmt:formatNumber value="${odrDetailVO.povo.odrtotalprice}"/>&nbsp;원</span>
 					</c:forEach>
 				</c:if>
 				
@@ -65,7 +66,7 @@
 						<label class="mx-1 mb-2" style="font-weight: bold;">${odrDetailVO.pvo.pname}</label><br>
 						<span class="mx-1" style="font-size: 10pt;">${odrDetailVO.pcvo.cname}</span><br>
 						<span class="mx-1" style="font-size: 10pt;">제품 번호 : ${odrDetailVO.pvo.pnum}</span><br>
-						<span class="mx-1" style="font-size: 10pt; font-weight: bold;">제품 가격 : ￦ ${odrDetailVO.pvo.price}</span><br><br>
+						<span class="mx-1" style="font-size: 10pt; font-weight: bold;">제품 가격 : ￦<fmt:formatNumber value="${odrDetailVO.pvo.price}" /></span><br><br>
 						<span class="mx-1" style="font-size: 10pt;">수량 : ${odrDetailVO.oqty}</span><br>
 					</div>
 					<hr class="float-left" style="width: 90%;"><br><br><br>
@@ -75,7 +76,7 @@
 				<span class="my-1 float-left">합계</span>
 				<c:if test="${not empty requestScope.orderList}">
 					<c:forEach begin="1" end="1" var="odrDetailVO" items="${requestScope.orderList}">
-						<span class="my-1 float-right">${odrDetailVO.povo.odrtotalprice}원</span><br>
+						<span class="my-1 float-right"><fmt:formatNumber value="${odrDetailVO.povo.odrtotalprice}"/>&nbsp;원</span><br>
 					</c:forEach>
 				</c:if>
 			</div>
@@ -83,7 +84,7 @@
 				<span class="my-1 float-left">VAT</span>
 				<c:if test="${not empty requestScope.orderList}">
 					<c:forEach begin="1" end="1" var="odrDetailVO" items="${requestScope.orderList}">
-						<span class="my-1 float-right">${odrDetailVO.povo.odrtotalprice}원</span><br>
+						<span class="my-1 float-right"><fmt:formatNumber value="${odrDetailVO.povo.odrtotalprice}"/>&nbsp;원</span><br>
 					</c:forEach>
 				</c:if>
 			</div>
@@ -97,7 +98,7 @@
 				<h6 class="mx-2 my-2" style="font-weight: bold;">신용카드</h6>
 				<c:if test="${not empty requestScope.orderList}">
 					<c:forEach begin="1" end="1" var="odrDetailVO" items="${requestScope.orderList}">
-						<span class="mx-2 my-2" style="font-size: 11pt;">${odrDetailVO.povo.odrtotalprice}원</span><br>
+						<span class="mx-2 my-2" style="font-size: 11pt;"><fmt:formatNumber value="${odrDetailVO.povo.odrtotalprice}"/>&nbsp;원</span><br>
 					</c:forEach>
 				</c:if>
 			</div>

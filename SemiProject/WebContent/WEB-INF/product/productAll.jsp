@@ -36,7 +36,7 @@
 			
 		});
 		
-		$("input[name=range]").click(function(){
+		$("button[name=range]").click(function(){
 			range = $(this).val();
 			$("div#displayAll").empty();
 			$("span#end").empty();
@@ -84,7 +84,38 @@
 			
 			localStorage.setItem('wishlist', JSON.stringify(localWishList));
 			
-		});
+		});// end of $(document).on("click", "div.wish", function(){})---------------------
+		
+		// 장바구니에 저장 버튼을 눌렀을때
+		$(document).on("click", "button.savecart", function(){
+			var loginuser = "${sessionScope.loginuser}";
+			if (loginuser != "") {
+				
+				var pnum = $(this).parent().children(".pnum").text();
+				var pqty = 1;
+				
+				// console.log(pnum);
+				// console.log(pqty);
+				
+				$.ajax({
+					url:"/SemiProject/product/saveCartJSON.one",
+					type:"POST",
+					data:{"pnum":pnum
+						, "pqty":pqty
+						}, 
+					success:function() { // 콜백함수
+						alert("장바구니에 추가했습니다.");
+					},
+					error: function(request, status, error){
+			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			        }
+				});
+			}
+			else {
+				alert("장바구니 기능은 로그인이 필요합니다.");
+				location.href="<%=ctxPath%>/login/login.one";
+			}
+		}); // end of $(document).on("click", "button.savecart", function(){})------------------------------
 		
 	}); // end of $(document).ready(function(){})---------------------------
 
@@ -132,7 +163,8 @@
 								        "<span>"+item.pname+"<br><span class='w3-opacity' style='font-size:12px'>"+item.cname+"</span><br><b>￦"+(item.price).toLocaleString('en')+"</b></span>" +
 							        "</a>" +
 							        "<div class='hide' style='visibility:hidden;'>" +
-						                "<button class='btn btn-outline-success btn-sm'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
+						                "<button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
+						                '<span class="pnum" style="display:none;">'+item.pnum+'</span>'+
 						            "</div>" +
 								"</div>";
 					}); // end of $.each(json,function(index, item){})---------
@@ -169,12 +201,12 @@
 </script>
 
 	<div class="container-fluid container-xl">
-		<h6 class="my-3 py-2" style="font-size: 10pt;"><a href="#">제품</a> > 의자</a></h6>
+		<h6 class="my-3 py-2" style="font-size: 10pt;"><a href="#">제품</a> &gt; 의자</h6>
 		<h2 class="mb-4"><b>모든제품</b></h2>
 		<div class="row justify-content-between mb-5">
 			<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
 				<div class="col-md-2 col-6">
-					<a href="">
+					<a href="<%= ctxPath%>/product/productByCategory.one?cnum=${cvo.cnum}">
 				        <img src="<%= ctxPath%>/image_ikea/${cvo.prodimage}" style="width:100%">
 				        <span>${cvo.cname}</span>
 			        </a>
@@ -188,81 +220,18 @@
 			</p>
 		</div>
 		<div>
-			<div class="btn-group">
-			  <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  	정렬
+			  <button class="btn btn-light " type="button" name="range" id="low-price" value="price">
+			  	낮은가격순
 			  </button>
-			  <div class="dropdown-menu">
-				<div class="dropdown-item">			  
-			    	<label for="low-price">낮은가격순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="low-price" value="price"/>
-			    </div>
-				<div class="dropdown-item">			  
-			    	<label for="high-price">높은가격순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="high-price" value="price desc"/>
-			    </div>
-				<div class="dropdown-item">			  
-			    	<label for="new">최신순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="new" value="pinpupdate desc"/>
-			    </div>
-				<div class="dropdown-item">			  
-			    	<label for="pro_name">이름순&nbsp;&nbsp;&nbsp;</label><input type="radio" name="range" id="pro_name" value="pname"/>
-			    </div>
-			  </div>
-			</div>
-			<div class="btn-group">
-			  <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  	카테고리
+			  <button class="btn btn-light " type="button" name="range" id="high-price" value="price desc">
+			  	높은가격순
 			  </button>
-			  <div class="dropdown-menu">
-				<c:forEach var="cvo" items="${requestScope.categoryList}" varStatus="status">
-					<div class="dropdown-item">
-					    <label for="${cvo.cnum}">${cvo.cname}</label> <input type = "checkbox" id="${cvo.cnum}" value="${cvo.cnum}" class="filter category">
-			        </div>
-				</c:forEach>
-			  </div>
-			</div>
-			<div class="btn-group">
-			  <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  	가격
+			  <button class="btn btn-light " type="button" name="range" id="new" value="pinpupdate desc">
+			  	최신순
 			  </button>
-			  <div class="dropdown-menu">
-			    <div class="dropdown-item">
-				    <label for="9999">&#8361;0 - 9,999</label> <input type = "checkbox" id="9999"  class="filter price">
-		        </div>
-			    <div class="dropdown-item">
-				    <label for="19999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="19999" class="filter price">
-		        </div>
-			    <div class="dropdown-item">
-				    <label for="29999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="29999" class="filter price">
-		        </div>
-			    <div class="dropdown-item">
-				    <label for="39999">&#8361;10,000 - 19,999</label> <input type = "checkbox" id="39999" class="filter price">
-		        </div>
-			    <div class="dropdown-item">
-				    <label for="40000">&#8361;40,000+</label> <input type = "checkbox" id="40000" class="filter price">
-		        </div>
-			  </div>
-			</div>
-			<div class="btn-group">
-			  <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			  	색상
+			  <button class="btn btn-light " type="button" name="range" id="pro_name" value="pname">
+			  	이름순
 			  </button>
-			  <div class="dropdown-menu">
-			    <div class="dropdown-item">
-				    <label class="w-75" for="gray">그레이</label> <input type = "checkbox" id="gray" class="filter color">
-		        </div>
-			    <div class="dropdown-item">
-				    <label class="w-75" for="beige">베이지</label> <input type = "checkbox" id="beige" class="filter color">
-		        </div>
-			    <div class="dropdown-item">
-				    <label class="w-75" for="white">화이트</label> <input type = "checkbox" id="white" class="filter color">
-		        </div>
-			    <div class="dropdown-item">
-				    <label class="w-75" for="black">블랙</label> <input type = "checkbox" id="black" class="filter color">
-		        </div>
-			    <div class="dropdown-item">
-				    <label class="w-75" for="brown">브라운</label> <input type = "checkbox" id="brown" class="filter color">
-		        </div>
-			  </div>
-			</div>
 		</div>
 		<hr>
 	</div>

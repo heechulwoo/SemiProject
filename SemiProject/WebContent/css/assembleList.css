@@ -1,0 +1,163 @@
+body {
+  font-size: 16px important;
+  font-family: Verdana, sans-serif !important;
+  
+}
+
+* {
+  word-break: keep-all;
+}
+/* 줄을 바꿀 때 단어를 끊지 않게 한다. */
+
+
+.mycontainer {
+  padding: 2% 6% 2% 6%;
+  font-family: Verdana, sans-serif;
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  left: 15px;
+  
+}
+
+.main_title{
+ font-size: 2rem;
+}
+
+.menu-title {
+  margin-bottom: 3vw;
+}
+
+.menu-title, .main-title{
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 3vh;
+  margin-bottom: 5vh;
+}
+
+@media (max-width: 580px) {
+   .main-title{
+   font-size: 1.7em;
+   }
+   
+   .menu-title{
+    font-size: 1.3em;
+  }
+
+}
+  
+a {
+  text-decoration: none;
+}
+
+.another {
+  color: #484848 !important;
+  text-decoration: underline !important;
+}
+
+
+.another:hover {
+  color: #484848 !important;
+  font-weight: normal !important;
+}
+
+.mybtn {
+  background-color: #efefef;
+  color: black;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  border-radius: 30px;
+  border: 1px solid lightgray;
+}
+
+.mybtn:hover {
+  border: 1px solid black;
+  border-radius: 30px;
+  text-decoration: none;
+}
+
+.mybtn_black {
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.8rem;
+  border-radius: 30px;
+  border: black;
+  background-color: black;
+  color: white !important;
+}
+
+.mybtn_black:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.formtable {
+  font-size: 1rem;
+  text-align: center;
+  width: 80%;
+  table-layout: auto;
+  margin: auto;
+  font-size: 0.9rem;
+}
+
+@media (max-width:1000px){
+	.formtable{
+	width: 100%;
+	}
+}
+
+
+.forminput {
+  height: 2.5em;
+  margin: 5px;
+}
+
+
+td {
+  height: 3em !important;
+}
+
+th {
+  background-color: #0058AB !important;
+  color:white !important;
+  padding: 1em !important;
+  margin: 1em !important; 
+}
+
+#searchType{
+font-size: 0.9rem;
+}
+
+#searchWord{
+height: 4vh;
+}
+
+.assembleFrm{
+	text-align: right;
+}
+
+.pagebar{
+padding: 5%;
+text-align: center;
+justify-content: center;
+}
+
+.page-item{
+	margin: auto !important;
+}
+
+
+.page-item.active .page-link  {
+	z-index:unset !important; /* 부트스트랩에 설정되어 있는 z-index로 인해 사이드바를 뚫고 나오는 현상 방지  */
+	/* color: #FBD92F !important; */
+	background-color: #0058AB !important;
+	border-color: #0058AB !important;
+}
+
