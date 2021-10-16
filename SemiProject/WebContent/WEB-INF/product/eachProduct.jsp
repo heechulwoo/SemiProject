@@ -43,7 +43,7 @@
 
 	$(document).ready(function() {
 		
-		var pnum = ${requestScope.pvo.pnum}
+		var pnum = "${requestScope.pvo.pnum}";
 		
 		var localWishList = JSON.parse(localStorage.getItem('wishlist'));
 		
@@ -68,7 +68,7 @@
 		// 위시리스트 추가하기 함수
 		$("button#prdWishList").click(function() {
 			
-			var pnum = ${requestScope.pvo.pnum}
+			var pnum = "${requestScope.pvo.pnum}";
 			
 			var localWishList = JSON.parse(localStorage.getItem('wishlist'));
 			
