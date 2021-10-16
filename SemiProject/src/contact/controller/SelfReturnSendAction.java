@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
 import contact.model.*;
@@ -13,6 +12,11 @@ public class SelfReturnSendAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		
+		// 카테고리 목록 얻어오기 
+		super.getCategoryList(request);	
+		
 		
 		String method = request.getMethod();
 		
@@ -28,9 +32,18 @@ public class SelfReturnSendAction extends AbstractController {
 			String hp3 = request.getParameter("hp3");
 			String whyreturn = request.getParameter("whyreturn");
 			String wherebuy = request.getParameter("wherebuy");
-			String plusReason = request.getParameter("plusReason");
+	//		String plusReason = request.getParameter("plusReason");  // plusReason 시큐어코드 처리
 			
 			String mobile = hp1+hp2+hp3;
+			
+			// !!!! 크로스 사이트 스크립트 공격에 대응하는 안전한 코드(시큐어코드) 작성하기 !!!!  //
+			String plusReason = request.getParameter("plusReason");
+			plusReason = plusReason.replaceAll("<", "&lt;");
+			plusReason = plusReason.replaceAll(">", "&gt;");
+			
+		//  입력한 내용에서 엔터는 <br>로 변환시키기
+			plusReason = plusReason.replaceAll("\r\n", "<br>");
+			
 			
 			// form 에서 받아온 값을 SelfReturnVO 에 넣어주기 (SelfReturnVO 에 셀프반품 전용 만들기)
 			SelfReturnVO selfReturn = new SelfReturnVO(fk_userid, fk_odrcode, name, email, mobile, whyreturn, wherebuy, plusReason);
