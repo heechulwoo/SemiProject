@@ -14,10 +14,11 @@ public class SelfReturnVO {
 	private String wherebuy;        // 구입처
 	private String plusreason;      // 추가 반품 사유
 	private String returndate;      // 반품신청일
-	
+	private int status;      		// 반품상태	
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	
 	
 	// 셀프 반품 신청서 등록용
@@ -39,10 +40,18 @@ public class SelfReturnVO {
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
+	public SelfReturnVO() {
+		// TODO Auto-generated constructor stub
+	}
 	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// === getter setter === //
 	
+
+	
+
 	public int getReturnno() {
 		return returnno;
 	}
@@ -102,6 +111,13 @@ public class SelfReturnVO {
 	}
 	public void setReturndate(String returndate) {
 		this.returndate = returndate;
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	
