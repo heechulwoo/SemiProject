@@ -50,6 +50,9 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
+		
+		$(".error").hide();
+		
 		$("button#searchAddress").click(function(){
 			new daum.Postcode({
 	            oncomplete: function(data) {
@@ -96,9 +99,136 @@
 	                document.getElementById("detailAddress").focus();
 	            }
 	        }).open();					
-		});
-	});
+		});// end of $("button#searchAddress").click(function(){})
+		
+		// 성을 blur했을 때 공백 체크확인
+		$("input#lastname").blur(function(){
+			
+			var lastname = $(this).val().trim();
+			if(lastname == "") {
+				// 입력하지 않거나 공백만 입력한 경우
+			    $(this).next().show();
+			    $(this).focus();
+			}
+			else {
+				// 공백이 아닌 글자를 입력했을 경우
+				$(this).next().hide();
+			}
+			
+		});// end of $("input#lastname").blur(function(){})
+		
+		// 이름을 blur했을 때 공백 체크확인
+		$("input#firstname").blur(function(){
+			
+			var firstname = $(this).val().trim();
+			if(firstname == "") {
+				// 입력하지 않거나 공백만 입력한 경우
+			    $(this).next().show();
+			    $(this).focus();
+			}
+			else {
+				// 공백이 아닌 글자를 입력했을 경우
+				$(this).next().hide();
+			}
+			
+		});// end of $("input#firstname").blur(function(){})
+		
+		// 이메일을 blur했을 때 유효성 검사
+		$("input#email").blur(function(){
+			
+		    var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; 
+		    // 이메일 정규표현식 객체 생성
+		    
+			var email = $(this).val();
+		    
+			var bool = regExp.test(email);
+		    
+			if(!bool) {
+				// 이메일이 정규표현식에 위배된 경우
+			    $(this).next().show();
+			    $(this).focus();
+			}
+			else {
+				// 이메일이 정규표현식에 맞는 경우
+				$(this).next().hide();
+			}
+			
+		});// 아이디가 email 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
+		
+		// 연락처 유효성 검사 blur 이벤트
+		$("input#mobile").blur(function(){
+			
+		    var regExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+		    // 휴대폰 형식에 맞게 검사해주는 정규표현식 객체 생성
+		    
+			var mobile = $(this).val();
+		    
+			var bool = regExp.test(mobile);
+		    
+			if(!bool) {
+				// 국번이 정규표현식에 위배된 경우
+			    $(this).next().show();
+			    $(this).focus();
+			}
+			else {
+				// 국번이 정규표현식에 맞는 경우
+				$(this).next().hide();
+			}
+			
+		});// 아이디가 mobile 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
+	
+	});// end of $(document).ready(function() {})
 
+	// Function Declaration
+	function goPayment() {
+		
+		var boolFlag = false;
+		
+		$("input.requiredInfo").each(function(){
+		    var data = $(this).val().trim();
+		    if(data == "") {
+			    alert("주문 입력사항은 모두 입력하셔야 합니다.");
+			    boolFlag = true;
+			    return false; // break; 라는 뜻이다.
+		    }
+	    });
+		
+		if(boolFlag) {
+			return; // 종료
+		}
+		
+		var agreeCheckboxLength = $("input:checkbox[id=agreeCheckbox]:checked").length;
+		
+		if(agreeCheckboxLength == 0) {
+			alert("결제 사항에 동의하셔야 합니다.");
+			return; // 종료
+		}
+		
+//		var odcartno = ${requestScope.odcartno};
+//		var odoqty = ${requestScope.odoqty};
+		var name = $("input#lastname").val() + $("input#firstname").val();
+		var email = $("input#email").val();
+		var mobile = $("input#mobile").val();
+		var sumTotalPrice = ${requestScope.sumTotalPrice};
+		
+		$.ajax({url:"<%= ctxPath%>/product/productPay.one",
+				type:"POST",
+				data:{"sumTotalPrice":sumTotalPrice,
+					  "name":name,
+					  "email":email,
+					  "mobile":mobile},
+				dataType:"JSON",
+				success:function() {
+					location.href = "<%= ctxPath%>/product/productPaySuccess.one";
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+		});
+		
+	}
+	
+	
 </script>
 
 </head>
@@ -147,30 +277,37 @@
 				    <div class="col-12 col-lg-10"><h3 style="font-weight: bold;">주문을 어디로 배송할까요?</h3></div>
 				    <div class="col-12 col-lg-12 mt-4">
 					    <form name="deliveryAddress" style="width: 95%;">
-					    	<input type="text" class="form-control mb-1" id="lastname" name="lastname" placeholder="${(requestScope.loginuser.name).substring(0, 1)}"/>
-					    	<span class="error">성을 입력하세요</span><br><br>
+					    	<label class="h6 ml-2" style="font-weight: bold;">성</label>
+					    	<input type="text" class="form-control requiredInfo mb-1" id="lastname" name="lastname" value="${(requestScope.loginuser.name).substring(0, 1)}"/>
+					    	<span class="error ml-2 mb-2">성을 입력하세요</span><br>
 					    	
-					    	<input type="text" class="form-control mb-1" id="firstname" name="firstname" placeholder="${(requestScope.loginuser.name).substring(1)}"/>
-					    	<span class="error">이름을 입력하세요</span><br><br>
+					    	<label class="h6 ml-2" style="font-weight: bold;">이름</label>
+					    	<input type="text" class="form-control requiredInfo mb-1" id="firstname" name="firstname" value="${(requestScope.loginuser.name).substring(1)}"/>
+					    	<span class="error ml-2 mb-2">이름을 입력하세요</span><br>
 					    	
-					    	<input type="text" class="form-control mb-1" id="email" name="email" placeholder="${requestScope.loginuser.email}"/>
-					    	<span class="error">이메일을 올바르게 입력하세요</span><br><br>
+					    	<label class="h6 ml-2" style="font-weight: bold;">이메일</label>
+					    	<input type="text" class="form-control requiredInfo mb-1" id="email" name="email" value="${requestScope.loginuser.email}"/>
+					    	<span class="error ml-2 mb-2">이메일을 올바르게 입력하세요</span><br>
 					    	
-					    	<input type="text" class="form-control mb-1" id="mobile" name="mobile" placeholder="${requestScope.loginuser.mobile}"/>
-					    	<span class="error">전화번호를 올바르게 입력하세요</span><br><br>
+					    	<label class="h6 ml-2" style="font-weight: bold;">연락처</label>
+					    	<input type="text" class="form-control requiredInfo mb-1" id="mobile" name="mobile" value="${requestScope.loginuser.mobile}"/>
+					    	<span class="error ml-2 mb-2">연락처를 올바르게 입력하세요</span><br>
 					    	
-					    	<button id="searchAddress" class="btn btn-dark mb-3" style="color: white; width: 200px; height: 50px; font-weight: bold; border-radius: 25px;">주소찾기</button>
+					    	<button id="searchAddress" class="btn btn-dark mb-3" style="color: white; width: 200px; height: 40px; font-weight: bold; border-radius: 25px;">주소찾기</button>
+					    	<br>
+					    	<label class="h6 ml-2" style="font-weight: bold;">우편번호</label>
+					    	<input type="text" class="form-control requiredInfo mb-1" id="postcode" name="postcode" value="${requestScope.loginuser.postcode}"/>
+					    	<span class="error ml-2 mb-2">우편번호를 올바르게 입력하세요</span><br>
 					    	
-					    	<input type="text" class="form-control mb-1" id="postcode" name="postcode" placeholder="${requestScope.loginuser.postcode}"/>
-					    	<span class="error">우편번호를 올바르게 입력하세요</span><br><br>
+					    	<label class="h6 ml-2" style="font-weight: bold;">배송지</label>
+					    	<input type="text" class="form-control requiredInfo mb-2" id="address" name="address" value="${requestScope.loginuser.address}"/>
 					    	
-					    	<input type="text" class="form-control mb-2" id="address" name="address" placeholder="${requestScope.loginuser.address}"/>
+					    	<input type="text" class="form-control requiredInfo mb-2" id="detailAddress" name="detailAddress" value="${requestScope.loginuser.detailaddress}"/>
 					    	
-					    	<input type="text" class="form-control mb-2" id="detailAddress" name="detailAddress" placeholder="${requestScope.loginuser.detailaddress}"/>
+					    	<input type="text" class="form-control requiredInfo mb-2" id="extraAddress" name="extraAddress" value="${requestScope.loginuser.extraaddress}"/>
+					    	<span class="error ml-2 mb-2">주소를 올바르게 입력하세요</span><br>
 					    	
-					    	<input type="text" class="form-control mb-2" id="extraAddress" name="extraAddress" placeholder="${requestScope.loginuser.extraaddress}"/>
-					    	<span class="error">주소를 올바르게 입력하세요</span><br><br>
-					    	
+					    	<label class="h6 ml-2" style="font-weight: bold;">배송옵션</label>
 					    	<input type="text" class="form-control" id="detailDelivery" name="detailDelivery" placeholder="배송옵션(예 : 부재시 경비실에 맡겨주세요)"/>
 					    	
 					    </form>
@@ -197,7 +334,7 @@
 						    	<input class="form-check-input ml-1" id="agreeCheckbox" name="agreeCheckbox" type="checkbox"/><label for="agreeCheckbox" class="ml-4">결제확인에 동의합니다.</label>
 						    </div>
 						    <div class="col-10 col-lg-9 my-4">
-						    	<button class="btn" style="background-color: #004d99; color: white; width: 100%; height: 70px; font-weight: bold; border-radius: 50px; font-size: 16pt;">결제하기</button>
+						    	<button id="btnPay" class="btn" onclick="goPayment();" style="background-color: #004d99; color: white; width: 100%; height: 60px; font-weight: bold; border-radius: 50px; font-size: 16pt;">결제하기</button>
 						    </div>
 					    </div>
 				    </div>
