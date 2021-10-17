@@ -12,7 +12,6 @@ import member.model.MemberVO;
 import product.model.InterProductDAO_kgh;
 import product.model.ProductDAO_kgh;
 import product.model.ProductImageVO_kgh;
-import product.model.ProductVO_kgh;
 
 public class PaymentController extends AbstractController {
 
@@ -102,6 +101,10 @@ public class PaymentController extends AbstractController {
 				request.setAttribute("VAT", VAT);
 				request.setAttribute("sumTotalPrice", sumTotalPrice);
 				request.setAttribute("shipmentDate", shipmentDate);
+				
+				request.setAttribute("odoqty", odoqty);
+				
+				request.setAttribute("odcartno", odcartno);
 				
 			//	System.out.println(sumTotalPrice);
 				

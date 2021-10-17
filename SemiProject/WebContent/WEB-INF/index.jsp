@@ -8,15 +8,86 @@
 	String ctxPath = request.getContextPath();
 %>    
 
+<jsp:include page="header.jsp"/>
+
 <style>
 
 </style>
 
-<script>
-
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$("span.pnum1").each(function(index,item){
+			if(JSON.parse(localStorage.getItem('wishlist')) != null && JSON.parse(localStorage.getItem('wishlist')).indexOf($(this).text())>=0 ){
+				$()
+				$(this).parent().removeClass("hidden");
+			}
+		});
+		
+		// 위시리스트 버튼을 눌렀을때 session에 저장하기
+		$(document).on("click", "div.wish", function(){
+			
+			var pnum = $(this).children("span.pnum1").text();
+			
+			var localWishList = JSON.parse(localStorage.getItem('wishlist'));
+			// console.log(localWishList);
+			
+			if(localWishList == null) {
+				localWishList = [];
+				localWishList.push(pnum);
+				$(this).removeClass("hidden");	// 위시리스트에 저장한 품목은 버튼을 숨기지 않고 보여줌
+			}
+			else{
+				var index = localWishList.indexOf(pnum);
+				if(index >= 0) {
+					localWishList.splice(index, 1);
+					$(this).addClass("hidden");
+				}
+				else {
+					localWishList.push(pnum);
+					$(this).removeClass("hidden");
+				}
+			}
+			
+			localStorage.setItem('wishlist', JSON.stringify(localWishList));
+			
+		});// end of $(document).on("click", "div.wish", function(){})---------------------
+		
+		// 장바구니에 저장 버튼을 눌렀을때
+		$(document).on("click", "button.savecart", function(){
+			var loginuser = "${sessionScope.loginuser}";
+			if (loginuser != "") {
+				
+				var pnum = $(this).parent().children(".pnum").text();
+				var pqty = 1;
+				
+				// console.log(pnum);
+				// console.log(pqty);
+				
+				$.ajax({
+					url:"/SemiProject/product/saveCartJSON.one",
+					type:"POST",
+					data:{"pnum":pnum
+						, "pqty":pqty
+						}, 
+					success:function() { // 콜백함수
+						alert("장바구니에 추가했습니다.");
+					},
+					error: function(request, status, error){
+			            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			        }
+				});
+			}
+			else {
+				alert("장바구니 기능은 로그인이 필요합니다.");
+				location.href="<%=ctxPath%>/login/login.one";
+			}
+		}); // end of $(document).on("click", "button.savecart", function(){})------------------------------
+		
+		
+	});
 </script>
 
-<jsp:include page="header.jsp"/>
 
 <!-- header 시작-->
 <header class="w3-display-container w3-content w3-wide" style="max-width:1100px; margin-top:40px;" id="home">
@@ -78,66 +149,29 @@
 <div class="container-fluid container-xl mt-1">
 	<div class="row">
 		
-		<div class="col-md-3 col-6 product">
-			<div class="hidden my-2">
-                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-            </div>
-			<a href="" class="text-body">				
-			<img src="<%= ctxPath%>/images/MARIUS.jpg" style="width:100%">
-	        <span class="w3-bar-item" style="font-size:12px"><b>MARIUS 마리우스</b></span><br>
-	        <span class="w3-opacity" style="font-size:12px">스툴</span><br>
-	                  ￦<span style="font-size:20px"><b>5,000 &emsp;</b></span>					        
-	        </a>
-	        <div class="hidden">
-                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-            </div>
-		</div>
-		
-		<div class="col-md-3 col-6 product">
-			<div class="hidden my-2">
-                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-            </div>
-			<a href="" class="text-body">
-		        <img src="<%= ctxPath%>/images/TOBIAS.jpg" style="width:100%">
-			      <span class="w3-bar-item" style="font-size:12px"><b>TOBIAS 토비아스</b></span><br>
-			      <span class="w3-opacity" style="font-size:12px">식탁의자</span><br>
-			                ￦<span style="font-size:20px"><b>89,900 &emsp;</b></span>
-	        </a>
-	        <div class="hidden">
-                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-            </div>
-		</div>
-		
-		<div class="col-md-3 col-6 product">
-			<div class="hidden my-2">
-                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-            </div>
-			<a href="" class="text-body">
-		        <img src="<%= ctxPath%>/images/PELLO.jpg" style="width:100%">
-			      <span class="w3-bar-item" style="font-size:12px"><b>PELLO 펠로</b></span><br>
-			      <span class="w3-opacity" style="font-size:12px">패브릭 암체어</span><br>
-			                ￦<span style="font-size:20px"><b>40,000 &emsp;</b></span>
-	        </a>
-	        <div class="hidden">
-                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-            </div>
-		</div>
-		
-		<div class="col-md-3 col-6 product">
-			<div class="hidden my-2">
-                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-            </div>
-			<a href="" class="text-body">
-		        <img src="<%= ctxPath%>/images/TEODORES.jpg" style="width:100%">
-			      <span class="w3-bar-item" style="font-size:12px"><b>TEODORES 테오도레스</b></span><br>
-			      <span class="w3-opacity" style="font-size:12px">식탁의자</span><br>
-			                ￦<span style="font-size:20px"><b>27,900 &emsp;</b></span>
-	        </a>
-	        <div class="hidden">
-                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-            </div>
-		</div>
-	
+		<c:if test="${not empty requestScope.hotproductList}">
+			<c:forEach var="hotpvo" items="${requestScope.hotproductList}" varStatus="status">
+				<div class="col-md-3 col-6 product">
+					<div class="hidden my-2 wish">
+		                <span class='pnum1' style='display:none'>${hotpvo.pnum}</span>
+		                <button class='btn btn-outline-danger btn-sm border-0'><i class='icon-link far fa-heart fa-lg'></i></button>
+		            </div>
+					<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${hotpvo.pnum}" class="text-body">				
+					  <img src="<%= ctxPath%>/image_ikea/${hotpvo.prodimage}" style="width:100%">
+				      <span class="w3-bar-item" style="font-size:12px"><b>${hotpvo.pname}</b></span><br>
+				      <span class="w3-opacity" style="font-size:12px">${hotpvo.cname}</span><br>
+				                ￦<span style="font-size:20px"><b><fmt:formatNumber value="${hotpvo.price}" pattern="###,###" /> &emsp;</b></span>		        
+			        </a>
+			        <div class="hidden">
+		                <button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>
+		                <span class="pnum" style="display:none;">${hotpvo.pnum}</span>
+		            </div>
+				</div>
+			</c:forEach>
+		</c:if>
+		<c:if test="${empty requestScope.hotproductList}">
+			<div class="col-md-3 col-6 product">판매된 상품이 없습니다.</div>
+		</c:if>
 	</div>
 </div>
 <!-- 인기제품 끝 -->
@@ -152,23 +186,26 @@
 
 <div class="container-fluid container-xl mt-1">
 	<div class="row">
-		<c:forEach var="pvo" items="${requestScope.newproductList}" varStatus="status">
-			<div class="col-md-3 col-6 product">
-				<div class="hidden my-2">
-	                <button class="btn btn-outline-danger btn-sm border-0"><i class="icon-link far fa-heart fa-lg"></i></button>
-	            </div>
-				<a href="" class="text-body">				
-				  <img src="<%= ctxPath%>/image_ikea/${pvo.prodimage}" style="width:100%">
-			      <span class="w3-bar-item" style="font-size:12px"><b>${pvo.pname}</b></span><br>
-			      <span class="w3-opacity" style="font-size:12px">${pvo.cname}</span><br>
-			                ￦<span style="font-size:20px"><b><fmt:formatNumber value="${pvo.price}" pattern="###,###" /> &emsp;</b></span>		        
-		        </a>
-		        <div class="hidden">
-	                <button class="btn btn-outline-success btn-sm">Cart&ensp;<i class="fa fa-shopping-cart"></i></button>
-	            </div>
-			</div>
-		</c:forEach>
-		
+		<c:if test="${not empty requestScope.newproductList}">
+			<c:forEach var="pvo" items="${requestScope.newproductList}" varStatus="status">
+				<div class="col-md-3 col-6 product">
+					<div class="hidden my-2 wish">
+		                <span class='pnum1' style='display:none'>${pvo.pnum}</span>
+		                <button class='btn btn-outline-danger btn-sm border-0'><i class='icon-link far fa-heart fa-lg'></i></button>
+		            </div>
+					<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${pvo.pnum}" class="text-body">				
+					  <img src="<%= ctxPath%>/image_ikea/${pvo.prodimage}" style="width:100%">
+				      <span class="w3-bar-item" style="font-size:12px"><b>${pvo.pname}</b></span><br>
+				      <span class="w3-opacity" style="font-size:12px">${pvo.cname}</span><br>
+				                ￦<span style="font-size:20px"><b><fmt:formatNumber value="${pvo.price}" pattern="###,###" /> &emsp;</b></span>		        
+			        </a>
+			        <div class="hidden">
+		                <button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>
+		                <span class="pnum" style="display:none;">${pvo.pnum}</span>
+		            </div>
+				</div>
+			</c:forEach>
+		</c:if>
 	
 	</div>
 </div>
