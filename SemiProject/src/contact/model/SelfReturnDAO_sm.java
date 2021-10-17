@@ -143,7 +143,7 @@ public class SelfReturnDAO_sm implements InterSelfReturnDAO_sm {
 			String sql = " select returnno, fk_userid, fk_odrcode, name, email, to_char(returndate, 'yyyy-mm-dd') AS returndate, status " + 
 						 " from " + 
 						 " ( " + 
-						 "    select returnno, fk_userid, fk_odrcode, name, email, returndate, status " + 
+						 "    select rownum AS rno, returnno, fk_userid, fk_odrcode, name, email, returndate, status " + 
 						 "    from " + 
 						 "    ( " + 
 						 "    select returnno, fk_userid, fk_odrcode, name, email, returndate, status " + 
@@ -171,7 +171,7 @@ public class SelfReturnDAO_sm implements InterSelfReturnDAO_sm {
 				sql +=	 "    order by returnno desc " + 
 						 "    ) V " + 
 						 " ) T " + 
-						 " where returnno between ? and ? ";
+						 " where rno between ? and ? ";
 				
 				pstmt = conn.prepareStatement(sql);
 				

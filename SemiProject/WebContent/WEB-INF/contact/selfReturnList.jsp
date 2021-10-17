@@ -213,13 +213,13 @@
 						<td>
         				<c:choose>
         					<c:when test="${rvo.status eq '0'}">
-        						신청완료
+        						<span style="color: #80ccff; font-weight: bold;">신청완료</span>
         					</c:when>
         					<c:when test="${rvo.status eq '1'}">
-        						반품취소
+        						<span style="color: #ff9980; font-weight: bold;">반품취소</span>
         					</c:when>
         					<c:otherwise>
-        						반품완료
+        						<span style="color: #8cd9b3; font-weight: bold;">반품완료</span>
         					</c:otherwise>
         				</c:choose>
         				</td>
@@ -229,7 +229,7 @@
 	    </table>    
 	    
 	    <nav class="my-5">
-	    	<div style="display: flex; width: 80%;">  <!--  가운데 맞춤 -->
+	    	<div style="display: flex; width: 90%;">  <!--  가운데 맞춤 -->
 	    		<ul class="pagination" style="margin: auto;"> ${requestScope.pageBar}</ul>
 	    	</div>
 	    </nav>
