@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%
 	String ctxPath = request.getContextPath();
 %>
@@ -42,8 +45,59 @@
 
 </style>
 
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <script type="text/javascript">
 
+	$(document).ready(function() {
+		$("button#searchAddress").click(function(){
+			new daum.Postcode({
+	            oncomplete: function(data) {
+	                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+	                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	                var addr = ''; // 주소 변수
+	                var extraAddr = ''; // 참고항목 변수
+
+	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                    addr = data.roadAddress;
+	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                    addr = data.jibunAddress;
+	                }
+
+	                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	                if(data.userSelectedType === 'R'){
+	                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                        extraAddr += data.bname;
+	                    }
+	                    // 건물명이 있고, 공동주택일 경우 추가한다.
+	                    if(data.buildingName !== '' && data.apartment === 'Y'){
+	                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                    }
+	                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                    if(extraAddr !== ''){
+	                        extraAddr = ' (' + extraAddr + ')';
+	                    }
+	                    // 조합된 참고항목을 해당 필드에 넣는다.
+	                    document.getElementById("extraAddress").value = extraAddr;
+	                
+	                } else {
+	                    document.getElementById("extraAddress").value = '';
+	                }
+
+	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	                document.getElementById('postcode').value = data.zonecode;
+	                document.getElementById("address").value = addr;
+	                // 커서를 상세주소 필드로 이동한다.
+	                document.getElementById("detailAddress").focus();
+	            }
+	        }).open();					
+		});
+	});
 
 </script>
 
@@ -73,10 +127,10 @@
 						<i class="fas fa-truck mr-2"></i>
 						<span>배송서비스</span>
 						<hr style="border: solid 2px #004d99; border-radius: 25px;">
-				    	<span class="mx-2 my-2" style="font-weight: bold; font-size: 11pt;">일반 배송 : 8,000원</span><br>
+				    	<span class="mx-2 my-2" style="font-weight: bold; font-size: 11pt;">일반 배송 : 8,000&nbsp;원</span><br>
 				    	<span class="mx-2 my-2" style="font-size: 11pt;">택배 배송 : 출고예정일 이후 3-5일 이내 배송되며, 2박스 이상으로 분리배송 될 수 있습니다.</span><br><br>
 				    	<span class="mx-2 my-2" style="font-weight: bold;font-size: 11pt;">출고 예정일</span><br>
-				    	<span class="mx-2 my-2" style="font-size: 11pt;">2021.10.14 09:00 - 21:00</span><br>
+				    	<span class="mx-2 my-2" style="font-size: 11pt;">${requestScope.shipmentDate}&nbsp; 09:00 - 21:00</span><br>
 					</div>
 				    <div class="col-10 col-lg-9 my-3 float-left">
 				    	<button class="btn" data-toggle="collapse" data-target="#payment1"  style="background-color: #004d99; color: white; width: 100%; height: 50px; font-weight: bold; border-radius: 25px;">다음</button>
@@ -93,26 +147,28 @@
 				    <div class="col-12 col-lg-10"><h3 style="font-weight: bold;">주문을 어디로 배송할까요?</h3></div>
 				    <div class="col-12 col-lg-12 mt-4">
 					    <form name="deliveryAddress" style="width: 95%;">
-					    	<input type="text" class="form-control mb-1" id="lastname" name="lastname" placeholder="성"/>
+					    	<input type="text" class="form-control mb-1" id="lastname" name="lastname" placeholder="${(requestScope.loginuser.name).substring(0, 1)}"/>
 					    	<span class="error">성을 입력하세요</span><br><br>
 					    	
-					    	<input type="text" class="form-control mb-1" id="firstname" name="firstname" placeholder="이름"/>
+					    	<input type="text" class="form-control mb-1" id="firstname" name="firstname" placeholder="${(requestScope.loginuser.name).substring(1)}"/>
 					    	<span class="error">이름을 입력하세요</span><br><br>
 					    	
-					    	<input type="text" class="form-control mb-1" id="email" name="email" placeholder="이메일"/>
+					    	<input type="text" class="form-control mb-1" id="email" name="email" placeholder="${requestScope.loginuser.email}"/>
 					    	<span class="error">이메일을 올바르게 입력하세요</span><br><br>
 					    	
-					    	<input type="text" class="form-control mb-1" id="mobile" name="mobile" placeholder="전화번호 (예 : 01012341234)"/>
+					    	<input type="text" class="form-control mb-1" id="mobile" name="mobile" placeholder="${requestScope.loginuser.mobile}"/>
 					    	<span class="error">전화번호를 올바르게 입력하세요</span><br><br>
 					    	
-					    	<button class="btn btn-dark mb-3" style="color: white; width: 200px; height: 50px; font-weight: bold; border-radius: 25px;">주소찾기</button>
+					    	<button id="searchAddress" class="btn btn-dark mb-3" style="color: white; width: 200px; height: 50px; font-weight: bold; border-radius: 25px;">주소찾기</button>
 					    	
-					    	<input type="text" class="form-control mb-1" id="postcode" name="postcode" placeholder="우편번호"/>
+					    	<input type="text" class="form-control mb-1" id="postcode" name="postcode" placeholder="${requestScope.loginuser.postcode}"/>
 					    	<span class="error">우편번호를 올바르게 입력하세요</span><br><br>
 					    	
-					    	<input type="text" class="form-control" id="address" name="address" placeholder="주소"/><br>	
+					    	<input type="text" class="form-control mb-2" id="address" name="address" placeholder="${requestScope.loginuser.address}"/>
 					    	
-					    	<input type="text" class="form-control mb-1" id="detailAddress" name="detailAddress" placeholder="상세주소"/>
+					    	<input type="text" class="form-control mb-2" id="detailAddress" name="detailAddress" placeholder="${requestScope.loginuser.detailaddress}"/>
+					    	
+					    	<input type="text" class="form-control mb-2" id="extraAddress" name="extraAddress" placeholder="${requestScope.loginuser.extraaddress}"/>
 					    	<span class="error">주소를 올바르게 입력하세요</span><br><br>
 					    	
 					    	<input type="text" class="form-control" id="detailDelivery" name="detailDelivery" placeholder="배송옵션(예 : 부재시 경비실에 맡겨주세요)"/>
@@ -155,31 +211,31 @@
 									<div class="col-3 mr-2"><a href="#" class="float-right mr-3" style="color: gray; text-decoration: underline;">수정</a></div>
 								</div>
 								<div>
-									<img src="<%= ctxPath%>/image_ikea/롱피엘_베이지1.webp" style="width: 100px;" /><br>
+									<c:if test="${not empty odProdimgList}">
+										<c:forEach var="odProdImg" items="${requestScope.odProdimgList}">
+											<img src="<%= ctxPath%>/image_ikea/${odProdImg.imgfilename}" style="width: 100px;" />
+										</c:forEach>
+									</c:if>
 									<br><br>
 									<h6 style="font-weight: bold;">주문 내역</h6>
 									<br>
 									<div class="row justify-content-between mb-3">
-										<div class="col-6 my-2"><h6>주문 금액 (배송비 제외)</h6></div>
-										<div class="col-4 my-2 mr-2 ml-auto"><h6><span class="float-right mr-2" id="price">39,000원</span></h6></div>
+										<div class="col-6 my-2"><h6>제품 금액(VAT 제외)</h6></div>
+										<div class="col-4 my-2 mr-2 ml-auto"><h6><span class="float-right mr-2" id="price"><fmt:formatNumber value="${requestScope.totalPrice}"/>&nbsp;원</span></h6></div>
 										<div class="w-100"></div>
 										
-										<div class="col-6 my-2"><h6>전체 서비스 비용</h6></div>
-										<div class="col-4 my-2 mr-2 ml-auto"><h6><span class="float-right mr-2" id="serviceCharge">8,000원</span></h6></div>
+										<div class="col-6 my-2"><h6>VAT</h6></div>
+										<div class="col-4 my-2 mr-2 ml-auto"><h6><span class="float-right mr-2" id="serviceCharge"><fmt:formatNumber value="${requestScope.VAT}"/>&nbsp;원</span></h6></div>
 										<div class="w-100"></div>
 										
-										<div class="col-6 my-2"><h6>주문 금액 (부가세 제외)</h6></div>
-										<div class="col-4 my-2 mr-2"><h6><span class="float-right mr-2" id="totalPrice">43,546원</span></h6></div>
-										<div class="w-100"></div>
-										
-										<div class="col-6 my-2"><h6>부가세 (10%)</h6></div>
-										<div class="col-4 my-2 mr-2"><h6><span class="float-right mr-2" id="totalPrice">47,900원</span></h6></div>
+										<div class="col-6 my-2"><h6>배송비</h6></div>
+										<div class="col-4 my-2 mr-2"><h6><span class="float-right mr-2" id="totalPrice">8,000&nbsp;원</span></h6></div>
 										<div class="w-100"></div>
 										
 										<hr style="border: 2px solid black; width: 550px;">
 										
 										<div class="col-6 my-2"><h5 style="font-weight: bold;">총 주문 금액</h5></div>
-										<div class="col-4 my-2 mr-2"><h5><span class=" float-right" id="totalPrice">47,900원</span></h5></div>
+										<div class="col-4 my-2 mr-2"><h5><span class=" float-right" id="totalPrice"><fmt:formatNumber value="${requestScope.sumTotalPrice}"/>&nbsp;원</span></h5></div>
 					
 									</div>
 									

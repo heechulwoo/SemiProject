@@ -10,7 +10,11 @@
 <jsp:include page="../header.jsp"/>
 
 <script type="text/javascript">
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> refs/heads/sonjy
 	$(document).ready(function(){
 		showWishList();
 		
@@ -131,7 +135,7 @@
 		
 		
 	}); // end of $(document).ready(function(){})-------------------------
-
+	
 	// Function Declaration
 	function showWishList() {
 		
@@ -266,3 +270,4 @@
 		</div>
 	</div>
 <jsp:include page="../footer.jsp"/>	
+

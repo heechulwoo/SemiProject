@@ -457,7 +457,31 @@ public class ProductDAO implements InterProductDAO {
            close();
         }      
 		return cname;
-	}
+	}// end of public String selectCname(String cnum)--------------
+
+	
+	// 장바구니 수정
+	@Override
+	public int editCart(String cartno, String oqty) throws SQLException {
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " update tbl_cart set oqty = ? " + 
+					     " where cartno = ? "; 
+			
+			pstmt = conn.prepareStatement(sql);		
+			pstmt.setString(1, oqty);
+			pstmt.setString(2, cartno);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+	           close();
+        }
+		return result;
+		
+	}// end of public void editCart(String cartno, String oqty)------------------
 
     
     

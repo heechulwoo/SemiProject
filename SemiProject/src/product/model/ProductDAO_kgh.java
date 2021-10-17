@@ -322,4 +322,38 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		
 		return productColorList;
 	}
+
+	
+	// 주문하려는 상품의 대표 이미지 가져오는 메소드 생성
+	@Override
+	public ProductImageVO_kgh getProdImage(String odpnum) throws SQLException {
+		ProductImageVO_kgh pimgVO = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select prodimage " + 
+						 " from tbl_product " + 
+						 " where pnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, odpnum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				pimgVO = new ProductImageVO_kgh();
+				pimgVO.setImgfilename(rs.getString(1));
+				
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return pimgVO;
+	}
+
+	
 }

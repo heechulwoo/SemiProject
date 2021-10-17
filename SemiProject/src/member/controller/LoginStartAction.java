@@ -17,6 +17,13 @@ public class LoginStartAction extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		// 카테고리 목록 얻어오기 
+	      super.getCategoryList(request);
+	      
+	      // 로그인 또는 로그아웃을 하면 시작페이지로 가는 것이 아니라 방금 보았던 그 페이지로 그대로 가기 위한 것임. 
+	    //    super.goBackURL(request);
+		
+		
 		String method = request.getMethod();
 		
 		
@@ -98,12 +105,19 @@ public class LoginStartAction extends AbstractController {
 				super.setRedirect(true);
 				
 				// 로그인을 하면 시작페이지(index.up)로 가는 것이 아니라 로그인을 시도하려고 머물렀던 그 페이지로 가기 위한 것이다.
-		        super.setViewPage(request.getContextPath()+"/index.one");
+				String goBackURL = (String)session.getAttribute("goBackURL");
 				
+				if(goBackURL == null) {
+					super.setViewPage(request.getContextPath()+"/index.one");
+				}
+				else {
+					super.setViewPage(request.getContextPath()+goBackURL);
+					
+				}
+		        
 			}
 			
-			
-			
+
 		}// end of if(loginuser != null)------------------
 		
 

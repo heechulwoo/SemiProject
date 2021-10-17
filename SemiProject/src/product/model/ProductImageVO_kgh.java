@@ -8,9 +8,9 @@ public class ProductImageVO_kgh {
 	
 	private ProductVO_kgh pvo;	// 제품 VO
 	
-	ProductImageVO_kgh() {}
+    public ProductImageVO_kgh() {}
 	
-	ProductImageVO_kgh(int imgfileno, String fk_pnum, String imgfilename) {
+    public ProductImageVO_kgh(int imgfileno, String fk_pnum, String imgfilename) {
 		this.imgfileno = imgfileno;
 		this.fk_pnum = fk_pnum;
 		this.imgfilename = imgfilename;

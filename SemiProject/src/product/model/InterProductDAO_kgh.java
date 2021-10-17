@@ -23,4 +23,8 @@ public interface InterProductDAO_kgh {
 
 	// 해당하는 제품 이름과 일치하는 상품의 색상 이미지 가져오기
 	List<ProductVO_kgh> selectProductColor(String pname) throws SQLException;
+
+	// 주문하려는 상품의 대표 이미지 가져오는 메소드 생성
+	ProductImageVO_kgh getProdImage(String odpnum) throws SQLException;
+
 }
