@@ -15,6 +15,8 @@ public class IndexController extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// IndexController 클래스의 인스턴스 메소드
 		
+		super.goBackURL(request);
+		
 		// 카테고리 목록 얻어오기 
 		super.getCategoryList(request);
 		
