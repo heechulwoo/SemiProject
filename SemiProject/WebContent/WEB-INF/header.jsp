@@ -7,9 +7,6 @@
 	String ctxPath = request.getContextPath();
 %>    
 
-<!DOCTYPE html>
-<html>
-<head>
 <title>IKEA SSANGYONG ｜ 이케아 쌍용</title>
 
 <!-- title icon -->
@@ -126,12 +123,11 @@
 			});
 		}
 	
+		
 	}); // end of $(document).ready(function(){}----------------------
 
-</script>
-
-<!-- 사이드바 function -->    
-<script>
+			
+// Function Declaration  
 	function w3_open() {
 	  document.getElementById("mySidebar").style.display = "block";
 	}
@@ -139,10 +135,37 @@
 	function w3_close() {
 	  document.getElementById("mySidebar").style.display = "none";
 	}
-</script>
-</head>
 
-<body>
+
+	function goSearch(){	
+	
+		if( $("input#searchWord").val() == ""){ // 검색어가 없다면
+			return false;// 검색이 취소된다.
+		}
+		 
+		var frm = document.searchFrm;
+		frm.action = "<%= ctxPath%>/product/admin/searchResult.one";
+		frm.method = "GET";
+		frm.submit();
+		
+	}// end of goSearch ------------------------------
+	
+	
+	
+	// 검색어에서 엔터를 하면 검색하러 가도록 한다.
+/* 	$("#searchWord").bind("keyup", function(event){
+		if(event.keyCode == 13){ 
+			goSearch();
+		} 
+	});	  ==> 이 방식 안됨. 왜??? */
+			
+	function enterkey(){
+		if(window.event.keyCode == 13){
+			goSearch();
+		}
+	}		
+
+</script>
 
 <!-- Sidebar 시작 -->
 <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
@@ -203,11 +226,12 @@
 		    </li>
 		  </ul>
 		 
-	    <form class="mx-2 my-auto d-inline w-100">
+	
+	    <form name="searchFrm" onsubmit="return false;" class="mx-2 my-auto d-inline w-100">
 	        <div class="input-group">
-	            <input type="text" class="form-control border" style=" border-radius: 25px; " placeholder="검색어 입력">
+	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; " placeholder="검색어 입력" onkeyup="enterkey()">
 	            <span class="input-group-append">
-	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button">
+	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button" onClick="goSearch();">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            </span>
