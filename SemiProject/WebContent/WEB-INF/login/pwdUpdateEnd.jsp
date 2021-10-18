@@ -92,6 +92,7 @@
 			if(pwd != pwd2){
 				// 비밀번호가 일치하지 않는 경우
 				$("span.error2").show();
+				$("input#pwd").val("");
 				$(this).val("");
 				$(this).focus();
 			}
@@ -148,7 +149,7 @@
 	</c:if>	
 	
 	<c:if test="${requestScope.method == 'POST' && requestScope.n == 1}">
-		<div id="div_updateResult" align="center" class="mt-2"><b>${requestScope.userid}님의 비밀번호가 변경되었습니다.</b><br>
+		<div id="div_updateResult" align="center" class="mt-4"><b>${requestScope.userid}님의 비밀번호가 변경되었습니다.</b><br>
         </div> 
 	</c:if>
 	

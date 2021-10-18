@@ -36,7 +36,6 @@ public class PwdUpdateEndAction extends AbstractController {
 		}
 		
 		request.setAttribute("userid", userid);
-		
 		request.setAttribute("method", method);
 		
 	//	super.setRedirect(false);

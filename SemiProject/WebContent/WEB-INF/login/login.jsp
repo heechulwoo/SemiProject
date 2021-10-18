@@ -118,17 +118,17 @@
 
 
 
-<div class="container"  style="max-width:1000px; margin-top: 30px; height:900px" >
+<div class="container"  style="max-width:1100px; margin-top: 30px; height:900px" >
 <!-- 상단 컨텐츠 시작 -->
  <div class="row custom-topcontents">
-   <div class="col-md-3 px-4">
-      <h1 ><b>로그인</b></h1>
-      <p style="font-size: 9pt;  margin-top:40px">IKEA 계정이 없으신가요?<br> 지금 바로 만들어보세요</p>
-      <span class="card-text"><i class="fa fa-pen"></i></span>
-      <a href="<%= ctxPath%>/member/register.one" style="font-size:14px"><b>회원가입</b></a> 
+   <div class="col-md-3 px-4 mt-5">
+      <h1 class="ml-5"><b>로그인</b></h1>
+      <p style="font-size: 9pt;  margin-top:40px" class="ml-5">IKEA 계정이 없으신가요?<br> 지금 바로 만들어보세요</p>
+      <span class="card-text"><i class="fa fa-pen ml-5"></i></span>
+      <a href="<%= ctxPath%>/member/register.one" style="font-size:14px" class="ml-1"><b>회원가입</b></a> 
    </div>
-   <div class="col-md-9">
-      <img src="<%= ctxPath%>/images/loginpage.jpg" class="img-fluid"   alt="반응형 로그인 이미지" width="750" height="300">
+   <div class="col-md-9" >
+      <img src="<%= ctxPath%>/images/loginpage.jpg" class="img-fluid ml-5"   alt="반응형 로그인 이미지" width="750" height="300">
     </div>
  </div>
 <!-- 상단 컨텐츠 끝 -->
@@ -142,7 +142,7 @@
  <div class="col-md-9" style="font-size:12px">
       
    <!-- 경고 메시지 시작 -->
-   <div class="alert alert-warning alert-dismissible fade show" role="alert">
+   <div class="alert alert-warning alert-dismissible fade show ml-5" role="alert" style="width:750px">
            공용으로 사용하는 PC에서는 &quot;아이디 기억하기&quot;를 체크하면 개인정보 유출의 위험이있습니다.
      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
        <span aria-hidden="true">&times;</span>
@@ -151,7 +151,7 @@
    <!-- 경고 메시지 끝 -->
       
    <!-- 로그인 폼 시작 -->
-   <form name="loginFrm"  class="font-weight-bolder">
+   <form name="loginFrm"  class="font-weight-bolder ml-5" style="font-size:13px"> 
    <fieldset>
       <div class="row pt-4">
       <div class="col-md-9">
@@ -161,7 +161,7 @@
                <label for="email">아이디</label>
             </div>
             <div class="col-md-9">
-               <input class="form-control" type="text" style="font-size:12px" id="loginUserid" name="userid" placeholder="아이디" autocomplete="off" required /> 
+               <input class="form-control" type="text" style="font-size:13px" id="loginUserid" name="userid" placeholder="아이디" autocomplete="off" required /> 
             </div>
          </div>
          
@@ -170,7 +170,7 @@
                <label for="pwd">비밀번호</label>
             </div>
             <div class="col-md-9">
-               <input class="form-control" type="password" style="font-size:12px" id="loginPwd" name="pwd"   placeholder="비밀번호" required />
+               <input class="form-control" type="password" style="font-size:13px" id="loginPwd" name="pwd"   placeholder="비밀번호" required />
             </div>
          </div>
          

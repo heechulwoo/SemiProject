@@ -14,6 +14,16 @@
 <jsp:include page="/WEB-INF/header.jsp"/>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
 
+<!-- 계정탈퇴 사이드바 function -->    
+<script>
+   function del_open() {
+     document.getElementById("sidebarDel").style.display = "block";
+   }
+    
+   function del_close() {
+     document.getElementById("sidebarDel").style.display = "none";
+   }
+</script>
 
 <style>
 
@@ -63,6 +73,10 @@
 		
 		$("span.error").hide();
 		
+		 // 현재 페이지를 새로고침한다.
+	       $(".myclose").click(function(){
+	            javascript:history.go(0);
+	      });
 
 		$("input#name").blur(function(){
 			
@@ -290,10 +304,21 @@
 			    $(this).parent().find(".error").hide(); // error메시지 숨기기
 			    $("span#emailCheckResult").html($("input#email").val()+"은 사용가능합니다.").css("color","green");
 				
-			}
-			
-			
+			}		
 		});// end of $("input#email").bind("change", function(){})----------
+		
+		
+		// === 계정 탈퇴하기 ===
+		$("button#btnDel").click(function(){
+	
+			var frm = document.deleteFrm;
+			frm.action = "<%= ctxPath%>/member/memberDelete.one";
+			frm.method = "post";
+			frm.submit();
+		//	self.close(); // 팝업창을 닫는 것이다.
+					
+		});// end of function goDelete()---------------------
+		
 		
 	});// end of $(document).ready(function(){})-----------------
 	
@@ -391,6 +416,8 @@
 	}// end of function goEdit(){}----------------
 	
 	
+	
+
 </script>
 
 	<!-- 상단 컨텐츠 시작 -->
@@ -406,7 +433,7 @@
 			  </button></a>
 		</div>
 			<img class="w3-image" width="900" height="300" src="<%= ctxPath%>/images/제목 없음.png" style="margin-top:40px">	
-		</div>
+	
 
 		<table id="tblMemberUpdate" class="table my-4" style="font-size: 10pt; border-collapse:separate; border-spacing:40px 30px">
 		 
@@ -478,48 +505,48 @@
 		    	      
 
 		    <tr>     
-		      <td>
+		      <td></td>
 		      <td><button type="button" id="btnUpdate"class="btn btn-dark mt-3 mr-3" onClick="goEdit()" style="border-radius: 40px; margin-left:400px; font-size: 10pt">  
 		  		<b>수정하기</b>
 			  </button>
 		     
-		      <!-- Modal -->
-		      <button type="button" id="btnUpdate" class="btn btn-outline-dark mt-3 " data-toggle="modal" style="border-radius: 40px; font-size: 10pt" data-target="#exampleModal">  <!--  data-toggle="modal"를 넣어주면 되는것이다. -->  
+		     
+		      <button type="button" id="btnDelete" class="btn btn-outline-dark mt-3 "  onclick="del_open()" style="border-radius: 40px; font-size: 10pt">  
 		  		<b>계정 탈퇴</b>
 			  </button>
-				<!-- Modal 구성 요소 -->
-				<div class="modal fade" id="exampleModal">
-				  <div class="modal-dialog">
-				    <div class="modal-content">
-				      
-				      <!-- Modal header -->
-				      <div class="modal-header">
-				        <h5 class="modal-title">회원탈퇴창</h5>
-				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				      </div>
-				      <!-- Modal body -->
-				      <div class="modal-body">
-				        Modal body....
-				      </div>
-				      <!-- Modal footer -->
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
-				        <button type="button" class="btn btn-primary" >계정 탈퇴</button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-				<!-- Modal 끝 -->
+				
 		    </tr>
-
 		  </tbody>
 		</table>
 		</form>
 	</div>
+	</div>
 	<!-- row 끝 -->
 	<!-- 중앙 컨텐츠 끝 -->
 
-	<hr>
+
+<!-- 계정탈퇴 사이드바 시작 -->
+   <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right w3-light" style="display:none; z-index:2; width:70%; max-width:550px; position:fixed; overflow:hidden; right:0px" id="sidebarDel" >
+      <div class="container" style="float:right; max-width:490px; height:700px"> 
+        <a href="javascript:void(0)" onclick="del_close()"class=" w3-button myclose" style="border-radius: 70px; margin-left:400px; margin-top:20px"><i class="fas fa-times"></i></a>
+		<form name="deleteFrm" id="deleteFrm" style="font-size:14px; margin-top:60px; margin-right:30px">
+		
+			<div style="font-size:21pt"><span><b>정말로 탈퇴하시겠습니까?</b></span>
+		     	<div style="font-size:11pt; color:#404040; margin-top:40px">
+		     		<p>IKEA를 더 이상 이용하지 않는다면 언제든 탈퇴할 수 있습니다.<br>단, 회원 정보 및 구매 내역이 함께 삭제된다는 점을 참고해주세요.</p>
+					<p style="margin-top:20px">계정을 없애고 싶으신 경우 계정 삭제를 처리해드릴게요. 계정을 없애시면 IKEA Family 멤버십 혜택을 더 이상 누리실 수 없습니다. 계정의 모든 개인정보 및 위시리스트가 모두 삭제됩니다.</p>
+					<p style="margin-top:20px">언제든지 다시 가입하실 수 있어요!</p>
+				</div>
+		     		<button type="button" class="btn btn-outline-dark" id="btnDel" style="margin-left:18px; margin-top:50px; border-radius: 50px; font-size:14px; width: 390px; height:55px">
+		           <b>계정 탈퇴</b></button>
+			</div>
+			
+		</form>
+       </div>  
+   </nav>
+ <!-- 계정탈퇴 사이드바 끝-->
+
+
 
 
 </body>
