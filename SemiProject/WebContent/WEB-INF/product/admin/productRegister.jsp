@@ -326,6 +326,14 @@ text-align: center;
 							</td>
 						</tr>
 						
+						<tr>
+							<th>제품 크기 이미지</th>
+							<td>
+								<input type="file" name="lastimg" class="forminput requiredInfo " />
+								<span class="error">필수입력</span> 
+							</td>
+						</tr>
+						
 
 					</tbody>
 				</table>

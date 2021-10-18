@@ -88,6 +88,7 @@ public class ProductRegisterAction extends AbstractController {
 			  // 이때 업로드 된 파일이 없는 경우에는 null을 반환한다.
 			  
 			  String pimage1 = mtrequest.getFilesystemName("pimage1");
+			  String lastimg = mtrequest.getFilesystemName("lastimg");
 			  
 			  String price = mtrequest.getParameter("price"); 
 			  String color = mtrequest.getParameter("color");
@@ -137,22 +138,28 @@ public class ProductRegisterAction extends AbstractController {
 				  
 				  int attachCount = 0;
 				  
-				 // 파일을 최소 4개 이상 올려야 하는 유효성 검사를 뷰단에서 하기 때문에 값은 무조건 있다.
+				 // 파일을 최소 2개 이상 올려야 하는 유효성 검사를 뷰단에서 하기 때문에 값은 무조건 있다.
 	             attachCount = Integer.parseInt(str_attachCount);
 	             			  
+	             
 				// 첨부파일의 파일명(파일서버에 업로드 되어진 실제파일명) 알아오기 
 	             for(int i=0; i<attachCount; i++) {
-	            	 
 	            	 String attachFileName = mtrequest.getFilesystemName("attach"+i);
 	            	 
 	            	 adao.product_imagefile_Insert(pvo, attachFileName);
-	            	 							// pnum 은 위에서 채번해온 제품번호이다.
+	            	 // pnum 은 위에서 채번해온 제품번호이다.
 	            	 
-	             	}// end of for-------------------------
+	             }// end of for-------------------------
+	            	 
+	             
+	             // tbl_imagefile 테이블에 제품의 크기 이미지 파일명 insert 해주기 
+	             adao.product_imagefile_Insert(pvo, lastimg);
 	             
 				  message = "제품등록을 성공적으로 완료했습니다."; 
 				  loc = request.getContextPath()+"/product/admin/productRegister.one"; 
 			  }
+			  
+			  
 			  catch(SQLException e){ 
 				  e.printStackTrace(); message = "SQL오류로 제품등록을 실패했습니다.";
 				  loc = request.getContextPath()+"/product/admin/productRegister.one"; 

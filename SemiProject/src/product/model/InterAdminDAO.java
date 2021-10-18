@@ -26,6 +26,9 @@ public interface InterAdminDAO {
 
 	// 검색 제품 알아오기
 	public List<ProductVO> selectSearchProduct(Map<String, String> paraMap)throws SQLException;
+
+	// tbl_imagefile 테이블에 제품의 크기 이미지 파일명 insert 해주기 
+	public int product_lastimg_Insert(ProductVO pvo, String lastimg)throws SQLException;
 	
 	
 	

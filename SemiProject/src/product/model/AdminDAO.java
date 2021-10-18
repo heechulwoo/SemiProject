@@ -171,6 +171,41 @@ public class AdminDAO implements InterAdminDAO {
 	      return result;       
 		
 	}// end of public int product_imagefile_Insert(int pnum, String attachFileName)------
+	
+	
+	
+	// tbl_imagefile 테이블에 제품의 크기 이미지 파일명 insert 해주기 
+	@Override
+	public int product_lastimg_Insert(ProductVO pvo, String lastimg) throws SQLException {
+
+		int result = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " insert into tbl_imagefile(imgfileno, fk_pnum, imgfilename) "+ 
+	                    " values(seq_img.nextval, ?, ?) ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, pvo.getPnum());
+	         pstmt.setString(2, lastimg);
+	         
+	         result = pstmt.executeUpdate();
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;       
+		
+		
+	}// end of public void product_imagefile_Insert(ProductVO pvo, String lastimg, String attachFileName)-----------
+
+	
+
+		
+		
 
 	
 	// 검색결과 페이지에서 스크롤 방식으로 페이징 처리 해주기 위해 검색 제품의 전체 개수 알아오기
@@ -265,6 +300,8 @@ public class AdminDAO implements InterAdminDAO {
 		return searchList;
 	}// end of public List<ProductVO> selectSearchProduct(Map<String, String> paraMap)----
 
+	
+	
 	
 	
 	 
