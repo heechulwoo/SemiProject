@@ -79,6 +79,23 @@ public class LoginStartAction extends AbstractController {
 			}
 			
 			
+			if(loginuser.getStatus() == 1) { // 휴면 상태라면 (1 휴면, 0활동)
+				
+				 String message = "탈퇴한 회원입니다! 새로 회원가입을 해주세요!";
+		         String loc = request.getContextPath()+"/index.one";
+		         // 원래는 위와 같이 index.up 이 아니라 휴면인 계정을 풀어주는 페이지로 잡아주어야 한다. (이건 세미할때 해보자!)
+		         
+		         request.setAttribute("message", message);
+		         request.setAttribute("loc", loc);
+		         
+		         super.setRedirect(false);
+		         super.setViewPage("/WEB-INF/msg.jsp");
+				
+		         return; // 메소드 종료
+			}
+			
+			
+			
 			//////////// 세션에 로그인 된 값들 업데이트 //////////////
 			HttpSession session = request.getSession();
 			
@@ -87,7 +104,7 @@ public class LoginStartAction extends AbstractController {
 			if( loginuser.isRequirePwdChange() == true ) {
 				
 				String message = "비밀번호를 변경하신지 3개월이 지났습니다. 암호를 변경하세요!!";
-		        String loc = request.getContextPath()+"/restart.one";
+		        String loc = request.getContextPath()+"/member/mypage.one";
 		        // 원래는 위와같이 index.up이 아니라 사용자의 암호를 변경해주는 페이지로 잡아주어야한다.
 		          
 		        request.setAttribute("message", message);

@@ -15,6 +15,8 @@ public class MemberListAction extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		// 카테고리 목록 얻어오기 
+	    super.getCategoryList(request);
 		
 		// == 관리자(admin)로 로그인 했을 때만 조회가 가능하도록 한다. == //
 		HttpSession session = request.getSession();

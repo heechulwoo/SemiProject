@@ -112,6 +112,7 @@ public class MemberEditEndAction extends AbstractController {
 	        super.setViewPage("/WEB-INF/msg.jsp");
 		
 		}
+
 	
 		}//if("POST".contentEquals(method))
 		
@@ -119,3 +120,6 @@ public class MemberEditEndAction extends AbstractController {
 		
 		
 	}
+
+	
+

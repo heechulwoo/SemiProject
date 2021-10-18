@@ -32,17 +32,6 @@
 			$("input#searchWord").val("${requestScope.searchWord}")
 		}
 		
-		// *** select 태그에 대한 이벤트는  click 이 아니라 change 이다. *** // 
-		$("select#sizePerPage").bind("change", function(){
-			goSearch();	
-			
-		});
-		
-		// 선택한 select 값이 나오게끔 한다.
-		if("${requestScope.sizePerPage}" != "") {
-			$("select#sizePerPage").val("${requestScope.sizePerPage}");
-		}
-		
 		$("input#searchWord").bind("keyup", function(event){
 			if(event.keyCode == 13){ // 검색어에서 엔터(keycode 13)를 하면 검색하러 가도록 한다.
 				goSearch();
