@@ -69,13 +69,13 @@ public class GoogleMail_sm {
     					"	<tbody style=\"font-size:13px\">\r\n" + 
     					"		<tr>\r\n" + 
     					"			<td>요청하신 제품의 셀프반품 신청이 완료되었습니다.<br> 아래의 정보가 맞는지 확인 후 이케아를 방문해주세요.<br>\r\n" + 
-    					"			제품번호 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("fk_odrcode")+"</span><br>\r\n" + 
+    					"			주문번호 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("fk_odrcode")+"</span><br>\r\n" + 
     					"			신청인 아이디 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("fk_userid")+"</span><br>\r\n" + 
     					"			신청인 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("name")+"</span><br>\r\n" + 
     					"			구입처 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("wherebuy")+"</span><br>\r\n" + 
     					"			반품사유 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("whyreturn")+"</span><br>\r\n" + 
     					"			추가내용 : <span style='font-size:13pt; color:black; font-weight: bold;'>"+paraMap.get("plusReason")+"</span><br><br><br>\r\n" + 
-    					"			<span style='font-size:7pt; color:black; font-weight: bold;'> >>> 반품에 필요한 정보를 입력한 후 송부된 이메일을 제품, 영수증과 함께 매장 내 교환환불 코너에 오시면 됩니다. 저희 IKEA를 이용해주셔서 감사합니다. <<< </span>" + 
+    					"			<span style='font-size:7pt; color:black; font-weight: bold;'> >>> 반품에 필요한 정보를 입력한 후 송부된 이메일을 제품, 영수증과 함께<br>매장 내 교환환불 코너에 오시면 됩니다. 저희 IKEA를 이용해주셔서 감사합니다. <<< </span>" + 
     					"		</tr>\r\n" + 
     					"		<tr><td style=\"padding-top:55px\"><b>IKEA Semi</b></td>\r\n" + 
     					"	</tr>\r\n" + 
