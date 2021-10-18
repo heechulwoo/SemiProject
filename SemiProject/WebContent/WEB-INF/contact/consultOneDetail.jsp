@@ -415,7 +415,7 @@
 			 		    <input type="hidden" name="ask_orginFileName" value="${requestScope.cvo.ask_orginFileName}" /> 
 			
 				      	<c:if test="${requestScope.cvo.ask_orginFileName ne '없음'}">
-			                 <a href="<%= ctxPath%>/contact/fileDownload.one?askno=${cvo.askno}">${cvo.ask_orginFileName}</a>
+			                 <a style="color: #1aa3ff;" href="<%= ctxPath%>/contact/fileDownload.one?askno=${cvo.askno}">${cvo.ask_orginFileName}</a>
 			            </c:if>
 			            <c:if test="${requestScope.cvo.ask_orginFileName eq '없음'}">
 			                                      첨부파일없음
