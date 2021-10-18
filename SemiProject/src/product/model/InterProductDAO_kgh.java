@@ -27,4 +27,20 @@ public interface InterProductDAO_kgh {
 	// 주문하려는 상품의 대표 이미지 가져오는 메소드 생성
 	ProductImageVO_kgh getProdImage(String odpnum) throws SQLException;
 
+	// 주문 테이블에 주문내역 insert하기
+	String insertOrder(String userid, String sumTotalPrice) throws SQLException;
+
+	// 해당 주문번호를 통해 배송지 insert하기
+	void insertAddress(Map<String, String> paraMap) throws SQLException;
+
+	// 주문상세 테이블에 주문 상세내역 insert 하기
+	int insertOrderDetail(Map<String, String> odrparaMap) throws SQLException;
+
+	// 제품 테이블의 재고 수량 update 하기
+	void updatePqty(String odpnumIndex, String odoqtyIndex) throws SQLException;
+
+	// 장바구니에 해당 하는 상품 목록 delete 하기
+	void deleteCartno(String odcartnoIndex) throws SQLException;
+
+
 }

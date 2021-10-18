@@ -1,0 +1,63 @@
+package product.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import common.controller.AbstractController;
+import member.model.MemberVO;
+
+public class ProductPayController extends AbstractController {
+
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String method = request.getMethod();
+		
+		if("POST".equalsIgnoreCase(method)) {
+			
+			if(super.checkLogin(request)) {
+				
+				HttpSession session = request.getSession();
+				MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+				
+				String sumTotalPrice = request.getParameter("sumTotalPrice");
+				String email = request.getParameter("email");
+				String name = request.getParameter("name");
+				String mobile = request.getParameter("mobile");
+				String userid = loginuser.getUserid();
+
+//				System.out.println(sumTotalPrice);
+//				System.out.println(email);
+//				System.out.println(name);
+//				System.out.println(mobile);
+//				System.out.println(userid);
+				
+				
+				request.setAttribute("sumTotalPrice", sumTotalPrice);
+				request.setAttribute("email", email);
+				request.setAttribute("name", name);
+				request.setAttribute("mobile", mobile);
+				request.setAttribute("userid", userid);
+				
+//				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/product/paymentGateway.jsp");
+				
+			}
+			else {
+				// 로그인을 하지 않았을 때
+				String message = "코인충전 결제를 하기 위해서는 먼저 로그인을 하세요!!";
+				String loc = "javascript:history.back()";
+				
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
+				
+				//   super.setRedirect(false);
+				super.setViewPage("/WEB-INF/msg.jsp");
+				
+			}
+		}
+		
+		
+	}
+
+}
