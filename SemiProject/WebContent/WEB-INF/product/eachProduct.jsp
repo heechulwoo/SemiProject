@@ -174,6 +174,11 @@
 	            	alert("주문 개수는 1개 이상이어야 합니다.");
 	            	return;
 	            }
+	            else if(odoqty > ${requestScope.pvo.pqty}) {
+	            	alert("재고량보다 더 많은 수량은 구매가 불가합니다.");
+	            	return;
+	            }
+	            
 	            
 	            
 	        //	console.log(pnum);
@@ -184,8 +189,8 @@
 	        	
 	        	if(bool) {
 	        		
-	        		frm.method = "POST";
-	        	    frm.action = "<%= request.getContextPath()%>/product/payment.one";
+	        		frm.method = "GET";
+	        	    frm.action = "<%= request.getContextPath()%>/product/payment2.one";
 	        	    frm.submit();
 	        	}
 	            
@@ -268,9 +273,35 @@
 					<input class="mb-2 mt-1" id="spinnerPqty" name="odoqty" value="1" style="width: 40px; height: 20px;">개<br>
 					<br>
 				</form>
-					<button id="buyButton" class="btn btn-primary btn-lg" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
-					<button id="shopBasketList" class='ml-2 btn btn-outline-success btn-sm savecart' style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
-					<button id="prdWishList" class="ml-2 btn btn-outline-danger btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
+					<c:set var="pvoPqty" value="${requestScope.pvo.pqty}" />
+					
+					<c:choose>
+						<c:when test="${pvoPqty eq 0}">
+							<button id="buyButton" class="btn btn-secondary btn-lg" disabled="disabled" style="width: 270px; height: 50px; font-weight: bold;" >품절</button>
+						</c:when>
+						<c:otherwise>
+							<button id="buyButton" class="btn btn-primary btn-lg" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
+						</c:otherwise>
+					</c:choose>
+					
+					<c:choose>
+						<c:when test="${pvoPqty eq 0}">
+							<button id="shopBasketList" class='ml-2 btn btn-outline-secondary btn-sm savecart' disabled="disabled" style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
+						</c:when>
+						<c:otherwise>
+							<button id="shopBasketList" class='ml-2 btn btn-outline-success btn-sm savecart' style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
+						</c:otherwise>
+					</c:choose>
+									
+					<c:choose>
+						<c:when test="${pvoPqty eq 0}">
+							<button id="prdWishList" class="ml-2 btn btn-outline-secondary btn-light" disabled="disabled" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
+						</c:when>
+						<c:otherwise>
+							<button id="prdWishList" class="ml-2 btn btn-outline-danger btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
+						</c:otherwise>
+					</c:choose>
+					
 					<br><br><br>
 					<i class="mr-2 fas fa-truck"></i>
 					<span style="font-size: 11pt;">배송 옵션은 결제 단계에서 확인 가능합니다</span>
@@ -351,8 +382,10 @@
 			  	<div class="row">
 			  		<div class="col-9 col-lg-3">
 			  			<c:if test="${not empty pimgList}">
-							<c:forEach begin="3" end="3" var="pimgList" items="${requestScope.pimgList}">
-					  	 		<img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 100%;"/>
+							<c:forEach var="pimgList" items="${requestScope.pimgList}" varStatus="status">
+								<c:if test="${status.last}">
+						  	 		<img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 100%;"/>
+								</c:if>
 			  				</c:forEach>
 			  			</c:if>
 			 		</div>

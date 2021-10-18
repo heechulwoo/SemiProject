@@ -22,8 +22,10 @@ public class EachProductController extends AbstractController {
 		
 		// 상품의 이미지를 가져오는 메서드
 		List<ProductImageVO_kgh> pimgList = pdao.selectProductImage(pnum);
+		int pimgLength = pimgList.size();
 		
 		request.setAttribute("pimgList", pimgList);
+		request.setAttribute("pimgLength", pimgLength);
 		
 		// 제품의 정보를 불러오는 메서드
 		ProductVO_kgh pvo = pdao.selectProductDetail(pnum);

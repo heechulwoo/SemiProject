@@ -11,17 +11,15 @@ public class ProductPayController extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String method = request.getMethod();
 		
-		if("POST".equalsIgnoreCase(method)) {
-			
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+		
+		String email = request.getParameter("email");
+		
 			if(super.checkLogin(request)) {
 				
-				HttpSession session = request.getSession();
-				MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-				
-				String sumTotalPrice = request.getParameter("sumTotalPrice");
-				String email = request.getParameter("email");
+				String totalPay = request.getParameter("totalPay");
 				String name = request.getParameter("name");
 				String mobile = request.getParameter("mobile");
 				String userid = loginuser.getUserid();
@@ -33,7 +31,7 @@ public class ProductPayController extends AbstractController {
 //				System.out.println(userid);
 				
 				
-				request.setAttribute("sumTotalPrice", sumTotalPrice);
+				request.setAttribute("totalPay", totalPay);
 				request.setAttribute("email", email);
 				request.setAttribute("name", name);
 				request.setAttribute("mobile", mobile);
@@ -45,7 +43,7 @@ public class ProductPayController extends AbstractController {
 			}
 			else {
 				// 로그인을 하지 않았을 때
-				String message = "코인충전 결제를 하기 위해서는 먼저 로그인을 하세요!!";
+				String message = "결제를 하기 위해서는 먼저 로그인을 하세요!!";
 				String loc = "javascript:history.back()";
 				
 				request.setAttribute("message", message);
@@ -55,7 +53,7 @@ public class ProductPayController extends AbstractController {
 				super.setViewPage("/WEB-INF/msg.jsp");
 				
 			}
-		}
+		
 		
 		
 	}

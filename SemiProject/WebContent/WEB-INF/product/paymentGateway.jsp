@@ -60,11 +60,13 @@ $(document).ready(function() {
 		//	window.opener.goCoinUpdate('${requestScope.userid}','${requestScope.sumTotalPrice}');
 		//  $(opener.location).attr("href", "javascript:goCoinUpdate('${requestScope.userid}','${coinmoney}');");
 			
+			opener.location.goProductPaySuccess();
 		    self.close();	// 팝업창 닫기
 			
         } else {
-            location.href="/SemiProject/index.one";
+        	opener.location.href="/SemiProject/index.one";
             alert("결제에 실패하였습니다.");
+            self.close();
        }
 
    }); // end of IMP.request_pay()----------------------------

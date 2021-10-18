@@ -65,7 +65,8 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 						 " from tbl_product P " + 
 						 " JOIN tbl_imagefile F " + 
 						 " ON P.pnum = F.fk_pnum " + 
-						 " where p.pnum = ? ";
+						 " where p.pnum = ? " + 
+						 " order by imgfilename ";
 			
 			pstmt = conn.prepareCall(sql);
 			pstmt.setString(1, pnum);
