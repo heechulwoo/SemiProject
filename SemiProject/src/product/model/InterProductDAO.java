@@ -27,5 +27,7 @@ public interface InterProductDAO {
 	String selectCname(String cnum) throws SQLException; // 카테고리번호에 해당하는 카테고리 이름 얻어오기
 
 	int editCart(String cartno, String oqty) throws SQLException; // 장바구니 수정
+
+	List<ProductVO> hotProduct() throws SQLException; // 메인페이지에 보여줄 인기제품 4종을 판매량순으로 select 해주는 메소드
 	
 }

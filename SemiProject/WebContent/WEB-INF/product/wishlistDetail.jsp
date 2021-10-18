@@ -131,7 +131,7 @@
 		
 		
 	}); // end of $(document).ready(function(){})-------------------------
-
+	
 	// Function Declaration
 	function showWishList() {
 		
@@ -266,3 +266,4 @@
 		</div>
 	</div>
 <jsp:include page="../footer.jsp"/>	
+

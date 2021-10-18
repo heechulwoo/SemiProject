@@ -67,8 +67,25 @@ i#arrow {
 
 
 <script type="text/javascript">
-
-
+	
+	//=== 셀프 반품하기 함수 === //
+	function goSelfReturn(userid) {
+		
+		//  셀프 반품하기 팝업창 띄우기 
+		var url = "<%= ctxPath %>/contact/selfReturn.one?userid="+userid;
+	  	
+		// 너비 1000 높이700 인 팝업 창을 화면 가운데 위치시키기
+		var pop_width = 1000;
+		var pop_height = 700;
+		var pop_left = Math.ceil( (window.screen.width - pop_width)/2 ); 
+		var pop_top = Math.ceil( (window.screen.height - pop_height)/2 );
+		
+	    window.open(url, "selfReturn",
+	                "left="+pop_left+", top="+pop_top+", width="+pop_width+", height="+pop_height);
+		
+		
+	} 
+	
 </script>
 
 
@@ -114,11 +131,21 @@ i#arrow {
           <p>
 		            매장 방문전 이케아 웹사이트에서 '셀프 반품' 신청을 하시면 보다 쉽고
 		            빠르게 반품할 수 있습니다.<br>
-		            반품에 필요한 정보를 입력한 후 생성된 바코드와 영수증을 제품과 함께
+		            반품에 필요한 정보를 입력한 후 송부된 이메일을 제품, 영수증과  함께
 		            매장의 교환환불코너에서 제시하면,<br>
 		            추가 정보 입력 절차 없이 바로 반품이 가능합니다.<br>
           </p>
-          <a href="<%= ctxPath %>/contact/selfReturn.one" role="button" id="returnBtn" class="btn" style="margin-top: 2vw; margin-bottom: 4vw" >셀프 반품 신청하기</a>
+          
+          <%-- 로그인 하지 않은 경우 로그인 페이지로 넘어감 --%>
+          <c:if test="${empty sessionScope.loginuser}">
+          	<a href="<%= ctxPath %>/login/login.one" role="button" id="returnBtn" class="btn" style="margin-top: 2vw; margin-bottom: 4vw" >셀프 반품 신청하기</a>
+          </c:if>
+          
+          <%-- 로그인 한 경우 환불신청서 작성으로 넘어감 --%>
+          <c:if test="${not empty sessionScope.loginuser}">
+          	<a href="javascript:goSelfReturn('${(sessionScope.loginuser).userid}');" role="button" id="returnBtn" class="btn" style="margin-top: 2vw; margin-bottom: 4vw" >셀프 반품 신청하기</a>
+          </c:if>
+          
           <p>* 플래닝 스튜디오 (천호/신도림)에서는 교환/환불이 불가능합니다.</p>
           <p>
             * IKEA Lab에서 구매하신 제품은 셀프 반품 접수 대상이 아니며, IKEA

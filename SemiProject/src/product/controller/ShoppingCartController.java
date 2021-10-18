@@ -17,11 +17,12 @@ public class ShoppingCartController extends AbstractController {
 		
 		// 카테고리 목록 얻어오기 
 		super.getCategoryList(request);
+		// 로그인 유무
+		boolean isLogin = super.checkLogin(request);
 		
-		HttpSession session =  request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
 		String ctxPath = request.getContextPath();
-		if(loginuser == null) { // 로그인을 안했으면
+		if(!isLogin) { // 로그인을 안했으면
 			String message = "장바구니 기능은 로그인이 필요합니다!";
 	        String loc = ctxPath+"/login/login.one";
 	         
@@ -32,6 +33,9 @@ public class ShoppingCartController extends AbstractController {
 	        super.setViewPage("/WEB-INF/msg.jsp");
 	        
 		} else { // 로그인을 했으면
+			
+			HttpSession session =  request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 			
 			String userid = loginuser.getUserid();
 			

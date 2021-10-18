@@ -105,7 +105,7 @@
       </select>
       <input type="text" id="searchWord" name="searchWord" />
 	  
-	  <button type="button" class="btn btn-dark" onclick="goSearch();" style="margin-right: 30px; margin-bottom: 8px">검색</button>
+	  <button type="button" class="btn btn-dark" onclick="goSearch();" style="margin-right: 30px; margin-bottom: 8px; border-radius: 12px">검색</button>
 	  
 	  <span style="color: black; font-weight: bold; font-size: 12pt;">페이지당 회원명수</span>
       <select id="sizePerPage" name="sizePerPage">

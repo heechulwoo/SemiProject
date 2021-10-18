@@ -149,7 +149,7 @@
 
         <p></p>
         <p>
-		          빠른 해결책을 원하는 경우에는 <a id="faq" href="#">자주 묻는 질문</a>을
+		          빠른 해결책을 원하는 경우에는 <a id="faq" href="<%= ctxPath %>/service/faq.one">자주 묻는 질문</a>을
 		          확인하세요.<br>
         </p>
         <br>
@@ -164,14 +164,14 @@
       <!-- 이케아 신청서 문의 시작 -->
       <div id="frmMain">
         <h3 style="font-weight: bold">신청서 문의</h3>
-        <br />
+        <br>
         <p style="font-weight: bold">
           	온라인 답변이 필요하시다면 IKEA 직원과 대화할 수 있는 편리한
           <a href="consultWrite.html">신청서 서비스</a>를 이용해보세요.<br />
         </p>
 
         <p>
-          <br />
+          <br>
         </p>
 
         <p>
@@ -179,10 +179,19 @@
 		          구매정보(영수증/주문번호)를 준비하시어<br />
 		          전화 문의 또는 채팅 문의를 이용해 주세요.
         </p>
+        
         <div class="contactDetail" style="margin-top: 2vw">
-          <a href="<%= ctxPath %>/contact/consultWrite.one" role="button" class="contactBtn" id="contactBtn" style="margin-top: 2vw; margin-bottom: 4vw">
-            	신청서 작성
-          </a>
+        
+	        <%-- 로그인 하지 않은 경우 로그인 페이지로 넘어감 --%>
+	        <c:if test="${empty sessionScope.loginuser}">
+	        	<a href="<%= ctxPath %>/login/login.one" role="button" id="contactBtn" class="contactBtn" style="margin-top: 2vw; margin-bottom: 4vw" >신청서 작성</a>
+	        </c:if>
+	        
+	        <%-- 로그인 한 경우 환불신청서 작성 리스트로 넘어감 --%>
+	        <c:if test="${not empty sessionScope.loginuser}">
+	          <a href="<%= ctxPath %>/contact/consultList.one" role="button" class="contactBtn" id="contactBtn" style="margin-top: 2vw; margin-bottom: 4vw"> 신청서 작성 </a>
+	        </c:if>
+	        
         </div>
       </div>
       <!-- 이케아 신청서 문의 끝 -->

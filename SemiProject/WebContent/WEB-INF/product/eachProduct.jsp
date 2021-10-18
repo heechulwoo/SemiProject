@@ -145,36 +145,59 @@
 		$("button#buyButton").click(function() {
 			
 			// alert("구매버튼 확인용");
+			var odoqty = $("input#spinnerPqty").val()
+			var totalp = ${requestScope.pvo.price} * odoqty;
+			console.log(totalp);
+			
 			
 			var loginuser = "${sessionScope.loginuser}";
 	        if (loginuser != "") {
 	            
 	        	var frm = document.orderFrm;
-	            var pnum = ${requestScope.pvo.pnum};
-	            var pqty = $("input#spinnerPqty").val();
+	            frm.odpnum.value = ${requestScope.pvo.pnum};
+	            frm.odoqty.value = odoqty;
+	            frm.odtotalprice.value = totalp;
+	            
+	            console.log(frm.odpnum.value);
+	            console.log(frm.odoqty.value);
+	            console.log(frm.odtotalprice.value);
 	            
 	            var regExp = /^[0-9]+$/;
-	            var bool = regExp.test(pqty);
+	            var bool = regExp.test(odoqty);
 	            
 	            if(!bool) {
 	            	alert("주문 개수는 1개 이상이어야 합니다.");
 	            	return;
 	            }
 	            
-	            if(pqty < 1) {
+	            if(odoqty < 1) {
 	            	alert("주문 개수는 1개 이상이어야 합니다.");
 	            	return;
 	            }
+	            else if(odoqty > ${requestScope.pvo.pqty}) {
+	            	alert("재고량보다 더 많은 수량은 구매가 불가합니다.");
+	            	return;
+	            }
 	            
-	        	// 주문개수가 1개 이상인 경우
-	            frm.method = "POST";
-	            frm.action = "<%= request.getContextPath()%>/product/payment.one";
-	            frm.submit();
+	            
+	            
+	        //	console.log(pnum);
+	        //  console.log(price);
+	        //  console.log(oqty);
+	            
+	        	var bool = confirm("결제를 진행하시겠습니까?");
+	        	
+	        	if(bool) {
+	        		
+	        		frm.method = "GET";
+	        	    frm.action = "<%= request.getContextPath()%>/product/payment2.one";
+	        	    frm.submit();
+	        	}
 	            
 	        }
 	        else {
 	        	alert("구매를 이용할 때 로그인이 필요합니다.");
-	            location.href="<%=ctxPath%>/login/login.one";
+	        	location.href="<%=ctxPath%>/login/login.one";
 	        }
 		});
 		
@@ -206,12 +229,6 @@
 	 }
 	
 	 
-	 function goProductPage(pnum) {
-		// 개별 상품 페이지로 이동
-		// alert("확인용 " + pnum);
-		location.href = "<%= request.getContextPath()%>/product/eachProduct.one?pnum=" + pnum;
-	 }
-
 </script>
 
 <div class="container-fluid">
@@ -239,24 +256,52 @@
 			<div class="col-9 col-lg-4 ml-5 pl-4 my-4" style="float: right; width: 30%;">
 				<div class="row justify-content-between">
 					<div class="col-7"><h5 id="pname" style="font-weight: bold;">${requestScope.pvo.pname}</h5></div>
-					<div class="col-5"><h5 id="price" class="text-left" style="font-weight: bold;"><fmt:formatNumber value="${requestScope.pvo.price}"/>&nbsp;원</h5></div>
+					<div class="col-5"><h5 id="price" class="text-left" style="font-weight: bold;"><fmt:formatNumber  value="${requestScope.pvo.price}"/>&nbsp;원</h5></div>
 				</div>
 				<div>
+				
 				<form name="orderFrm">
 					<span style="font-size: 10pt">${requestScope.pvo.categvo.cname}, ${requestScope.pvo.color}</span>
 					<br>
 					<hr>
-					<input name="pnum" type="hidden" value="${requestScope.pvo.pnum}"/>
+					<input type="hidden" name="odpnum" value="${requestScope.pvo.pnum}"/>
+					<input type="hidden" id="odtotalprice" name="odtotalprice" value="" />
 					<a href="javascript:goEditPersonal();" class="btn btn-outline-light btn-lg" style="font-weight: bold;">색상</a><br>
 					<div class="radio mt-3 mb-2" style="font-size: 10pt;">
 					  <label class="mr-1"><input class="mr-2" type="radio" name="optradio" checked>${requestScope.pvo.color}</label>
 					</div>
-					<input class="mb-2 mt-1" id="spinnerPqty" name="pqty" value="1" style="width: 40px; height: 20px;"> 개<br>
+					<input class="mb-2 mt-1" id="spinnerPqty" name="odoqty" value="1" style="width: 40px; height: 20px;">개<br>
 					<br>
 				</form>
-					<button id="buyButton" class="btn btn-primary btn-lg" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
-					<button id="shopBasketList" class='ml-2 btn btn-outline-success btn-sm savecart' style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
-					<button id="prdWishList" class="ml-2 btn btn-outline-danger btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
+					<c:set var="pvoPqty" value="${requestScope.pvo.pqty}" />
+					
+					<c:choose>
+						<c:when test="${pvoPqty eq 0}">
+							<button id="buyButton" class="btn btn-secondary btn-lg" disabled="disabled" style="width: 270px; height: 50px; font-weight: bold;" >품절</button>
+						</c:when>
+						<c:otherwise>
+							<button id="buyButton" class="btn btn-primary btn-lg" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
+						</c:otherwise>
+					</c:choose>
+					
+					<c:choose>
+						<c:when test="${pvoPqty eq 0}">
+							<button id="shopBasketList" class='ml-2 btn btn-outline-secondary btn-sm savecart' disabled="disabled" style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
+						</c:when>
+						<c:otherwise>
+							<button id="shopBasketList" class='ml-2 btn btn-outline-success btn-sm savecart' style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
+						</c:otherwise>
+					</c:choose>
+									
+					<c:choose>
+						<c:when test="${pvoPqty eq 0}">
+							<button id="prdWishList" class="ml-2 btn btn-outline-secondary btn-light" disabled="disabled" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
+						</c:when>
+						<c:otherwise>
+							<button id="prdWishList" class="ml-2 btn btn-outline-danger btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
+						</c:otherwise>
+					</c:choose>
+					
 					<br><br><br>
 					<i class="mr-2 fas fa-truck"></i>
 					<span style="font-size: 11pt;">배송 옵션은 결제 단계에서 확인 가능합니다</span>
@@ -301,7 +346,9 @@
 						    </div>
 						  </div>
 						  
-						</div>				</div>
+						</div>				
+					</div>
+					
 			</div>
 		</div>
 		
@@ -335,8 +382,10 @@
 			  	<div class="row">
 			  		<div class="col-9 col-lg-3">
 			  			<c:if test="${not empty pimgList}">
-							<c:forEach begin="3" end="3" var="pimgList" items="${requestScope.pimgList}">
-					  	 		<img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 100%;"/>
+							<c:forEach var="pimgList" items="${requestScope.pimgList}" varStatus="status">
+								<c:if test="${status.last}">
+						  	 		<img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 100%;"/>
+								</c:if>
 			  				</c:forEach>
 			  			</c:if>
 			 		</div>
@@ -356,7 +405,7 @@
 							<div class="col-6 col-lg-2 px-0 my-3">
 								<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${sameProductVO.pnum}"><img class="my-1" src="<%= ctxPath%>/image_ikea/${sameProductVO.prodimage}" style="width: 90%;"/></a><br>
 								<a href="#" style="font-weight: bold; color: black; text-align: center;">${sameProductVO.pname}</a><br>
-								<fmt:formatNumber value="${sameProductVO.price}"/><span>원</span>
+								<span><fmt:formatNumber value="${sameProductVO.price}"/>원</span>
 							</div>
 						</c:forEach>
 					</c:if>

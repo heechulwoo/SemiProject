@@ -117,7 +117,7 @@
 		//	frm.useridHidden.value = ${requestScope.userid};
 			frm.userCertificationCode.value = $("input#input_confirmCode").val();  /* form에 input_confirmCode의 value값을 담음 */
 			
-			frm.action = "<%= ctxPath%>/login/verifyCertification.one";
+			frm.action = "<%= ctxPath%>/login/verifyCertification_jy.one";
 			frm.method = "POST";
 			frm.submit();
 			
