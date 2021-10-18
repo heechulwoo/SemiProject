@@ -149,7 +149,7 @@
 
         <p></p>
         <p>
-		          빠른 해결책을 원하는 경우에는 <a id="faq" href="#">자주 묻는 질문</a>을
+		          빠른 해결책을 원하는 경우에는 <a id="faq" href="<%= ctxPath %>/service/faq.one">자주 묻는 질문</a>을
 		          확인하세요.<br>
         </p>
         <br>
