@@ -112,7 +112,7 @@ public class ProductRegisterAction extends AbstractController {
 			  
 			  ProductVO pvo = new ProductVO();
 			  
-			  pvo.setPnum(Integer.toString(pnum));
+			  pvo.setPnum(fk_cnum+Integer.toString(pnum));
 			  pvo.setFk_cnum(fk_cnum);
 			  pvo.setPname(pname); 
 			  pvo.setProdimage(pimage1);
@@ -145,7 +145,7 @@ public class ProductRegisterAction extends AbstractController {
 	            	 
 	            	 String attachFileName = mtrequest.getFilesystemName("attach"+i);
 	            	 
-	            	 adao.product_imagefile_Insert(pnum, attachFileName);
+	            	 adao.product_imagefile_Insert(pvo, attachFileName);
 	            	 							// pnum 은 위에서 채번해온 제품번호이다.
 	            	 
 	             	}// end of for-------------------------

@@ -147,7 +147,7 @@ public class AdminDAO implements InterAdminDAO {
 	
 	// tbl_imagefile 테이블에 제품의 추가이미지 파일명 insert 해주기 
 	@Override
-	public int product_imagefile_Insert(int pnum, String attachFileName) throws SQLException {
+	public int product_imagefile_Insert(ProductVO pvo, String attachFileName) throws SQLException {
 		
 		 int result = 0;
 	      
@@ -159,7 +159,7 @@ public class AdminDAO implements InterAdminDAO {
 	         
 	         pstmt = conn.prepareStatement(sql);
 	         
-	         pstmt.setInt(1, pnum);
+	         pstmt.setString(1, pvo.getPnum());
 	         pstmt.setString(2, attachFileName);
 	         
 	         result = pstmt.executeUpdate();
