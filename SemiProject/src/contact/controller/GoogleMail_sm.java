@@ -57,16 +57,38 @@ public class GoogleMail_sm {
     	Address toAddr = new InternetAddress(recipient);
     	msg.addRecipient(Message.RecipientType.TO, toAddr);
     	        
+    	
     	// 메시지 본문의 내용과 형식, 캐릭터 셋 설정
-    	msg.setContent(" [ (semi)IKEA 고객지원 ] 안녕하세요 "+paraMap.get("name")+"님! 요청하신 제품의 셀프반품 신청이 완료되었습니다.<br><br> "
-    			+ " 제품번호 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("fk_odrcode")+"</span><br>"
-    			+ " 신청인 아이디 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("fk_userid")+"</span><br>"
-    			+ " 신청인 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("name")+"</span><br>"
-    			+ " 구입처 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("wherebuy")+"</span><br>"
-    			+ " 반품사유 : <span style='font-size:14pt; color:blue; font-weight: bold;'>"+paraMap.get("whyreturn")+"</span><br>"
-    			+ " 추가내용 : <span style='font-size:14pt; color:black; font-weight: bold;'>"+paraMap.get("plusReason")+"</span><br><br><br>"
-    			+ " <span style='font-size:10pt; color:black; font-weight: bold;'> >>> 반품에 필요한 정보를 입력한 후 송부된 이메일을 제품, 영수증과 함께 매장 내 교환환불 코너에 오시면 됩니다. 저희 IKEA를 이용해주셔서 감사합니다. <<< </span>", "text/html;charset=UTF-8");
+    	msg.setContent( "<div style=\"width:568px; height:40px; padding-left:130px; padding-top:30px\"><img src=\"https://www.ikea.com/kr/ko/static/ikea-logo.f7d9229f806b59ec64cb.svg\" alt=\"IKEA_logo\" width=\"90\" height=\"35\"></div>\r\n" + 
+    					"<div style=\"padding-left:130px; font-family: Arial\">\r\n" + 
+    					"<div style=\"border: 29px solid #f4f6f8; width:535px; height:300px\">\r\n" + 
+    					"<table style=\"padding:25px\">\r\n" + 
+    					"	<tr>\r\n" + 
+    					"		<td style=\"font-size:25px; padding-bottom:20px\"><b>안녕하세요 "+paraMap.get("name")+"님!</b></td>\r\n" + 
+    					"	</tr>\r\n" + 
+    					"	<tbody style=\"font-size:13px\">\r\n" + 
+    					"		<tr>\r\n" + 
+    					"			<td>요청하신 제품의 셀프반품 신청이 완료되었습니다.<br> 아래의 정보가 맞는지 확인 후 이케아를 방문해주세요.<br>\r\n" + 
+    					"			제품번호 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("fk_odrcode")+"</span><br>\r\n" + 
+    					"			신청인 아이디 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("fk_userid")+"</span><br>\r\n" + 
+    					"			신청인 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("name")+"</span><br>\r\n" + 
+    					"			구입처 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("wherebuy")+"</span><br>\r\n" + 
+    					"			반품사유 : <span style='font-size:13pt; color:#00579c; font-weight: bold;'>"+paraMap.get("whyreturn")+"</span><br>\r\n" + 
+    					"			추가내용 : <span style='font-size:13pt; color:black; font-weight: bold;'>"+paraMap.get("plusReason")+"</span><br><br><br>\r\n" + 
+    					"			<span style='font-size:7pt; color:black; font-weight: bold;'> >>> 반품에 필요한 정보를 입력한 후 송부된 이메일을 제품, 영수증과 함께 매장 내 교환환불 코너에 오시면 됩니다. 저희 IKEA를 이용해주셔서 감사합니다. <<< </span>" + 
+    					"		</tr>\r\n" + 
+    					"		<tr><td style=\"padding-top:55px\"><b>IKEA Semi</b></td>\r\n" + 
+    					"	</tr>\r\n" + 
+    					"		\r\n" + 
+    					"\r\n" + 
+    					"	</tbody>\r\n" + 
+    					"</table>\r\n" + 
+    					"</div>\r\n" + 
+    					"</div>", "text/html;charset=UTF-8");
     	        
+    	
+    	
+    	
     	// 메일 발송하기
     	Transport.send(msg);
     	

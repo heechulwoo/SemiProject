@@ -13,29 +13,24 @@
 
 <style type="text/css">
 
-	div#returnTitle {
+	div#orderTitle {
 	  padding-top: 70px;
 	  padding-bottom: 50px;
 	  border-bottom: solid 1px gray;
 	}
 	
-	form#returnFrm {
+	form#orderFrm {
 		padding-top: 70px;
 		text-align: center;
 	}
 	
-	table#returnTbl {
+	table#orderTbl {
 	  width: 93%;
 	  border: solid 1px gray;
 	  margin: 10px;
 	  text-align: center;
 	}
-	
-	div#writeForm {
-		padding-top: 30px;
-	}
 
-	button#writeConsult,
 	button#goSearchBtn {
 	  width: 10em;
 	  text-align: center;
@@ -49,13 +44,12 @@
 	  justify-content: center;
 	}
 	
-	button#writeConsult:hover,
 	button#goSearchBtn:hover {
 	  opacity: 0.8;
 	  text-decoration: none;
 	}
 	
-	tr.selfReturnInfo:hover{
+	tr.productOrderInfo:hover{
 		background-color: #f2f2f2;
 		cursor: pointer;
 	}
@@ -98,21 +92,13 @@
 		});
 		
 		
-		// 특정 반품목록을 클릭하면 그 글의 상세내용을 보여주도록 하자(회원이 작성한 내용은 보여주기만 하고 / 여기선 상태만 바꿀 것)
-		$("tr.selfReturnInfo").click(function() {
-		
-		/*	
-			var $target = $(event.target);
-			이 방법은 부모를 이용한 것
-			console.log( $target.parent().find(".userid").html() ); // 아무곳이나 눌러도 아이디만 나옴
-			console.log( $target.html() );
-		*/	
-			// 또는
-		//	console.log( $(this).children(".userid").text() ); // 아이디 값이 나옴
-			var fk_userid = $(this).children(".fk_userid").text();
-			var returnno = $(this).children(".returnno").text(); 
+		// 특정 주문내역을 클릭하면 그 글의 상세내용을 보여주도록 하자(상세내용에서 배송 상태 바꿀 것)
+		$("tr.productOrderInfo").click(function() {
 			
-			location.href="<%= ctxPath%>/contact/selfReturnOneDetail.one?fk_userid="+fk_userid+"&returnno="+returnno+"&goBackURL=${requestScope.goBackURL}";
+			var fk_userid = $(this).children(".fk_userid").text();
+			var odrcode = $(this).children(".odrcode").text(); 
+			
+			location.href="<%= ctxPath%>/contact/productOrderOneDetail.one?fk_userid="+fk_userid+"&odrcode="+odrcode+"&goBackURL=${requestScope.goBackURL}";
 			// 위치이동을 의미 (=> location.href)
 			
 			
@@ -129,8 +115,8 @@
 		
 		// === 필요한 것만 땡겨오기 (폼태그에 있는 벨류를 보내줌) === // 
 		
-		var frm = document.returnFrm;
-		frm.action = "selfReturnList.one";
+		var frm = document.orderFrm;
+		frm.action = "productOrderList.one";
 		frm.method = "GET";
 		frm.submit();
 		
@@ -141,26 +127,27 @@
 
 <div class="container">
 	
-	<!-- 이케아 셀프 반품 회원 리스트 시작 -->
-		<div id="returnTitle" class="col-md-auto">
-		  <h1 style="font-weight: bold">셀프 반품 회원리스트</h1>
+	<!-- 이케아 주문 리스트 시작 -->
+		<div id="orderTitle" class="col-md-auto">
+		  <h1 style="font-weight: bold">주문내역 리스트</h1>
 		  <br>
 		  <p>
-		   	셀프 반품을 신청한 회원 목록입니다.<br>
+		   	주문한 회원 목록입니다.<br>
+		   	클릭 시 , 주문 상세 내역을 조회할 수 있습니다.
 		  </p>
 		  <br>
 		</div>
-	<!-- 이케아 셀프 반품 회원 리스트 끝 -->
+	<!-- 이케아 주문 리스트 끝 -->
 	
 	
-		<%-- 셀프 반품 회원 리스트 상단 검색 및 페이지 조절 끝 --%>
+		<%-- 주문 리스트 상단 검색 및 페이지 조절 끝 --%>
 		
-		<form name="returnFrm" id="returnFrm">
+		<form name="orderFrm" id="orderFrm" class="col-md-auto">
 			
 		  <select id="searchType" name="searchType" style="margin-right: 30px;">  <!-- name이 DB에 들어가는 것과 같은지 꼭 유의 -->
-	         <option value="name">회원명</option>
+	         <!-- <option value="name">회원명</option> -->
 	         <option value="fk_userid">아이디</option>
-	         <option value="email">이메일</option>
+	         <option value="odrcode">주문번호</option>
 	      </select>
 	      <input type="text" size="30" id="searchWord" name="searchWord" style="margin-right: 30px;" />
 	      
@@ -181,48 +168,28 @@
 	      </select>
 		</form>
 		
-		<%-- 셀프 반품 회원 리스트 상단 검색 및 페이지 조절 끝 --%>
+		<%-- 주문 리스트 상단 검색 및 페이지 조절 끝 --%>
 		
 		
-		<%-- 셀프 반품 회원 리스트 테이블 시작 --%>
-		<table id="returnTbl" class="table table-bordered" style="width: 90%; margin-top: 35px;">
+		<%-- 주문 리스트 테이블 시작 --%>
+		<table id="orderTbl" class="table table-bordered col-md-auto" style="width: 90%; margin-top: 35px;">
 	        <thead>
 	           <tr>
-	           	  <th>반품번호</th>
+	           	  <th>주문번호</th>
 	           	  <th>아이디</th>
-	              <th>주문번호</th>
-	              <th>회원명</th>
-	              <th>이메일</th>
-	              <th>반품신청일</th>
-	              <th>반품상태</th>
+	              <th>주문총액</th>
+	              <th>주문일자</th>
 	           </tr>
 	        </thead>
 	        
-	        <%-- 반복문으로 문의게시판 게시글 뽑아오기 --%>
+	        <%-- 반복문으로 주문 리스트 뽑아오기 --%>
 	        <tbody>
-	        	<c:forEach var="rvo" items="${requestScope.selfReturnList}">
-	        		<tr class="selfReturnInfo">
-	        			<td class="returnno">${rvo.returnno}</td>
-	        			<td class="fk_userid">${rvo.fk_userid}</td>
-	        			<td class="fk_odrcode">${rvo.fk_odrcode}</td>
-	        			<td>${rvo.name}</td>
-	        			<td>${rvo.email}</td>
-	        			<td>${rvo.returndate}</td>
-	        	 
-	        	 <%-- 셀프반품 상태 --%>
-						<td>
-        				<c:choose>
-        					<c:when test="${rvo.status eq '0'}">
-        						<span style="color: #80ccff; font-weight: bold;">신청완료</span>
-        					</c:when>
-        					<c:when test="${rvo.status eq '1'}">
-        						<span style="color: #ff9980; font-weight: bold;">반품취소</span>
-        					</c:when>
-        					<c:otherwise>
-        						<span style="color: #8cd9b3; font-weight: bold;">반품완료</span>
-        					</c:otherwise>
-        				</c:choose>
-        				</td>
+	        	<c:forEach var="ovo" items="${requestScope.orderList}">
+	        		<tr class="productOrderInfo">
+	        			<td class="odrcode">${ovo.odrcode}</td>
+	        			<td class="fk_userid">${ovo.fk_userid}</td>
+	        			<td>${ovo.odrtotalprice}</td>
+	        			<td>${ovo.odrdate}</td>
 	        		</tr>
 	        	</c:forEach>
 	        </tbody>
