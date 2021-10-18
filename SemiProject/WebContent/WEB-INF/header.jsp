@@ -159,6 +159,20 @@
 		frm.submit();
 		
 	}// end of goSearch ------------------------------
+	// 검색어에서 엔터를 하면 검색하러 가도록 한다.
+	/*
+	$("input#searchWord").bind("keyup", function(event){
+		if(event.keyCode == 13){ 
+			goSearch();
+		}
+	}); ==> 이 방식 안됨 */
+	
+	function enterkey(){
+		if(window.event.keyCode == 13){
+			goSearch();
+		}
+	}
+	
 </script>
 </head>
 
@@ -236,9 +250,9 @@
 		    </li>
 		  </ul>
 		 
-	    <form name="searchFrm" class="mx-2 my-auto d-inline w-100">
+	    <form name="searchFrm" onsubmit="return false;" class="mx-2 my-auto d-inline w-100">
 	        <div class="input-group">
-	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; " placeholder="검색어 입력">
+	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; " placeholder="검색어 입력" onkeyup="enterkey()">
 	            <span class="input-group-append">
 	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button" onClick="goSearch();">
 	                    <i class="fa fa-search"></i>
@@ -255,4 +269,4 @@
 	   	</ul>	  
 	</nav>
 </div>
-<!-- 상단 네비게이션 끝 -->  
+<!-- 상단 네비게이션 끝 --> 
