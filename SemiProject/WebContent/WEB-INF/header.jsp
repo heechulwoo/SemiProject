@@ -183,7 +183,19 @@
 	  <a href="<%= ctxPath%>/service/support.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
 	  <a href="<%= ctxPath%>/product/shipping.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
 
-	  <a href="<%= ctxPath%>/member/mypage.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>	  
+	  <c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid != 'admin'}">
+		  <div style="color: black">
+		  	  <a class="nav-link dropdown-toggle menufont_size sidetoggle" href="#" id="navbarDropdown" data-toggle="dropdown" > 
+					마이페이지	                            
+			  </a>
+			  <div class="dropdown-menu sidedropdownmenu" aria-labelledby="navbarDropdown" >
+				    <a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/mypage.one">내정보수정</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/mypageOder.one">주문조회</a>
+			  </div>
+		  </div>	  
+	  </c:if>
+	  
  	  <c:if test="${loginuser == null}"><div style="margin:40px 0 0 15px"><a href="<%= ctxPath %>/login/login.one" class="text-dark">로그인</a></div></c:if>
  	  <c:if test="${loginuser == null}"><div style="margin:15px 0 0 15px"><a href="<%= ctxPath %>/member/register.one" class="text-dark">회원가입</a></div></c:if>
 	  <c:if test="${loginuser != null}"><div style="margin:40px 0 0 15px; font-weight: bolder; " >${loginuser.name}님</div></c:if>
