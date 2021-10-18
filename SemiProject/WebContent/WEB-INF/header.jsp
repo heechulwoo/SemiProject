@@ -177,6 +177,7 @@
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/consultList.one">문의글 조회</a>
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/assembleList.one">조립 서비스 신청 조회</a>
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/selfReturnList.one">셀프 반품 신청 조회</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/productOrderList.one">주문내역 조회</a>
 		 </div>
 		</li>
       </c:if>
