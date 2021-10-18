@@ -232,7 +232,7 @@
 </script>
 
 <div class="container-fluid">
-	<h6 class="my-3 py-2 px-5 ml-3" style="font-size: 10pt;"><a href="<%= ctxPath%>/index.one">제품</a> > <a href="<%= ctxPath%>/product/productAll.one">의자</a> > <a href="#">스툴의자</a> > ${requestScope.pvo.pname}</h6>
+	<h6 class="my-3 py-2 px-5 ml-3" style="font-size: 10pt;"><a href="<%= ctxPath%>/index.one">제품</a> > <a href="<%= ctxPath%>/product/productAll.one">의자</a> > <a href="<%= ctxPath%>/product/productByCategory.one?cnum=${requestScope.pvo.fk_cnum}">스툴의자</a> > ${requestScope.pvo.pname}</h6>
 	
 	<div class="container-fluid mx-2 px-5">
 		<div class="row my-2">

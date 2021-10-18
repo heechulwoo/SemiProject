@@ -254,6 +254,12 @@
 	
 	// 이니시스 결제 이후 함수
 	function ProductPaySuccess() {
+		var frm = document.payForm;
+		var name = frm.lastname.value + frm.firstname.value;
+		var email = frm.email.value;
+		var mobile = frm.mobile.value;
+		var totalPay = frm.totalPay.value;
+		
 		
 	}
 	
