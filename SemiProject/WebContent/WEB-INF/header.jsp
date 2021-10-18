@@ -136,6 +136,7 @@
 		});
 		
 	}); // end of $(document).ready(function(){}----------------------
+
 			
 	// Function Declaration  
 	function w3_open() {
@@ -145,6 +146,8 @@
 	function w3_close() {
 	  document.getElementById("mySidebar").style.display = "none";
 	}
+
+
 	function goSearch(){	
 	
 	/* 	console.log($("input#searchWord").val());
@@ -159,6 +162,7 @@
 		frm.submit();
 		
 	}// end of goSearch ------------------------------
+
 	// 검색어에서 엔터를 하면 검색하러 가도록 한다.
 	/*
 	$("input#searchWord").bind("keyup", function(event){
