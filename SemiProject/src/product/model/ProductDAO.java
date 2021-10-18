@@ -61,7 +61,7 @@ public class ProductDAO implements InterProductDAO {
 						 "         select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(order by pinpupdate desc) as new, prodimage " + 
 						 "         from " + 
 						 "         ( " + 
-						 "             select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(partition by pname order by pinpupdate) as updatedate, prodimage " + 
+						 "             select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(partition by fk_cnum,pname order by pinpupdate) as updatedate, prodimage " + 
 						 "             from tbl_product " + 
 						 "         ) " + 
 						 "         where updatedate = 1 " + 
@@ -482,6 +482,64 @@ public class ProductDAO implements InterProductDAO {
 		return result;
 		
 	}// end of public void editCart(String cartno, String oqty)------------------
+
+	
+	// 메인페이지에 보여줄 인기제품 4종을 판매량순으로 select 해주는 메소드
+	@Override
+	public List<ProductVO> hotProduct() throws SQLException {
+		List<ProductVO> hotProductList = new ArrayList<>();
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select pnum,fk_cnum,pname,price,color, pinupdate ,pqty,psummary,pcontent,cname, prodimage " + 
+						 " from " + 
+						 " ( " + 
+						 "     select pnum,fk_cnum,pname,price,color, to_char(pinpupdate,'yyyy-mm-dd') as pinupdate ,pqty,psummary,pcontent,cname, prodimage,hot " + 
+						 "     from " + 
+						 "     tbl_product P " + 
+						 "     join " + 
+						 "     ( " + 
+						 "         select fk_pnum, ROW_NUMBER() over(order by sum(oqty) desc) as hot " + 
+						 "         from tbl_order_detail " + 
+						 "         group by fk_pnum " + 
+						 "     )O " + 
+						 "     on O.fk_pnum = p.pnum " + 
+						 "     join tbl_category C " + 
+						 "     on P.fk_cnum = c.cnum " + 
+						 "     where hot < 5 " + 
+						 " ) " + 
+						 " order by hot ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while( rs.next() ) {
+				
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setPnum(rs.getString(1));
+				pvo.setFk_cnum(rs.getString(2));
+				pvo.setPname(rs.getString(3));
+				pvo.setPrice(rs.getInt(4));
+				pvo.setColor(rs.getString(5));
+				pvo.setPinpupdate(rs.getString(6));
+				pvo.setPqty(rs.getInt(7));
+				pvo.setPsummary(rs.getString(8));
+				pvo.setPcontent(rs.getString(9));
+				pvo.setCname(rs.getString(10));
+				pvo.setProdimage(rs.getNString(11));
+				
+				hotProductList.add(pvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return hotProductList;
+	} // end of public List<ProductVO> hotProduct()-------------------------------
 
     
     

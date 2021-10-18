@@ -87,8 +87,8 @@
 					}
 				});
 				
-				if($("input#attachCount").val() < 4){
-					alert("추가 이미지는 4개 이상 필수 첨부해야 합니다.")
+				if($("input#attachCount").val() < 2){
+					alert("추가 이미지는 2개 이상 필수 첨부해야 합니다.")
 					flag = true;
 					return false;
 				}
@@ -299,7 +299,8 @@ text-align: center;
 						<tr>
 							<th>제품 요약</th>
 							<td>
-								<textarea name="productSummary" class="forminput requiredInfo"></textarea>
+								<textarea name="productSummary" class="forminput requiredInfo" cols="60"
+								style="width: 80%; height: 40px"></textarea>
 								<span class="error">필수입력</span>
 							</td>
 						</tr>
@@ -308,7 +309,7 @@ text-align: center;
 							<th>제품 설명</th>
 							<td>
 								<textarea name="productInfo" class="forminput requiredInfo" cols="60" 
-								style="width: 80%; height: 100px" class="textarea"></textarea>
+								style="width: 80%; height: 100px"></textarea>
 								<span class="error">필수입력</span>
 							</td>
 						</tr>
@@ -320,8 +321,16 @@ text-align: center;
 							<input id="spinnerImgQty" value="0" class="forminput requiredInfo" style="display: inline; width: 40px; height: 20px;">
 							<div id="divfileattach"></div> 
 							<input type="hidden" name="attachCount" id="attachCount" />
-							<small style="color:#0058AB;">추가 이미지는 4개 이상 첨부해주세요.</small>
+							<small style="color:#0058AB;">추가 이미지는 2개 이상 첨부해주세요.</small>
 							<span class="error">필수첨부</span>
+							</td>
+						</tr>
+						
+						<tr>
+							<th>제품 크기 이미지</th>
+							<td>
+								<input type="file" name="lastimg" class="forminput requiredInfo " />
+								<span class="error">필수입력</span> 
 							</td>
 						</tr>
 						

@@ -65,7 +65,8 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 						 " from tbl_product P " + 
 						 " JOIN tbl_imagefile F " + 
 						 " ON P.pnum = F.fk_pnum " + 
-						 " where p.pnum = ? ";
+						 " where p.pnum = ? " + 
+						 " order by imgfilename ";
 			
 			pstmt = conn.prepareCall(sql);
 			pstmt.setString(1, pnum);
@@ -97,7 +98,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select cname, pnum, fk_cnum, pname, price, color, pinpupdate, pqty, psummary, pcontent " + 
+			String sql = " select cname, pnum, fk_cnum, pname, price, color, pinpupdate, pqty, psummary, pcontent, prodimage " + 
 						 " from tbl_product P " + 
 						 " JOIN tbl_category G " + 
 						 " ON P.fk_cnum = G.cnum " + 
@@ -124,6 +125,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 				pvo.setPqty(rs.getInt(8));
 				pvo.setPsummary(rs.getString(9));
 				pvo.setPcontent(rs.getString(10));
+				pvo.setProdimage(rs.getString(11));
 			}
 			
 		} finally {
@@ -241,7 +243,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			
 		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
 			e.printStackTrace();
-		}  finally {
+		} finally {
 			close();
 		}
 		
@@ -322,4 +324,182 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		
 		return productColorList;
 	}
+
+	
+	// 주문하려는 상품의 대표 이미지 가져오는 메소드 생성
+	@Override
+	public ProductImageVO_kgh getProdImage(String odpnum) throws SQLException {
+		ProductImageVO_kgh pimgVO = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select prodimage " + 
+						 " from tbl_product " + 
+						 " where pnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, odpnum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				pimgVO = new ProductImageVO_kgh();
+				pimgVO.setImgfilename(rs.getString(1));
+				
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return pimgVO;
+	}
+
+	
+	// 주문 테이블에 주문내역 insert 하고 주문번호 select하기
+	@Override
+	public String insertOrder(String userid, String sumTotalPrice) throws SQLException {
+		String odrCode = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_order(odrcode, fk_userid, odrtotalprice) " + 
+						 " values(to_char(sysdate, 'YYMMDD')||seq_order.nextval, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			pstmt.setInt(2, Integer.parseInt(sumTotalPrice));
+			
+			int n = pstmt.executeUpdate();
+			
+			if(n == 1) {
+				sql = " select odrcode " + 
+					  " from tbl_order " + 
+					  " where rownum = 1 and fk_userid = ? and odrtotalprice = ? " + 
+					  " order by odrdate ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, userid);
+				pstmt.setInt(2, Integer.parseInt(sumTotalPrice));
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					odrCode = rs.getString(1);
+				}
+			}
+		} finally {
+			close();
+		}
+		
+		return odrCode;
+	}
+
+	
+	// 해당 주문번호를 통해 배송지 insert하기
+	@Override
+	public void insertAddress(Map<String, String> paraMap) throws SQLException {
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_address(addrno, fk_odrcode, name, mobile, postcode, address, detailaddress, extraaddress) " + 
+						 " values(seq_address.nextval, ?, ?, ?, ?, ?, ?, ?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("odrCode"));
+			pstmt.setString(2, paraMap.get("odrName"));
+			pstmt.setString(3, aes.encrypt(paraMap.get("odrMobile")));
+			pstmt.setString(4, paraMap.get("odrPostcode"));
+			pstmt.setString(5, paraMap.get("odrAddress"));
+			pstmt.setString(6, paraMap.get("odrDetailAddress"));
+			pstmt.setString(7, paraMap.get("odrExtraAddress"));
+			
+			pstmt.executeUpdate();
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+	}
+
+	
+	// 주문상세 테이블에 주문 상세내역 insert 하기
+	@Override
+	public int insertOrderDetail(Map<String, String> odrparaMap) throws SQLException {
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_order_detail(Odrseqnum, fk_odrcode, fk_pnum, oqty, odrprice, deliverstatus) " + 
+						 " values(seq_order_detail.nextval, ?, ?, ?, ?, 1) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, odrparaMap.get("odrCode"));
+			pstmt.setString(2, odrparaMap.get("odpnumIndex"));
+			pstmt.setString(3, odrparaMap.get("odoqtyIndex"));
+			pstmt.setString(4, odrparaMap.get("odcartnoIndex"));
+			
+			n = pstmt.executeUpdate();
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return n;
+	}
+
+	
+	// 제품 테이블의 재고 수량 update 하기
+	@Override
+	public void updatePqty(String odpnumIndex, String odoqtyIndex) throws SQLException {
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_product set pqty = pqty - ? " + 
+						 " where pnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(odoqtyIndex));
+			pstmt.setString(2, odpnumIndex);
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			close();
+		}
+	}
+
+	
+	// 장바구니에 해당 하는 상품 목록 delete 하기
+	@Override
+	public void deleteCartno(String odcartnoIndex) throws SQLException {
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " delete from tbl_cart " + 
+						 " where cartno = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, odcartnoIndex);
+			
+			pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+	}
+
+
+	
 }

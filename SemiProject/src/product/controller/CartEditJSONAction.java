@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
@@ -53,11 +52,9 @@ public class CartEditJSONAction extends AbstractController {
 				
 				// 장바구니 수정
 				int n =pdao.editCart(cartno,oqty);
-				JSONArray jsonArr = new JSONArray();
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("n",n);
-				jsonArr.put(jsonObj);
-				String json = jsonArr.toString();
+				String json = jsonObj.toString();
 				request.setAttribute("json", json);
 			//	System.out.println("~~~~ 확인용 json => " + json);
 		        super.setViewPage("/WEB-INF/jsonview.jsp");
