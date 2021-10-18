@@ -10,7 +10,7 @@ public class ProductOrderDetailVO_sm {
 	private int deliverstatus;		// 배송상태
 	private String deliverdate;		// 배송일자
 	
-	
+	private ProductVO_sm pvosm;		// 제품 VO
 	
 	// === getter setter === // 
 	
@@ -57,6 +57,14 @@ public class ProductOrderDetailVO_sm {
 		this.deliverdate = deliverdate;
 	}
 	
+	
+	
+	public ProductVO_sm getPvosm() {
+		return pvosm;
+	}
+	public void setPvosm(ProductVO_sm pvosm) {
+		this.pvosm = pvosm;
+	}
 	
 	
 	

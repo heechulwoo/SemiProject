@@ -280,9 +280,15 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select odrseqnum, fk_odrcode, fk_pnum, oqty, odrprice, deliverstatus, to_char(deliverdate, 'yyyy-mm-dd') AS deliverdate "+
-					 	 " from tbl_order_detail "+
-					 	 " where odrseqnum = ? ";
+			String sql = "select odrseqnum, fk_odrcode, fk_pnum, oqty, odrprice, deliverstatus, deliverdate, pname "+
+						 " from "+
+						 " ( "+
+						 " select odrseqnum, fk_odrcode, fk_pnum, oqty, odrprice, deliverstatus, to_char(deliverdate, 'yyyy-mm-dd') AS deliverdate , P.pname AS pname "+
+						 " from tbl_order_detail D "+
+						 " JOIN tbl_product P "+
+						 " ON D.fk_pnum = P.pnum "+
+						 " ) "+
+						 " where odrseqnum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, odrseqnum);
@@ -293,6 +299,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 	        if(rs.next()) {
 	        	
 	        	dvo = new ProductOrderDetailVO_sm();
+	        	ProductVO_sm pvosm = new ProductVO_sm();
 	        	
 	        	dvo.setOdrseqnum(rs.getInt(1));
 	        	dvo.setFk_odrcode(rs.getString(2));
@@ -301,6 +308,9 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 	        	dvo.setOdrprice(rs.getInt(5));
 	        	dvo.setDeliverstatus(rs.getInt(6));
 	        	dvo.setDeliverdate(rs.getString(7));
+	        	
+	        	pvosm.setPname(rs.getString(8));
+	        	dvo.setPvosm(pvosm);
 	        	
 	        }
 			
