@@ -238,8 +238,11 @@
 		<div class="row my-2">
 			<div class="col-12 col-lg-7 mx-2">
 				<div class="row justify-content-between ">
+					<c:if test="${not empty pvo}">
+						<div class="col-6 col-md-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/${pvo.prodimage}" style="width: 95%;"/></div>
+					</c:if>
 					<c:if test="${not empty pimgList}">
-						<c:forEach var="pimgList" items="${requestScope.pimgList}">
+						<c:forEach begin="1" end="3" var="pimgList" items="${requestScope.pimgList}">
 							<c:if test="${not empty pimgList.imgfilename}">
 								<div class="col-6 col-md-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 95%;"/></div>
 							</c:if>

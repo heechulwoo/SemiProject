@@ -98,7 +98,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select cname, pnum, fk_cnum, pname, price, color, pinpupdate, pqty, psummary, pcontent " + 
+			String sql = " select cname, pnum, fk_cnum, pname, price, color, pinpupdate, pqty, psummary, pcontent, prodimage " + 
 						 " from tbl_product P " + 
 						 " JOIN tbl_category G " + 
 						 " ON P.fk_cnum = G.cnum " + 
@@ -125,6 +125,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 				pvo.setPqty(rs.getInt(8));
 				pvo.setPsummary(rs.getString(9));
 				pvo.setPcontent(rs.getString(10));
+				pvo.setProdimage(rs.getString(11));
 			}
 			
 		} finally {
