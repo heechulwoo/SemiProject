@@ -209,7 +209,7 @@
 				   </tr>
 				   
 				   <tr>
-				      <td width="25%" class="rDetail" style="padding-top: 10px;">제품번호</td>
+				      <td width="25%" class="rDetail" style="padding-top: 10px;">주문번호</td>
 				      <td width="75%" align="left" class="detailcontent" style="padding-top: 10px;" >
 				         ${requestScope.rvo.fk_odrcode}  <%-- ${requestScope.cvo.fk_userid} --%>
 				         <input type="hidden" name="fk_odrcode" value="${requestScope.rvo.fk_odrcode}" />
