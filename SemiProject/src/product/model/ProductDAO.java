@@ -61,7 +61,7 @@ public class ProductDAO implements InterProductDAO {
 						 "         select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(order by pinpupdate desc) as new, prodimage " + 
 						 "         from " + 
 						 "         ( " + 
-						 "             select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(partition by pname order by pinpupdate) as updatedate, prodimage " + 
+						 "             select pnum,fk_cnum,pname,price,color,pinpupdate,pqty,psummary,pcontent,ROW_NUMBER() over(partition by fk_cnum,pname order by pinpupdate) as updatedate, prodimage " + 
 						 "             from tbl_product " + 
 						 "         ) " + 
 						 "         where updatedate = 1 " + 
