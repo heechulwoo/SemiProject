@@ -172,7 +172,7 @@ public class MemberDAO_sj implements InterMemberDAO_sj {
 			conn = ds.getConnection();
 			
 			String sql = " update tbl_member set pwd = ? "
-					   + "                     , lastpwdchagedate = sysdate "
+					   + "                     , lastpwdchangedate = sysdate "
 					   + " where userid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
