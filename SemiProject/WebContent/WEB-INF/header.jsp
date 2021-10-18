@@ -126,12 +126,19 @@
 			});
 		}
 	
+		/* 검색  */
+		
+		// 검색어에서 엔터를 하면 검색하러 가도록 한다.
+		$("input#searchWord").bind("keyup", function(event){
+			if(event.keyCode == 13){ 
+				goSearch();
+			}
+		});
+		
 	}); // end of $(document).ready(function(){}----------------------
 
-</script>
-
-<!-- 사이드바 function -->    
-<script>
+			
+	// Function Declaration  
 	function w3_open() {
 	  document.getElementById("mySidebar").style.display = "block";
 	}
@@ -139,6 +146,23 @@
 	function w3_close() {
 	  document.getElementById("mySidebar").style.display = "none";
 	}
+
+
+	function goSearch(){	
+	
+	/* 	console.log($("input#searchWord").val());
+		
+		if( $("input#searchWord").val() == ""){ // 검색어가 없다면
+			return false;// 검색이 취소된다.
+		}
+		 */
+		var frm = document.searchFrm;
+		frm.action = "<%= ctxPath%>/product/admin/searchResult.one";
+		frm.method = "GET";
+		frm.submit();
+		
+	}// end of goSearch ------------------------------
+
 </script>
 </head>
 
@@ -177,6 +201,7 @@
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/consultList.one">문의글 조회</a>
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/assembleList.one">조립 서비스 신청 조회</a>
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/selfReturnList.one">셀프 반품 신청 조회</a>
+					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/productOrderList.one">주문내역 조회</a>
 		 </div>
 		</li>
       </c:if>
@@ -203,17 +228,17 @@
 		    </li>
 		  </ul>
 		 
-	    <form class="mx-2 my-auto d-inline w-100">
+	    <form name="searchFrm" class="mx-2 my-auto d-inline w-100">
 	        <div class="input-group">
-	            <input type="text" class="form-control border" style=" border-radius: 25px; " placeholder="검색어 입력">
+	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; " placeholder="검색어 입력">
 	            <span class="input-group-append">
-	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button">
+	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button" onClick="goSearch();">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            </span>
 	        </div>
 	    </form>
-
+	    
 		<ul class="navbar-nav w-25 list-group-horizontal mt-sm-0 mt-2 mx-auto nav_text">
 	    	<li class="nav-item text" style="margin-left:50px"><a class="nav-link text-body text-dark fa fa-truck fa-lg" href="<%= ctxPath%>/product/shipping.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" href="<%= ctxPath%>/member/mypage.one"></a></li>
