@@ -149,7 +149,7 @@ public class AssembleListAction extends AbstractController {
 		 
 		// *** 현재 페이지를 돌아갈 페이지(goBackURL)로 주소 지정하기 *** // 
 		String currentURL = MyUtil_jay.getCurrentURL(request); 
-		// 회원조회를 했을시 현재 그 페이지로 그대로 되돌아가길 위한 용도로 쓰임. 
+		// 목록으로 돌아가기를 했을시 현재 그 페이지로 그대로 되돌아가길 위한 용도로 쓰임. 
 	 
 		currentURL = currentURL.replaceAll("&"," ");
 		request.setAttribute("goBackURL", currentURL);

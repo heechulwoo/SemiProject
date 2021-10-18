@@ -23,7 +23,9 @@ public class ProductRegisterAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// TODO Auto-generated method stub
+		
+		// 카테고리 목록 얻어오기 
+		super.getCategoryList(request);		
 
 		// == 관리자 (admin)으로 로그인 했을 때만 조회가 가능하도록 한다. == //
 		
@@ -110,7 +112,7 @@ public class ProductRegisterAction extends AbstractController {
 			  
 			  ProductVO pvo = new ProductVO();
 			  
-			  pvo.setPnum(Integer.toString(pnum));
+			  pvo.setPnum(fk_cnum+Integer.toString(pnum));
 			  pvo.setFk_cnum(fk_cnum);
 			  pvo.setPname(pname); 
 			  pvo.setProdimage(pimage1);
@@ -143,7 +145,7 @@ public class ProductRegisterAction extends AbstractController {
 	            	 
 	            	 String attachFileName = mtrequest.getFilesystemName("attach"+i);
 	            	 
-	            	 adao.product_imagefile_Insert(pnum, attachFileName);
+	            	 adao.product_imagefile_Insert(pvo, attachFileName);
 	            	 							// pnum 은 위에서 채번해온 제품번호이다.
 	            	 
 	             	}// end of for-------------------------

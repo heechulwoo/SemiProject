@@ -59,12 +59,28 @@ public class GoogleMail {
     	msg.addRecipient(Message.RecipientType.TO, toAddr);
     	        
     	// 메시지 본문의 내용과 형식, 캐릭터 셋 설정
-    	msg.setContent("💌💌💌💌 <br> "
-    			+ " 💁‍<b>"+name+"("+fk_userid+")님의 조립 서비스 신청이 정상적으로 완료되었음을 알려드립니다!</b><br>"
-    			+ "조립 서비스를 받으실 주문번호:&nbsp;<span style='color:red'><b>"+fk_odrcode+"</b></span><br>"
-    			+ "신청 내역은 마이페이지에서도 확인 가능합니다.<br><br>"
-    			+ "고객님의 일정을 확인하고 곧 연락드리겠습니다. 감사합니다! 💖 <br>"
-    			+ "💌💌💌💌", "text/html;charset=UTF-8");
+    	msg.setContent("<div style=\"width:568px; height:40px; padding-left:130px; padding-top:30px\"><img src=\"https://www.ikea.com/kr/ko/static/ikea-logo.f7d9229f806b59ec64cb.svg\" alt=\"IKEA_logo\" width=\"90\" height=\"35\"></div>\r\n" + 
+						"<div style=\"padding-left:130px; font-family: Arial\">\r\n" + 
+						"<div style=\"border: 29px solid #f4f6f8; width:535px; height:300px\">\r\n" + 
+						"<table style=\"padding:25px\">\r\n" + 
+						"	<tr>\r\n" + 
+						"		<td style=\"font-size:29px; padding-bottom:20px\"><b>안녕하세요.</b></td>\r\n" + 
+						"	</tr>\r\n" + 
+						"	<tbody style=\"font-size:13px\">\r\n" + 
+						"		<tr>\r\n" + 
+						"			<td><b>"+name+"("+fk_userid+")님의 조립 서비스 신청이 정상적으로 완료되었음을 알려드립니다!</b><br>\r\n" + 
+						"			조립 서비스를 받으실 주문번호:&nbsp;<span style='color:#00579c'><b>"+fk_odrcode+"</b></span>입니다.<br>" + 
+						"			신청 내역은 마이페이지에서도 확인 가능합니다.<br>고객님의 일정을 확인하고 곧 연락드리겠습니다. 감사합니다!</td>\r\n" + 
+						"		</tr>\r\n" + 
+						"		<tr><td style=\"padding-top:55px\"><b>IKEA Semi</b></td>\r\n" + 
+						"	</tr>\r\n" + 
+						"		\r\n" + 
+						"\r\n" + 
+						"	</tbody>\r\n" + 
+						"</table>\r\n" + 
+						"</div>\r\n" + 
+						"</div>", "text/html;charset=UTF-8");
+
     	        
     	// 메일 발송하기
     	Transport.send(msg);
