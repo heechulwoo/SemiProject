@@ -185,6 +185,7 @@
 	});// end of $(document).ready(function() {})
 
 	// Function Declaration
+	// 결제창으로 넘어가는 함수
 	function goPayment() {
 		
 		var boolFlag = false;
@@ -251,7 +252,10 @@
 		
 	}
 	
-	function
+	// 이니시스 결제 이후 함수
+	function ProductPaySuccess() {
+		
+	}
 	
 	<%--
 	function daum_address() {
