@@ -633,11 +633,6 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 				String deliverdate = rs.getString(7); // 배송일자
 				int odrtotalprice = rs.getInt(8);
 				
-				System.out.println(pname +"확인용입니다");
-				System.out.println(price +"확인용입니다");
-				System.out.println(oqty +"확인용입니다");
-				System.out.println(odrprice +"확인용입니다");
-						
 				
 				ProductVO_kgh pvo = new ProductVO_kgh();
 				 // pname, price

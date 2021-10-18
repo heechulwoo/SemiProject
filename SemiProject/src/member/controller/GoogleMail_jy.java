@@ -44,7 +44,7 @@ public class GoogleMail_jy {
     	MimeMessage msg = new MimeMessage(ses);
 
     	// 제목 설정
-    	String subject = "localhost:9090/SemiProject/restart.one 회원님의 휴면해제를 위한 인증코드 발송";
+    	String subject = "[IKEA]휴면해제를 위한 인증코드 발송";
     	msg.setSubject(subject);
     	        
     	// 보내는 사람의 메일주소
@@ -57,7 +57,27 @@ public class GoogleMail_jy {
     	msg.addRecipient(Message.RecipientType.TO, toAddr);
     	        
     	// 메시지 본문의 내용과 형식, 캐릭터 셋 설정
-    	msg.setContent("발송된 인증코드 : <span style='font-size:14pt; color:red;'>"+certificationCode+"</span>", "text/html;charset=UTF-8");
+    	msg.setContent( "<div style=\"width:568px; height:40px; padding-left:130px; padding-top:30px\"><img src=\"https://www.ikea.com/kr/ko/static/ikea-logo.f7d9229f806b59ec64cb.svg\" alt=\"IKEA_logo\" width=\"90\" height=\"35\"></div>\r\n" + 
+    					"<div style=\"padding-left:130px; font-family: Arial\">\r\n" + 
+    					"<div style=\"border: 29px solid #f4f6f8; width:535px; height:300px\">\r\n" + 
+    					"<table style=\"padding:25px\">\r\n" + 
+    					"	<tr>\r\n" + 
+    					"		<td style=\"font-size:29px; padding-bottom:20px\"><b>안녕하세요.</b></td>\r\n" + 
+    					"	</tr>\r\n" + 
+    					"	<tbody style=\"font-size:13px\">\r\n" + 
+    					"		<tr>\r\n" + 
+    					"			<td>휴면해제를 요청하셨습니다.<br>\r\n" + 
+    					"			고객님께서 요청하시지 않았다면, 보안을 위해 IKEA 고객센터로 문의해주세요.<br><br><br>\r\n" + 
+    					"			휴면해제를 위한 인증번호는 <span style=\"font-size:15px; color:#00579c\"><b>"+certificationCode+"</b></span>입니다.</td>\r\n" + 
+    					"		</tr>\r\n" + 
+    					"		<tr><td style=\"padding-top:55px\"><b>IKEA Semi</b></td>\r\n" + 
+    					"	</tr>\r\n" + 
+    					"		\r\n" + 
+    					"\r\n" + 
+    					"	</tbody>\r\n" + 
+    					"</table>\r\n" + 
+    					"</div>\r\n" + 
+    					"</div>", "text/html;charset=UTF-8");
     	        
     	// 메일 발송하기
     	Transport.send(msg);

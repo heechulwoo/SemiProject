@@ -8,10 +8,12 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- jstl을 사용하기 위함  -->    
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
 
-
 <jsp:include page="/WEB-INF/header.jsp"/>
+
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
 
 
@@ -57,140 +59,69 @@
 <script type="text/javascript">
 	
 	
+function goOderList() {
+	window.history.back();
+}
+	
+	
 </script>
 
 	<!-- 상단 컨텐츠 시작 -->
-	<div class="container" style="max-width:950px; margin-top:40px; height: 1300px;">
+	<div class="container" style="max-width:950px; margin-top:40px; height: 600px;">
 	<div class="row custom-topcontents">
 		
 	
 		<div id="head">
-			<span style="font-size: 26pt"><b>&nbsp;계정 관리</b></span><br>
-			<span class="mt-1"style="font-size: 10pt; margin-left:9px;">로그아웃을 하고 싶으신가요?</span>
-			<a href="<%= ctxPath %>/login/logout.one"><button type="button" class="btn btn-link btn-sm text-body" style="text-decoration:underline">  
-		  		로그아웃
-			  </button></a>
+			<span style="font-size: 26pt"><b>&nbsp;주문 상세</b></span><br>
+			<span class="mt-1"style="font-size: 13pt; margin-left:12px;">주문번호:&nbsp;${requestScope.odrcode}</span>
+
 		</div>
-			<img class="w3-image" width="900" height="300" src="<%= ctxPath%>/images/제목 없음.png" style="margin-top:40px">	
+				<img class="w1-image" width="1100" height="10" src="<%= ctxPath%>/images/yellow.PNG" style="margin-top:20px">	
 		</div>
-		
-		
-		<thead>
+
+  
+  
+  <table id="orderTbl" class="table table-bordered" style="width:100%; margin-top: 40px;">
+        <thead>
            <tr >
-              <th>주문번호</th>
-              <th>주문일자</th>
-              <th>주문총액</th>
+              <th>제품명</th>
+              <th>제품금액</th>
+              <th>주문개수</th>
+              <th>배송상태</th>
+              <th>배송일자</th>
            </tr>
         </thead>
-    	<c:forEach var="odrDetail" items="${requestScope.odrDetail}">
+        
+        <tbody>
+    		<c:forEach var="odrDetail" items="${requestScope.odrDetail}">
     			<tr class="orderInfo" >
     				<td class="odrcode">${odrDetail.pvo.pname}</td>
-    				<td>${odrDetail.pvo.price}</td>
-    				<td>${odrDetail.oqty}</td>
-    			    <td>${odrDetail.odrprice}</td>
-    				<td>${odrDetail.deliverstatus}</td>
-    				<td>${odrDetail.fk_odrcode}</td>
+    				<td><fmt:formatNumber value="${odrDetail.pvo.price}" pattern="###,###" />원</td>
+    				<td>${odrDetail.oqty}개</td>
+    				<td>
+    				<c:choose>
+    					<c:when test="${odrDetail.deliverstatus eq '1'}">
+    							배송완료
+    					</c:when>
+    						<c:otherwise>
+    							배송중
+    						</c:otherwise>
+    					</c:choose>
+					</td>
     				<td>${odrDetail.deliverdate}</td>
-    				<td>${odrDetail.povo.odrtotalprice}</td>
-    			</tr>
-    		</c:forEach>   
-		
-		
+				</tr>
+    		</c:forEach>    
+		</tbody>
+	</table>
 
-		<table id="tblMemberUpdate" class="table my-4" style="font-size: 10pt; border-collapse:separate; border-spacing:40px 30px">
-		  <tbody>
-		    
-		    <tr>
-		      <th>이름&nbsp;</th>	  
-		   	<c:forEach var="odrDetail" items="${requestScope.odrDetail}">
-    			<tr class="orderInfo" >
-    				<td class="odrcode">${odrDetail.pvo.pname}</td>
-    		</c:forEach>
-			  </tr>
-		 	     	   
-		 	 <tr>
-		 	 	<th>금액</th>	  
-		 	 <c:forEach var="odrDetail" items="${requestScope.odrDetail}">
-    			<tr class="orderInfo" >
-    				<td class="odrcode">${odrDetail.pvo.price}</td>
-    		</c:forEach>
-			 </tr>
+	     
 
-		 	  <tr>
-		 	   <th>이름&nbsp;</th>	  
-		   		<td> <span>${sessionScope.loginuser.name}</span>  
-           	   </td>
-			 </tr>
+<button type="button" class="btn btn-warning" onclick="goOderList();" style="margin-left: 390px; margin-top: 50px;  font-weight:bolder;">목록으로</button>    
+		  	
+			
 
-		 	  <tr>
-		 	   <th>이름&nbsp;</th>	  
-		   		<td> <span>${sessionScope.loginuser.name}</span>  
-           	   </td>
-			 </tr>
-		 	 
-		 	  <tr>
-		 	   <th>이름&nbsp;</th>	  
-		   		<td> <span>${sessionScope.loginuser.name}</span>  
-           	   </td>
-			 </tr>
-		 	 
-		 	 
-		 	  <tr>
-		 	   <th>이름&nbsp;</th>	  
-		   		<td> <span>${sessionScope.loginuser.name}</span>  
-           	   </td>
-			 </tr>
-		 	 
- 	 
-		    	      
+</div>
 
-		    <tr>     
-		      <td>
-		      <td><button type="button" id="btnUpdate"class="btn btn-dark mt-3 mr-3" onClick="goEdit()" style="border-radius: 40px; margin-left:400px; font-size: 10pt">  
-		  		<b>수정하기</b>
-			  </button>
-		     
-		      <!-- Modal -->
-		      <button type="button" id="btnUpdate" class="btn btn-outline-dark mt-3 " data-toggle="modal" style="border-radius: 40px; font-size: 10pt" data-target="#exampleModal">  <!--  data-toggle="modal"를 넣어주면 되는것이다. -->  
-		  		<b>계정 탈퇴</b>
-			  </button>
-				<!-- Modal 구성 요소 -->
-				<div class="modal fade" id="exampleModal">
-				  <div class="modal-dialog">
-				    <div class="modal-content">
-				      
-				      <!-- Modal header -->
-				      <div class="modal-header">
-				        <h5 class="modal-title">회원탈퇴창</h5>
-				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				      </div>
-				      <!-- Modal body -->
-				      <div class="modal-body">
-				        Modal body....
-				      </div>
-				      <!-- Modal footer -->
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
-				        <button type="button" class="btn btn-primary" >계정 탈퇴</button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-				<!-- Modal 끝 -->
-		    </tr>
-
-		  </tbody>
-		</table>
-
-	</div>
-	<!-- row 끝 -->
-	<!-- 중앙 컨텐츠 끝 -->
-
-	<hr>
-
-
-</body>
-</html>
 
 
 <jsp:include page="/WEB-INF/footer.jsp"/>
