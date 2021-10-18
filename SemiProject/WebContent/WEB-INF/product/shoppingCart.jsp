@@ -36,10 +36,12 @@
 					  "oqty":oqty},
 				dataType:"JSON",
 				success:function(json){
+					if(json.n == 1){
 						alert("주문수량이 변경되었습니다.");   
 						$("div#displayAll").empty();
 						showCartList();
 						totalPrice();
+					}
 			    },
 			    error: function(request, status, error){
 			       alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
