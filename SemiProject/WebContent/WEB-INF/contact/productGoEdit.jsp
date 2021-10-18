@@ -168,22 +168,6 @@
 		</c:if>	
 		
 		<c:if test="${ not empty requestScope.ovo }"> 
-	<%--
-			<c:set var="returnno" value="${requestScope.rvo.returnno}" />
-			<c:set var="fk_userid" value="${requestScope.rvo.fk_userid}" />
-			<c:set var="fk_odrcode" value="${requestScope.rvo.fk_odrcode}" />
-			<c:set var="name" value="${requestScope.rvo.name}" />
-			<c:set var="email" value="${requestScope.rvo.email}" />
-			<c:set var="mobile" value="${requestScope.rvo.mobile}" />
-			<c:set var="whyreturn" value="${requestScope.rvo.whyreturn}" />
-			<c:set var="wherebuy" value="${requestScope.rvo.wherebuy}" />
-			<c:set var="plusreason" value="${requestScope.rvo.plusreason}" />
-	   		<c:set var="returndate" value="${requestScope.rvo.returndate}" />
-	    <c:set var="status" value="${requestScope.rvo.status}" />   
-	--%>
-	   		
-			
-			
 			
 			<h3 class="col-md-auto" style="font-weight: bold;">
 				주문번호&nbsp;<span style="color: #80ccff;">${requestScope.ovo.fk_odrcode}</span>&nbsp;-
@@ -215,6 +199,14 @@
 				      <td width="75%" align="left" class="detailcontent" style="padding-top: 10px;" >
 				         ${requestScope.ovo.fk_pnum}
 				         <input type="hidden" name="fk_pnum" value="${requestScope.ovo.fk_pnum}" />
+				      </td>   
+				   </tr>
+				   
+				   <tr>
+				      <td width="25%" class="oDetail" style="padding-top: 10px;">상품명</td>
+				      <td width="75%" align="left" class="detailcontent" style="padding-top: 10px;" >
+				         ${requestScope.ovo.pvosm.pname}
+				         <input type="hidden" name="fk_pnum" value="${requestScope.ovo.pvosm.pname}" />
 				      </td>   
 				   </tr>
 				   
