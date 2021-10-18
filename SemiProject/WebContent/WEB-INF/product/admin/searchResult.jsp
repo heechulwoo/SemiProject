@@ -32,7 +32,9 @@
 			$("input#searchWord").val("${requestScope.searchWord}")
 		}
 		
-		// 검색결과의 유무에 따라 다르게 보이기
+		// ** 검색결과의 유무에 따라 다르게 보이기**
+		
+		// 검색 결과가 없는 경우 
 		if("${requestScope.totalProdCount}" == "0"){
 			$("div#exist").hide();
 			$("div#noproduct").show();
@@ -44,13 +46,18 @@
 			
 		    
 		}
+		
+		// 검색 결과가 있는 경우
 		else{
 			$("div#exist").show();
 			$("div#noproduct").hide();
 			$("div#new1").hide();
 			$("div#new2").hide();
 			$("div#range").show();
+			$("div#result").show();
 		}
+
+			
 	
 		displayProd(start); // 처음에만 호출	
 	
@@ -249,6 +256,10 @@
 			<h1>"<b>${requestScope.searchWord}</b>"와&nbsp;(과)&nbsp;일치하는 제품이 없습니다</h1>
 			<small>&nbsp;&nbsp;&nbsp;원하시는 결과가 없으신가요? 찾으시는 제품의 이름이나 카테고리로 검색해보세요.</small>
 		</div>		
+<!-- 		<div id="noword" style="margin-top: 3vw;">
+			<h1>"<b>IKEA의 제품 둘러보기</b></h1>
+			<small>&nbsp;&nbsp;&nbsp;검색어가 없으면 IKEA의 전체 제품을 보여드려요.</small>
+		</div> -->		
 			<div style="margin-top: 3vw;" id="range">
 			  <button class="btn btn-light " type="button" name="range" id="low-price" value="price">
 			  	낮은가격순
