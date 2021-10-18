@@ -103,8 +103,9 @@ public class PaymentController extends AbstractController {
 				request.setAttribute("shipmentDate", shipmentDate);
 				
 				request.setAttribute("odoqty", odoqty);
-				
+				request.setAttribute("odpnum", odpnum);
 				request.setAttribute("odcartno", odcartno);
+				request.setAttribute("odtotalprice", odtotalprice);
 				
 			//	System.out.println(sumTotalPrice);
 				

@@ -210,20 +210,16 @@
 			return; // 종료
 		}
 		
-//		var odcartno = ${requestScope.odcartno};
-//		var odoqty = ${requestScope.odoqty};
+//		var odcartno = "${requestScope.odcartno}";
+//		var odoqty = "${requestScope.odoqty}";
 //		var name = $("input#lastname").val() + $("input#firstname").val();
 //		var email = $("input#email").val();
 //		var mobile = $("input#mobile").val();
 //		var sumTotalPrice = ${requestScope.sumTotalPrice};
 	
-		var frm = document.payForm;
-		var name = frm.lastname.value + frm.firstname.value;
-		var email = frm.email.value;
-		var mobile = frm.mobile.value;
-		var totalPay = frm.totalPay.value;
-<%--		frm.action = "<%= ctxPath%>/product/productPay.one?totalPay=" + totalPay; --%>
+		var totalPay = ${requestScope.sumTotalPrice};
 		
+		console.log(totalPay);
 		
 		
 <%--	
@@ -253,13 +249,33 @@
 	}
 	
 	// 이니시스 결제 이후 함수
-	function ProductPaySuccess() {
-		var frm = document.payForm;
-		var name = frm.lastname.value + frm.firstname.value;
-		var email = frm.email.value;
-		var mobile = frm.mobile.value;
-		var totalPay = frm.totalPay.value;
+	function goProductPaySuccess() {
+		alert("결제완료되었습니다!");
+
+		var name = $("input#lastname").val() + $("input#firstname").val();
 		
+		$.ajax({
+			url:"<%= ctxPath%>/product/productPaySuccess.one",
+			type:"POST",
+			data:{"name":name,
+				  "email":$("input#email").val(),
+				  "mobile":$("input#mobile").val(),
+				  "postcode":$("input#postcode").val(),
+				  "address":$("input#address").val(),
+				  "detailAddress":$("input#detailAddress").val(),
+				  "extraAddress":$("input#extraAddress").val(),
+				  "odpnum":$("input#odpnum").val(),
+				  "odoqty":$("input#odoqty").val(),
+				  "odcartno":$("input#odcartno").val(),
+				  "odtotalprice":$("input#odtotalprice").val(),
+				  "sumtotalprice":$("input#totalPrice").val()},
+			success:function() {
+				
+			},
+			error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+		});
 		
 	}
 	
@@ -322,10 +338,11 @@
 <body>
 
 	<div id="main" class="container-fluid my-4">
-	
+		
 		<a href="<%= ctxPath %>/index.one"><img src="<%= ctxPath%>/image_ikea/IKEA.svg"/></a>
 		<hr>
 		<br>
+		  	
 		<div id="payCheckList" class="container-fluid mx-3 mb-4">
 		  <div class="row justify-content-start no-gutters">
 		  	<div class="col-12 col-lg-7">
@@ -334,7 +351,7 @@
 		  	<div class="col-12 col-lg-12">
 			    <div class="col-1 pl-2 mx-2 float-left"><h3 style="font-weight: bold; text-decoration: underline; height: 900px;">1</h3></div>
 		    	<div class="col-11">
-				    <div class="col-11 col-lg-9 mx-2"><h3 style="font-weight: bold;">배송방법</h3></div>
+				    <div class="col-11 col-lg-9 mx-2"><h3 style="font-weight: bold;">배송지 작성</h3></div>
 				    <div class="col-11 col-lg-9 mt-3"><span>배송지 : 대한민국</span></div>
 				    <div class="col-10 col-lg-9 ml-2 my-4 jumbotron d-flex align-items-center" style="height: 10%;">
 				    	<i class="fas fa-info-circle ml-1 mr-3 text-primary"></i>
@@ -349,27 +366,30 @@
 				    	<span class="mx-2 my-2" style="font-weight: bold;font-size: 11pt;">출고 예정일</span><br>
 				    	<span class="mx-2 my-2" style="font-size: 11pt;">${requestScope.shipmentDate}&nbsp; 09:00 - 21:00</span>
 					</div>
-					<div class="col-10 col-lg-9 px-3 py-4 float-left">
-						<form name="addressForm mb-4">
+					<div class="col-10 col-lg-10 px-3 py-4 float-left">
 							<button id="searchAddress" class="btn btn-dark mb-3" style="color: white; width: 200px; height: 40px; font-weight: bold; border-radius: 25px;">주소찾기</button>
 					    	<br>
 					    	<label class="h6 ml-2" style="font-weight: bold;">우편번호</label>
-					    	<input type="text" class="form-control requiredInfo mb-1" id="Odpostcode" name="Odpostcode" value="${loginuser.postcode}"/>
+					    	<input type="text" class="form-control requiredInfo mb-1" id="postcode" name="postcode" value="${loginuser.postcode}"/>
 					    	<span class="error ml-2 mb-2">우편번호를 올바르게 입력하세요</span><br>
 					    	
 					    	<label class="h6 ml-2" style="font-weight: bold;">배송지</label>
-					    	<input type="text" class="form-control requiredInfo mb-2" id="Odaddress" name="Odaddress" value="${loginuser.address}"/>
+					    	<input type="text" class="form-control requiredInfo mb-2" id="address" name="address" value="${loginuser.address}"/>
 					    	
-					    	<input type="text" class="form-control requiredInfo mb-2" id="OddetailAddress" name="OddetailAddress" value="${loginuser.detailaddress}"/>
+					    	<input type="text" class="form-control requiredInfo mb-2" id="detailAddress" name="detailAddress" value="${loginuser.detailaddress}"/>
 					    	
-					    	<input type="text" class="form-control requiredInfo mb-2" id="OdextraAddress" name="OdextraAddress" value="${loginuser.extraaddress}"/>
+					    	<input type="text" class="form-control requiredInfo mb-2" id="extraAddress" name="extraAddress" value="${loginuser.extraaddress}"/>
 					    	<span class="error ml-2 mb-2">주소를 올바르게 입력하세요</span><br>
 					    	
 					    	<label class="h6 ml-2" style="font-weight: bold;">배송옵션</label>
 					    	<input type="text" class="form-control mb-4" id="detailDelivery" name="detailDelivery" placeholder="배송옵션(예 : 부재시 경비실에 맡겨주세요)"/>
+				    
 					    	
-						</form>
-				    	<button class="btn" data-toggle="collapse" data-target="#payment1"  style="background-color: #004d99; color: white; width: 100%; height: 50px; font-weight: bold; border-radius: 25px;">다음</button>
+					    	<input type="hidden" class="form-control" id="odpnum" name="odpnum" value="${requestScope.odpnum}" />
+					    	<input type="hidden" class="form-control" id="odoqty" name="odoqty"  value="${requestScope.odoqty}"/>
+					    	<input type="hidden" class="form-control" id="odcartno" name="odcartno" value="${requestScope.odcartno}" />
+					    	<input type="hidden" class="form-control" id="odtotalprice" name="odtotalprice" value="${requestScope.odtotalprice}" />
+				    		<button class="btn" data-toggle="collapse" data-target="#odrpayment1"  style="background-color: #004d99; color: white; width: 100%; height: 50px; font-weight: bold; border-radius: 25px;">다음</button>
 					</div>
 				    <div class="col-10 col-lg-9 ml-5 pl-3 my-3">
 				    </div>
@@ -378,13 +398,13 @@
 		  	</div>
 		  	
 		  	<div class="col-12 col-lg-12" id="payCheckList2" class="container mx-3 mb-4 ">
-			  <div id="payment1" class="collapse row no-gutters">
+			  <div id="odrpayment1" class="collapse row no-gutters">
 				  <hr class="pb-5"style="width: 900px;" align="left">
 				    <div class="col-1 pl-2 mx-2 float-left"><h3 style="font-weight: bold; text-decoration: underline; height: 400px;">2</h3></div>
 				    <div class="col-10">
-				    <div class="col-12 col-lg-10"><h3 style="font-weight: bold;">주문을 어디로 배송할까요?</h3></div>
-				    <div class="col-12 col-lg-12 mt-4">
-					    <form name="payForm" style="width: 95%;">
+				    <div class="col-12 col-lg-10"><h3 style="font-weight: bold;">주문서 작성</h3></div>
+				    <div class="col-10 col-lg-10 mt-4">
+					    
 					    	<label class="h6 ml-2" style="font-weight: bold;">성</label>
 					    	<input type="text" class="form-control requiredInfo mb-1" id="lastname" name="lastname" value="${(requestScope.loginuser.name).substring(0, 1)}"/>
 					    	<span class="error ml-2 mb-2">성을 입력하세요</span><br>
@@ -402,10 +422,8 @@
 					    	<span class="error ml-2 mb-2">연락처를 올바르게 입력하세요</span><br>
 					    	
 					    	<input type="hidden" class="form-control" id="totalPay" name="totalPay" value="${requestScope.sumTotalPrice}" />
-					    	<input type="hidden" id="userid" name="userid" value="" />
-					    </form>
-					    
 				    </div>
+				    
 				    <div class="col-10 col-lg-9 my-3">
 				    	<button class="btn my-3" data-toggle="collapse" data-target="#payment2" style="background-color: #004d99; color: white; width: 100%; height: 50px; font-weight: bold; border-radius: 25px;">다음</button></div>
 				  	</div>
@@ -438,7 +456,7 @@
 				  		<div class="sidenav ml-1 pl-1 my-3">
 								<div class="row justify-content-between mb-5">
 									<div class="col-6"><h5 style="font-weight: bold;">주문정보</h5></div>
-									<div class="col-3 mr-2"><a href="#" class="float-right mr-3" style="color: gray; text-decoration: underline;">수정</a></div>
+									<div class="col-3 mr-2"><a href="<%= ctxPath%>/product/shoppingCart.one" class="float-right mr-3" style="color: gray; text-decoration: underline;">수정</a></div>
 								</div>
 								<div>
 									<c:if test="${not empty odProdimgList}">
@@ -479,7 +497,6 @@
 				  	</div>
 			  </div>
 	   		</div>
-	
 </div>
 
 </body>
