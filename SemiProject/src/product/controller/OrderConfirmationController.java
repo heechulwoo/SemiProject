@@ -30,6 +30,8 @@ public class OrderConfirmationController extends AbstractController {
 */			
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("cnt", orderList.size());
+
+			
 			
 			super.setViewPage("/WEB-INF/product/orderConfirmation.jsp");
 

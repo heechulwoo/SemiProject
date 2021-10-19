@@ -284,7 +284,7 @@
 							<button id="buyButton" class="btn btn-secondary btn-lg mb-3" disabled="disabled" style="width: 270px; height: 50px; font-weight: bold;" >품절</button>
 						</c:when>
 						<c:otherwise>
-							<button id="buyButton" class="btn btn-primary btn-lg mb-3" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
+							<button class="btn btn-primary btn-lg mb-3" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
 						</c:otherwise>
 					</c:choose>
 					

@@ -182,14 +182,14 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			conn = ds.getConnection();
 			
 			String sql = " select cnum, cname, pnum, pname, prodimage, price, odrcode, " + 
-						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate " + 
+						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate, deliverstatus " + 
 						 " from " + 
 						 " ( " + 
 						 "     select cnum , cname, pnum, pname, prodimage, price, fk_odrcode AS odrcode, " + 
-						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate, delivery " + 
+						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate, deliverstatus " + 
 						 "     from " + 
 						 "     ( " + 
-						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice " + 
+						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice, deliverstatus " + 
 						 "         from " + 
 						 "         ( " + 
 						 "             select cnum , cname, pnum, pname, prodimage, price " + 
@@ -236,6 +236,8 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 					
 				podvo.setOqty(rs.getInt("oqty"));				// 주문상세
 				podvo.setOdrprice(rs.getInt("odrprice"));
+				podvo.setDeliverstatus(rs.getInt("deliverstatus"));
+				
 				
 				orderList.add(podvo);
 				

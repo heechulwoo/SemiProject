@@ -32,6 +32,13 @@
 		<div class="col-lg-2"></div>
 		<div class="col-11 col-md-4">
 			<h4 class="ml-2 mt-5 pt-4" style="font-weight: bold;">구매 세부 정보</h4><br>
+			
+			<c:if test="${not empty requestScope.orderList}">
+				<c:forEach >
+				
+				</c:forEach>
+			</c:if>
+			
 			<i class="fas fa-receipt fa-lg mx-2 my-2 float-left"></i>
 			<h5 class="mx-1 my-1 float-left" style="font-weight: bold;">주문 접수됨</h5>
 			<br><br><br>
