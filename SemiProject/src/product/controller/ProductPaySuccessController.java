@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
@@ -117,6 +118,7 @@ public class ProductPaySuccessController extends AbstractController {
         	/// *** Transaction 처리해주는 메서드 *** //
         	int isSuccess = pdao.orderAdd(paraMap);
         	
+        	JSONArray jsonArr = new JSONArray();
         	JSONObject jsobj = new JSONObject();
         	
         	jsobj.put("isSuccess", isSuccess);
@@ -144,7 +146,9 @@ public class ProductPaySuccessController extends AbstractController {
         		jsobj.put("isSuccess", 0);
         	}
             
-            String json = jsobj.toString();
+        	jsonArr.put(jsobj);
+        	
+            String json = jsonArr.toString();
             request.setAttribute("json", json);
             
             super.setRedirect(false);

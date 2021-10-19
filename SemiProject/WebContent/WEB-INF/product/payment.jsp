@@ -270,6 +270,9 @@
 				  "odtotalprice":$("input#odtotalprice").val(),
 				  "sumtotalprice":$("input#totalPay").val()},
 			success:function(json) {
+				
+				var = JSON.parse(json);
+				
 				if(json.isSuccess == 1) {
 					location.href="<%= ctxPath%>/product/orderConfirmation.one?odrcode=" + json.odrcode;
 				}

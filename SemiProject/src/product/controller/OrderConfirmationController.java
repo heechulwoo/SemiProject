@@ -34,51 +34,7 @@ public class OrderConfirmationController extends AbstractController {
 			
 			
 			super.setViewPage("/WEB-INF/product/orderConfirmation.jsp");
-
 			
-		/*	JSONArray jsonArr = new JSONArray();
-			
-			if(orderList.size() > 0) {
-				for(ProductOrderDetailVO_kgh podvo : orderList) {
-					
-					JSONObject jsonObj = new JSONObject();
-					
-					jsonObj.put("cnum", podvo.getPcvo().getCnum());
-					jsonObj.put("cname", podvo.getPcvo().getCname());
-					
-					jsonObj.put("pnum", podvo.getPvo().getPnum());
-					jsonObj.put("pname", podvo.getPvo().getPname());
-					jsonObj.put("prodimage", podvo.getPvo().getProdimage());
-					jsonObj.put("price", podvo.getPvo().getPrice());
-					
-					jsonObj.put("odrcode", podvo.getPovo().getOdrcode());
-					jsonObj.put("odrtotalprice", podvo.getPovo().getOdrtotalprice());
-					jsonObj.put("odrdate", podvo.getPovo().getOdrdate());
-					
-					jsonObj.put("oqty", podvo.getOqty());
-					jsonObj.put("odrprice", podvo.getOdrprice());
-					
-					jsonArr.put(jsonObj);
-					
-				}
-				
-				String json = jsonArr.toString();
-				
-				request.setAttribute("json", json);
-			
-			//	super.setRedirect(false);
-				super.setViewPage("/WEB-INF/product/orderConfirmation.jsp");
-				super.setViewPage("/WEB-INF/jsonview.jsp");
-			}
-			else {
-				String json = jsonArr.toString();
-				
-				request.setAttribute("json", json);
-				
-			//	super.setRedirect(false);
-				super.setViewPage("/WEB-INF/jsonview.jsp");
-			}
-		*/		
 		}
 		else {
 			System.out.println("get방식 접속");
