@@ -180,17 +180,12 @@
 	            }
 	            
 	            
-	            
-	        //	console.log(pnum);
-	        //  console.log(price);
-	        //  console.log(oqty);
-	            
 	        	var bool = confirm("결제를 진행하시겠습니까?");
 	        	
 	        	if(bool) {
 	        		
-	        		frm.method = "GET";
-	        	    frm.action = "<%= request.getContextPath()%>/product/payment2.one";
+	        		frm.method = "POST";
+	        	    frm.action = "<%= request.getContextPath()%>/product/payment.one";
 	        	    frm.submit();
 	        	}
 	            

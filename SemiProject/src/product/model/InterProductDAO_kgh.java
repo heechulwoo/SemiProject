@@ -30,17 +30,26 @@ public interface InterProductDAO_kgh {
 	// 주문 테이블에 주문내역 insert하기
 	String insertOrder(String userid, String sumTotalPrice) throws SQLException;
 
-	// 해당 주문번호를 통해 배송지 insert하기
-	void insertAddress(Map<String, String> paraMap) throws SQLException;
 
-	// 주문상세 테이블에 주문 상세내역 insert 하기
-	int insertOrderDetail(Map<String, String> odrparaMap) throws SQLException;
+	// ===== Transaction 처리하기 ===== // 
+    // >> 앞에서 미리 했음 1. 주문 테이블에 입력되어야할 주문전표를 채번(select)하기 
+    // 2. 주문 테이블에 채번해온 주문전표, 로그인한 사용자, 현재시각을 insert 하기(수동커밋처리)
+    // 3. 주문상세 테이블에 채번해온 주문전표, 제품번호, 주문량, 주문금액을 insert 하기(수동커밋처리)
+    // 4. 제품 테이블에서 제품번호에 해당하는 잔고량을 주문량 만큼 감하기(수동커밋처리) 
+    
+	// 5. 장바구니 테이블에서 cartnojoin 값에 해당하는 행들을 삭제(delete OR update)하기(수동커밋처리) 
+    // >> 장바구니에서 주문을 한 것이 아니라 특정제품을 바로주문하기를 한 경우에는 장바구니 테이블에서 행들을 삭제할 작업은 없다. << 
+	
+    // 6. 배송지 테이블에서  사용자의 주소 정보 더하기(insert)(수동커밋처리) 
+    // 7. **** 모든처리가 성공되었을시 commit 하기(commit) **** 
+    // 8. **** SQL 장애 발생시 rollback 하기(rollback) ****
+	int orderAdd(HashMap<String, Object> paraMap) throws SQLException;
 
-	// 제품 테이블의 재고 수량 update 하기
-	void updatePqty(String odpnumIndex, String odoqtyIndex) throws SQLException;
+	// 주문 일자 가져오기
+	String selectOrderDate(String odrcode) throws SQLException;
 
-	// 장바구니에 해당 하는 상품 목록 delete 하기
-	void deleteCartno(String odcartnoIndex) throws SQLException;
+	// 주문 정보 지우기
+	void deleteOrder(String odrcode) throws SQLException;
 
 
 }
