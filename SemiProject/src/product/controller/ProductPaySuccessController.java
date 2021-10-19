@@ -124,7 +124,11 @@ public class ProductPaySuccessController extends AbstractController {
         	jsobj.put("isSuccess", isSuccess);
         	jsobj.put("odrcode", odrcode);
         	
+        	
         	if(isSuccess == 1) {
+        		
+        		// System.out.println("isSuccess : " + isSuccess);
+        		// System.out.println("odrcode : " + odrcode);
         		
         		System.out.println("주문 처리 성공");
         		
@@ -149,6 +153,7 @@ public class ProductPaySuccessController extends AbstractController {
         	jsonArr.put(jsobj);
         	
             String json = jsonArr.toString();
+            // System.out.println("json : " + json);
             request.setAttribute("json", json);
             
             super.setRedirect(false);

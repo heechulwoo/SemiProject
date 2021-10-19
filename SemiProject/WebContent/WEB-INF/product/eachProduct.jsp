@@ -142,7 +142,7 @@
 		});// end of $("button#shopBasketList").click(function() {})
 		
 		// 구매하기 버튼을 클릭할 때 구매창으로 넘어가는 함수
-		$("button#buyButton").click(function() {
+		$("button#productBuy").click(function() {
 			
 			// alert("구매버튼 확인용");
 			var odoqty = $("input#spinnerPqty").val()
@@ -284,7 +284,7 @@
 							<button id="buyButton" class="btn btn-secondary btn-lg mb-3" disabled="disabled" style="width: 270px; height: 50px; font-weight: bold;" >품절</button>
 						</c:when>
 						<c:otherwise>
-							<button class="btn btn-primary btn-lg mb-3" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
+							<button id="productBuy" class="btn btn-primary btn-lg mb-3" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
 						</c:otherwise>
 					</c:choose>
 					
