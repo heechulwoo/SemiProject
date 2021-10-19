@@ -57,8 +57,13 @@ public class ProductEditAction extends AbstractController {
 		}
 		else {
 			// 로그인을 안 했다면
+			String message = "로그인이 필요합니다.";
+			String loc = "javascript:history.back()";
 			
-			super.setViewPage("/WEB-INF/login/login.jsp");
+			request.setAttribute("message", message);
+			request.setAttribute("loc", loc);
+			
+			super.setViewPage("/WEB-INF/msg.jsp");
 		}
 		
 	}

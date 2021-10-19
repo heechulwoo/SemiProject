@@ -26,13 +26,14 @@
 	               $(this).spinner("value", 50);
 	               return false;
 	            }
-	            else if(ui.value < 1) {
-	               $(this).spinner("value", 1);
+	            else if(ui.value < 0) {
+	               $(this).spinner("value", 0);
 	               return false;
 	            }
 			}  
 		}); // end of $("input#spinnerPqty").spinner()-----------------------
 		
+		$("input#spinnerPqty").val("${requestScope.pvo.pqty}");
 		
 		// #### 스피너의 이벤트는 click 도 아니고 change 도 아니고 "spinstop" 이다. #### //
 		$("input#spinnerImgQty").bind("spinstop", function(){
@@ -72,7 +73,7 @@
 		}); // end of $("input#spinnerImgQty").spinner()------------------
 		
 		
-	// 등록하기 버튼
+	// 수정하기 버튼
 	$("input#btnRegister").click(function(){
 				
 			var flag = false;
@@ -86,13 +87,6 @@
 						return false;
 					}
 				});
-				
-				if($("input#attachCount").val() < 2){
-					alert("추가 이미지는 2개 이상 필수 첨부해야 합니다.")
-					flag = true;
-					return false;
-				}
-				
 				
 			if(!flag){
 				var frm = document.prodInputFrm;
@@ -206,7 +200,7 @@ $(function() {
 </script>
 
 
-<title>제품 등록</title>
+<title>제품 수정</title>
 
 <!-- 직접 만든 CSS -->
 <link rel="stylesheet" href="../../css/assemble_form.css" />
@@ -235,7 +229,7 @@ text-align: center;
 			<form name="prodInputFrm"
 				action="<%=request.getContextPath()%>/product/admin/productEditEnd.one"
 				method="POST" enctype="multipart/form-data">
-
+			<input type="hidden" name="pnum" value="${requestScope.pvo.pnum}" />
 				<table id="tblProdInput" class="formtable">
 					<tbody>
 						<tr>
@@ -255,20 +249,19 @@ text-align: center;
 						<tr>
 							<th>제품명</th>
 							<td>
-								<input type="text" name="pname" class="forminput requiredInfo" value="${requestScope.pvo.pname}" />
+								<input type="hidden" name="pname" class="forminput requiredInfo" value="${requestScope.pvo.pname}" />
 	         					<span class="error">필수입력</span>
 							</td>
 						</tr>
 
 						<tr>
 							<th rowspan="2">제품 대표 이미지</th>
-							<td><img src="/SemiProject/image_ikea/${requestScope.pvo.prodimage}" style="width: 30%;"/></td>
+							<td><img src="/SemiProject/image_ikea/${requestScope.pvo.prodimage}" style="width: 30%;"/><input type="hidden" name="beforeProdimage" value="${requestScope.pvo.prodimage}"/></td>
 						</tr>	
 						<tr>
 							<td>
-								<input type="file" name="pimage1" class="forminput requiredInfo " /><br>
+								<input type="file" name="pimage1" class="forminput" /><br>
 								<small style="color:#0058AB;">파일을 첨부하시면 기존이미지는 삭제됩니다.</small>
-								<span class="error">필수입력</span> 
 							</td>
 						</tr>
 
@@ -286,7 +279,7 @@ text-align: center;
 						
 						<tr>
 							<th>재고량</th>
-							<td>&nbsp;<input type="text" id="spinnerPqty" name="pqty" value="1" style="width:30px;" class="requiredInfo" value="${requestScope.pvo.pqty}"/>
+							<td>&nbsp;<input type="text" id="spinnerPqty" name="pqty" style="width:30px;" class="requiredInfo"/>
 								<span class="error">필수입력</span></td>
 						</tr>
 						
@@ -316,7 +309,7 @@ text-align: center;
 								<td>
 								<c:forEach var="pimgList" items="${requestScope.pimgList}" varStatus="status">
 									<c:if test="${not status.last}">
-							  	 		<img src="/SemiProject/image_ikea/${pimgList.imgfilename}" style="width: 30%;"/>
+							  	 		<img src="/SemiProject/image_ikea/${pimgList.imgfilename}" style="width: 30%;"/><input type="hidden" value="${pimgList.imgfilename}" name="beforeImage${status.count}"/>
 									</c:if>
 								</c:forEach>
 								</td>
@@ -324,11 +317,10 @@ text-align: center;
 						<tr>
 						<tr>	
 							<td><label for="spinnerImgQty" style="font-size: 0.9rem; width:70px;">파일수 : </label>
-							<input id="spinnerImgQty" value="0" class="forminput requiredInfo" style="display: inline; width: 40px; height: 20px;">
+							<input id="spinnerImgQty" class="forminput" style="display: inline; width: 40px; height: 20px;">
 							<div id="divfileattach"></div> 
-							<input type="hidden" name="attachCount" id="attachCount" />
+							<input type="hidden" name="attachCount" id="attachCount" value="0" />
 							<small style="color:#0058AB;">파일을 첨부하시면 기존이미지는 삭제됩니다.</small>
-							<span class="error">필수첨부</span>
 							</td>
 						</tr>
 						
@@ -337,16 +329,15 @@ text-align: center;
 							<c:if test="${not empty pimgList}">
 								<c:forEach var="pimgList" items="${requestScope.pimgList}" varStatus="status">
 									<c:if test="${status.last}">
-							  	 	<td><img src="/SemiProject/image_ikea/${pimgList.imgfilename}" style="width: 30%;"/></td>
+							  	 	<td><img src="/SemiProject/image_ikea/${pimgList.imgfilename}" style="width: 30%;"/><input type="hidden" value="${requestScope.pvo.prodimage}" name="beforelastImage"/><input type="hidden" value="${status.count}" name="beforeLastIndex"/></td>
 									</c:if>
 				  				</c:forEach>
 				  			</c:if>
 				  		</tr>	
 				  		<tr>	
 							<td>
-								<input type="file" name="lastimg" class="forminput requiredInfo " /><br>
+								<input type="file" name="lastimg" class="forminput" /><br>
 								<small style="color:#0058AB;">파일을 첨부하시면 기존이미지는 삭제됩니다.</small>
-								<span class="error">필수입력</span> 
 							</td>
 						</tr>
 						
@@ -356,9 +347,9 @@ text-align: center;
 				<br><br>
 				<div class="updateprogress">
 					<div class="submitORnot" style="margin-top: 2vw;">
-					<input type="button" value="제품 등록" id="btnRegister" class="mybtn_black"
-					style="margin-top: 3%; margin: 3% auto;">
-					<input type="reset" value=" 취소 " class="mybtn_black"
+					<input type="button" value="제품 수정" id="btnRegister" class="mybtn_black"
+					style="margin-top: 3%; margin: 3% auto;" />
+		 			<input type="button" value=" 취소 " class="mybtn_black" onclick="javascript:history.back();"
 					style="margin-top: 3%; margin: 3% auto;">
 				</div>
 			</div>
