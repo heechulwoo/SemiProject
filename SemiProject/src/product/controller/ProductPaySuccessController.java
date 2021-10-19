@@ -1,5 +1,6 @@
 package product.controller;
 
+import java.sql.SQLException;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,17 @@ import product.model.ProductDAO_kgh;
 
 public class ProductPaySuccessController extends AbstractController {
 
+	// === 전표(주문코드)를 생성하는 메서드 생성하기 === //
+	private String getOdrCode() throws SQLException {
+		
+		InterProductDAO_kgh pdao = new ProductDAO_kgh();
+		
+		String odrcode = pdao.getodrCode();
+		
+		return odrcode;
+	}
+	
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -38,7 +50,10 @@ public class ProductPaySuccessController extends AbstractController {
 			
 			String sumtotalprice = request.getParameter("sumtotalprice");
 			
-		    
+			if(odcartno == "") {
+				odcartno = null;
+			}
+			
 	    	// ===== Transaction 처리하기 ===== // 
             // 1. 주문 테이블에 입력되어야할 주문전표를 채번(select)하기 
             // 2. 주문 테이블에 채번해온 주문전표, 로그인한 사용자, 현재시각을 insert 하기(수동커밋처리)
@@ -57,7 +72,6 @@ public class ProductPaySuccessController extends AbstractController {
 	    	String[] oqtyArr = odoqty.split(",");
             String[] totalPriceArr = odtotalprice.split(",");
             
-            
             /*	
 	            for(int i=0; i<pnumArr.length; i++) {
 	                System.out.println("~~~~ 확인용 pnum: " + pnumArr[i] + ", oqty: " + oqtyArr[i] + ", totalPrice: " + totalPriceArr[i]); 
@@ -70,9 +84,18 @@ public class ProductPaySuccessController extends AbstractController {
             
             HashMap<String, Object> paraMap = new HashMap<String, Object>();
             
+            // 주문 테이블에 userid insert
+            HttpSession session = request.getSession();
+            MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+            
             // 주문 테이블에 insert
+            paraMap.put("userid", loginuser.getUserid());
+            
+            String odrcode = getOdrCode();
+            paraMap.put("odrcode", odrcode);
+            
             paraMap.put("sumtotalprice", sumtotalprice);
-
+            
             // 주문 상세 테이블에 insert
             paraMap.put("pnumArr", pnumArr);
             paraMap.put("oqtyArr", oqtyArr);
@@ -89,58 +112,36 @@ public class ProductPaySuccessController extends AbstractController {
             
             // 장바구니 테이블에 delete
             paraMap.put("odcartno", odcartno);
-            
-            // 주문 테이블에 userid insert
-            HttpSession session = request.getSession();
-            MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
-            paraMap.put("userid", loginuser.getUserid());
-            
-            
-            // ** 먼저 주문 테이블에 insert하고 주문번호 select 해오기 ** //
-            String odrcode = pdao.insertOrder(loginuser.getUserid(), sumtotalprice);
-            
-            paraMap.put("odrcode", odrcode);
-            // 주문 번호 확인
-            // System.out.println(odrcode);
 
-            JSONObject jsobj = new JSONObject();
             
-            if(odrcode != null) {
-            	/// *** Transaction 처리해주는 메서드 *** //
-            	int isSuccess = pdao.orderAdd(paraMap);
-            	
-            	jsobj.put("isSuccess", isSuccess);
-            	
-            	
-            	if(isSuccess == 1) {
-            		
-            		System.out.println("주문 처리 성공");
-            		
-            		// 주문일자 가져오기
-            		String orderdate = pdao.selectOrderDate(odrcode);
-            		
-            		System.out.println(orderdate);
-            		
-            		paraMap.put("orderdate", orderdate);
-            		
-            		// == 주문이 완료되면 email 발송 시작 == //
-            		GoogleMail_kgh mail = new GoogleMail_kgh();
-            		
-            		mail.sendmail(loginuser.getEmail(), odrcode, orderdate, sumtotalprice);
-            		// == 주문이 완료되면 email 발송 끝 == //
-            		
-            	}
-            	else {
-            		// 나머지 정보 insert update 실패 할 경우
-            		// 주문테이블에 insert된 주문정보 delete 하기
-            		pdao.deleteOrder(odrcode);
-            		
-            		
-            		jsobj.put("isSuccess", 0);
-            	}
-            	
-            	
-            }
+        	/// *** Transaction 처리해주는 메서드 *** //
+        	int isSuccess = pdao.orderAdd(paraMap);
+        	
+        	JSONObject jsobj = new JSONObject();
+        	
+        	jsobj.put("isSuccess", isSuccess);
+        	
+        	if(isSuccess == 1) {
+        		
+        		System.out.println("주문 처리 성공");
+        		
+        		// 주문일자 가져오기
+        		String orderdate = pdao.selectOrderDate(odrcode);
+        		
+        		System.out.println(orderdate);
+        		
+        		paraMap.put("orderdate", orderdate);
+        		
+        		// == 주문이 완료되면 email 발송 시작 == //
+        		GoogleMail_kgh mail = new GoogleMail_kgh();
+        		
+        		mail.sendmail(loginuser.getEmail(), odrcode, orderdate, sumtotalprice);
+        		// == 주문이 완료되면 email 발송 끝 == //
+        		
+        	}
+        	else {
+        		jsobj.put("isSuccess", 0);
+        	}
             
             String json = jsobj.toString();
             request.setAttribute("json", json);

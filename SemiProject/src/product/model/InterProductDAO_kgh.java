@@ -51,5 +51,8 @@ public interface InterProductDAO_kgh {
 	// 주문 정보 지우기
 	void deleteOrder(String odrcode) throws SQLException;
 
+	// 주문번호 가져오는 메서드
+	String getodrCode() throws SQLException;
+
 
 }

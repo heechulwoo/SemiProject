@@ -223,7 +223,13 @@
 	                "left=" + pop_left + ", top=" + pop_top + ", width=" + pop_width + ", height=" + pop_height);
 	 }
 	
-	 
+	function goProductPage(pnum) {
+		
+		location.href="<%=ctxPath%>/product/eachProduct.one?pnum=" + pnum;
+		
+	} 
+	
+	
 </script>
 
 <div class="container-fluid">
@@ -324,15 +330,17 @@
 						        <div class="modal-body my-3">
 						          	<span style="font-weight: bold;">고양점</span><br>
 						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
-						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
-						          	<hr class="my-3">
-						          	<span style="font-weight: bold;">고양점</span><br>
-						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
-						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
-						          	<hr class="my-3">
-						          	<span style="font-weight: bold;">고양점</span><br>
-						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
-						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
+						          	<c:set var="pvo" value="${requestScope.pvo}"/>
+						          	
+						          	<c:choose>
+						          		<c:when test="${pvo.pqty eq 0}">
+						          			<span style="font-size: 10pt; font-weight: bold; color: red;">재고 없음</span>
+						          		</c:when>
+						          		<c:otherwise>
+								          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
+						          		</c:otherwise>
+						          	</c:choose>
+						          	
 						        </div>
 						        
 						        <!-- Modal footer -->

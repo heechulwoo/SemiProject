@@ -400,7 +400,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 
 	
 	// ===== Transaction 처리하기 ===== // 
-    // >> 앞에서 미리 했음 1. 주문 테이블에 입력한 주문전표를 채번(select)하기 
+    // 1. 주문 테이블에 입력한 주문전표로 주문 정보 insert하기 
     // 2. 주문상세 테이블에 채번해온 주문전표, 제품번호, 주문량, 주문금액을 insert 하기(수동커밋처리)
     // 3. 제품 테이블에서 제품번호에 해당하는 잔고량을 주문량 만큼 감하기(수동커밋처리) 
     
@@ -413,50 +413,66 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 	@Override
 	public int orderAdd(HashMap<String, Object> paraMap) throws SQLException {
 		int isSuccess = 0;
-		int n1 = 0, n2 = 0, n3 = 0, n4 = 0;
+		int n1 = 0, n2 = 0, n3 = 0, n4 = 0, n5 = 0;
 		
 		try {
 			conn = ds.getConnection();
 			
 			conn.setAutoCommit(false);	// 수동 커밋
 			
-			// 2. 주문상세 테이블에 채번해온 주문전표, 제품번호, 주문량, 주문금액을 insert 하기(수동커밋처리)
-			String[] pnumArr = (String[])paraMap.get("pnumArr");
-			String[] oqtyArr = (String[])paraMap.get("oqtyArr");
-			String[] totalPriceArr = (String[])paraMap.get("totalPriceArr");
+			// 1. 주문 테이블에 입력한 주문전표로 주문 정보 insert하기 
+			String sql = " insert into tbl_order(odrcode, fk_userid, odrtotalprice) " + 
+						 " values(?, ?, ?) ";
 			
-			int cnt = 0;
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)paraMap.get("odrcode"));
+			pstmt.setString(2, (String)paraMap.get("userid"));
+			pstmt.setInt(3, Integer.parseInt((String)paraMap.get("sumtotalprice")));
 			
-			for (int i = 0; i < pnumArr.length; i++) {
-				
-				String sql = " insert into tbl_order_detail(odrseqnum, fk_odrcode, fk_pnum, oqty, odrprice)" + 
-							 " values(seq_order_detail.nextval, ?, ?, ?, ?) ";
-				
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, (String)paraMap.get("odrcode"));
-				pstmt.setString(2, pnumArr[i]);
-				pstmt.setString(3, oqtyArr[i]);
-				pstmt.setString(4, totalPriceArr[i]);
-				
-				pstmt.executeUpdate();
-				cnt++;
-			}// end of for
-			
-			if(cnt == pnumArr.length) {
-				n1 = 1;
-			}
-			
+			n1 = pstmt.executeUpdate();
 			System.out.println("~~~ 확인용 n1 : " + n1);
 			
-			// 3. 제품 테이블에서 제품번호에 해당하는 잔고량을 주문량 만큼 감하기(수동커밋처리)
+
+			// 2. 주문상세 테이블에 채번해온 주문전표, 제품번호, 주문량, 주문금액을 insert 하기(수동커밋처리)
 			if(n1 == 1) {
-				pnumArr = (String[]) paraMap.get("pnumArr");
-				oqtyArr = (String[]) paraMap.get("oqtyArr");
+				String[] pnumArr = (String[])paraMap.get("pnumArr");
+				String[] oqtyArr = (String[])paraMap.get("oqtyArr");
+				String[] totalPriceArr = (String[])paraMap.get("totalPriceArr");
 				
-				cnt = 0;
+				int cnt = 0;
+
 				for (int i = 0; i < pnumArr.length; i++) {
-					String sql = " update tbl_product set pqty = pqty - ? "
-			                   + " where pnum = ? ";
+					
+					sql = " insert into tbl_order_detail(odrseqnum, fk_odrcode, fk_pnum, oqty, odrprice)" + 
+						  " values(seq_order_detail.nextval, ?, ?, ?, ?) ";
+					
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, (String)paraMap.get("odrcode"));
+					pstmt.setString(2, pnumArr[i]);
+					pstmt.setString(3, oqtyArr[i]);
+					pstmt.setString(4, totalPriceArr[i]);
+					
+					pstmt.executeUpdate();
+					cnt++;
+				}// end of for
+				
+				if(cnt == pnumArr.length) {
+					n2 = 1;
+				}
+
+				System.out.println("~~~ 확인용 n2 : " + n2);
+			
+			}// end of if
+			
+			// 3. 제품 테이블에서 제품번호에 해당하는 잔고량을 주문량 만큼 감하기(수동커밋처리)
+			if(n2 == 1) {
+				String[] pnumArr = (String[]) paraMap.get("pnumArr");
+				String[] oqtyArr = (String[]) paraMap.get("oqtyArr");
+				
+				int cnt = 0;
+				for (int i = 0; i < pnumArr.length; i++) {
+					sql = " update tbl_product set pqty = pqty - ? "
+			            + " where pnum = ? ";
 					
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setInt(1, Integer.parseInt(oqtyArr[i]));
@@ -468,19 +484,19 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 				}// end of for
 				
 				if(cnt == pnumArr.length) {
-					n2 = 1;
+					n3 = 1;
 				}
 				
-				System.out.println("~~~ 확인용 n2 : " + n2);
+				System.out.println("~~~ 확인용 n3 : " + n3);
 				
 			}// end of if
 			
 			// 4. 장바구니 테이블에서 odcartno 값에 해당하는 행들을 삭제(delete OR update)하기(수동커밋처리) 
 		    // >> 장바구니에서 주문을 한 것이 아니라 특정제품을 바로주문하기를 한 경우에는 장바구니 테이블에서 행들을 삭제할 작업은 없다. << 
-			if(paraMap.get("odcartno") != null && n2 == 1) {
+			if(paraMap.get("odcartno") != null && n3 == 1) {
 				
-				String sql = " delete from tbl_cart " + 
-							 " where cartno in(" + (String)paraMap.get("odcartno") + ") ";
+				sql = " delete from tbl_cart " + 
+					  " where cartno in(" + (String)paraMap.get("odcartno") + ") ";
 				
 				//  !!! in 절은 위와 같이 직접 변수로 처리해야 함. !!! 
 		        //  in 절에 사용되는 것들은 컬럼의 타입을 웬만하면 number 로 사용하는 것이 좋다. 
@@ -488,24 +504,24 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 				
 				pstmt = conn.prepareStatement(sql);
 				
-				n3 = pstmt.executeUpdate();
+				n4 = pstmt.executeUpdate();
 				
 				System.out.println("~~~ 확인용 n3 : " + n3);
 			
 			}// end of if
 			
-			if(paraMap.get("odcartno") == null && n2 == 1) {
+			if(paraMap.get("odcartno") == null && n3 == 1) {
 				// "제품 상세 정보" 페이지에서 "바로주문하기" 를 한 경우 
 				// 장바구니 번호인 cartnojoin 이 없는 것이다.
-				n3 = 1;
+				n4 = 1;
 				
-				System.out.println("~~~ 확인용 n3 : " + n3);
+				System.out.println("~~~ 확인용 n4 : " + n4);
 			}
 			
 			// 5. 배송지 테이블에서  사용자의 주소 정보 더하기(insert)(수동커밋처리) 
-			if(n3 > 0) {
-				String sql = " insert into tbl_address(addrno, fk_odrcode, name, mobile, postcode, address, detailaddress, extraaddress) " + 
-							 " values(seq_address.nextval, ?, ?,  ?, ?, ?, ?, ?) ";
+			if(n4 > 0) {
+				sql = " insert into tbl_address(addrno, fk_odrcode, name, mobile, postcode, address, detailaddress, extraaddress) " + 
+					  " values(seq_address.nextval, ?, ?,  ?, ?, ?, ?, ?) ";
 				
 				pstmt = conn.prepareStatement(sql);
 				
@@ -517,19 +533,19 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 				pstmt.setString(6, (String)paraMap.get("detailAddress"));
 				pstmt.setString(7, (String)paraMap.get("extraAddress"));
 			
-				n4 = pstmt.executeUpdate();
+				n5 = pstmt.executeUpdate();
 				
-				System.out.println("~~~ 확인용 n4 : " + n4);
+				System.out.println("~~~ 확인용 n5 : " + n5);
 			}// end of if
 			
 			// 6. **** 모든처리가 성공되었을시 commit 하기(commit) **** 
-			if(n1 * n2 * n3 * n4 > 0) {
+			if(n1 * n2 * n3 * n4 * n5 > 0) {
 				conn.commit();
 				
 				conn.setAutoCommit(true);
 				// 자동 커밋으로 전환
 				
-				System.out.println("~~ 확인용 n1 * n2 * n3 * n4 : " + n1 * n2 * n3 * n4);
+				System.out.println("~~ 확인용 n1 * n2 * n3 * n4 * n5 : " + n1 * n2 * n3 * n4 * n5);
 			
 				isSuccess = 1;
 			}
@@ -602,6 +618,34 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		} finally {
 			close();
 		}
+	}
+
+	
+	// 주문번호 생성하는 메서드
+	@Override
+	public String getodrCode() throws SQLException {
+		
+		String odrcode = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select to_char(sysdate, 'YYMMDD')||seq_order.nextval AS odrcode " + 
+						 " from dual ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			odrcode = rs.getString(1);
+			
+		} finally {
+			close();
+		}
+		
+		return odrcode;
 	}
 
 	
