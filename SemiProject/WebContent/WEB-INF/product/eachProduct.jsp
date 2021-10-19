@@ -306,6 +306,10 @@
 						</c:otherwise>
 					</c:choose>
 					
+					<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
+						<button id="buyButton" class="btn btn-warning btn-lg mb-3" onclick="<%= ctxPath%>/product/admin/productEdit.one?pnum=${requestScope.pvo.pnum}" style="width: 270px; height: 50px; font-weight: bold;" >제품 수정</button>
+					</c:if>
+					
 					<br><br><br>
 					<i class="mr-2 fas fa-truck"></i>
 					<span style="font-size: 11pt;">배송 옵션은 결제 단계에서 확인 가능합니다</span>

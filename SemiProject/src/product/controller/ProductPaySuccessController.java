@@ -120,6 +120,7 @@ public class ProductPaySuccessController extends AbstractController {
         	JSONObject jsobj = new JSONObject();
         	
         	jsobj.put("isSuccess", isSuccess);
+        	jsobj.put("odrcode", odrcode);
         	
         	if(isSuccess == 1) {
         		
