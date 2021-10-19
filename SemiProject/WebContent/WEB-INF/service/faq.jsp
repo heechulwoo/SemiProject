@@ -155,7 +155,7 @@
 								<div class="accordion-body__contents">
 									웹사이트에 로그인하여 회원 정보를 변경할 수 있어요. 변경이 어려우시다면, 이케아 고객지원센터에서 회원정보 변경을
 									도와드릴 수 있습니다. (단, 비밀번호 변경 제외)<br />
-									<br /> <a href="#" class="adeco">내 프로필 바로가기</a>
+									<br /> <a href="<%= ctxPath%>/member/mypage.one" class="adeco">내 프로필 바로가기</a>
 								</div>
 								<!-- end of sub accordion item body contents -->
 							</div>
@@ -205,8 +205,8 @@
 							<div class="accordion-header js-accordion-header">나의 온라인
 								주문내역은 어디에서 확인할 수 있나요?</div>
 							<div class="accordion-body js-accordion-body">
-								<div class="accordion-body__contents">웹사이트에 로그인 하신 후, '내
-									프로필'에 들어가면 '주문 내역'메뉴가 있습니다. 또는, 웹사이트의 '고객지원 - '배송조회 및 관리' 페이지에서
+								<div class="accordion-body__contents">웹사이트에 로그인 하신 후, '마이페이지'에 들어가면 
+								'주문조회'메뉴가 있습니다. 또는, 웹사이트의 '고객지원 - '배송조회 및 관리' 페이지에서
 									온라인 주문내역을 확인하실 수 있습니다.</div>
 								<!-- end of sub accordion item body contents -->
 							</div>
@@ -303,8 +303,7 @@
 									매장별 이벤트에 따라 제품의 할인 여부가 달라지기에 온라인과 가격이 다를 수 있습니다.<br /> 운영하는
 									매장들은 매장별로 이벤트나 프로모션을 운영하고 있습니다.<br /> 아래에서 방문을 원하는 매장을 찾아 다양한
 									매장별 프로모션 및 이벤트 정보를 만나보세요.<br />
-									<br /> <a href="#" class="adeco">매장 안내</a><br /> <a href="#"
-										class="adeco">온라인 프로모션</a>
+									<br /> <a href="<%= ctxPath%>/contact/stores.one" class="adeco">매장 안내</a><br />
 								</div>
 								<!-- end of sub accordion item body contents -->
 							</div>
@@ -315,8 +314,8 @@
 							<div class="accordion-header js-accordion-header">재고가 없는
 								제품에 대한 주문이 가능할까요?</div>
 							<div class="accordion-body js-accordion-body">
-								<div class="accordion-body__contents">재고가 없는 제품은 온라인 구매
-									버튼이 비활성화되어 구매하실 수 없습니다.</div>
+								<div class="accordion-body__contents">재고가 없는 제품은 온라인 구매가 
+								비활성화되어  구매하실 수 없습니다. 관련해서 문의신청서를 작성해주시면 재입고 여부를 알려드릴게요.</div>
 								<!-- end of sub accordion item body contents -->
 							</div>
 							<!-- end of sub accordion item body -->
