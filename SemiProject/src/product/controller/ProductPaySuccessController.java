@@ -129,7 +129,7 @@ public class ProductPaySuccessController extends AbstractController {
         		// 주문일자 가져오기
         		String orderdate = pdao.selectOrderDate(odrcode);
         		
-        		System.out.println(orderdate);
+        		// System.out.println(orderdate);
         		
         		paraMap.put("orderdate", orderdate);
         		

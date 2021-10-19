@@ -5,8 +5,6 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.*;
-
 import common.controller.AbstractController;
 import product.model.*;
 
@@ -79,6 +77,9 @@ public class OrderConfirmationController extends AbstractController {
 				super.setViewPage("/WEB-INF/jsonview.jsp");
 			}
 		*/		
+		}
+		else {
+			System.out.println("get방식 접속");
 		}
 		
 	}
