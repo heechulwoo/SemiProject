@@ -23,6 +23,9 @@ public interface InterProductOrderDAO_sm {
 	
 	// 배송상태 변경해주기(deliverstatus == 2 인 경우)
 	int updateDeliverStatus2(Map<String, String> paraMap) throws SQLException;
+	
+	// 배송지 상세 정보를 리스트로 보여주는 메소드(tbl_address 테이블에 select)
+	ProductAddressVO_sm viewOrderAddress(String odrcode) throws SQLException;
 
 	
 	

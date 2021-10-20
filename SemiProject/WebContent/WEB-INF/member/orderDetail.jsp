@@ -88,7 +88,7 @@ function goOderList() {
               <th>제품금액</th>
               <th>주문개수</th>
               <th>배송상태</th>
-              <th>배송일자</th>
+              <th>배송완료일자</th>
            </tr>
         </thead>
         
@@ -101,14 +101,26 @@ function goOderList() {
     				<td>
     				<c:choose>
     					<c:when test="${odrDetail.deliverstatus eq '1'}">
-    							배송완료
+    							주문완료
+    					</c:when>
+    					<c:when test="${odrDetail.deliverstatus eq '2'}">
+    							배송중
     					</c:when>
     						<c:otherwise>
-    							배송중
+    							배송완료
     						</c:otherwise>
     					</c:choose>
 					</td>
-    				<td>${odrDetail.deliverdate}</td>
+    				<td>
+    				<c:choose>
+    					<c:when test="${odrDetail.deliverstatus eq ''}">
+    							-
+    					</c:when>
+    						<c:otherwise>
+    							${odrDetail.deliverdate}
+    						</c:otherwise>
+    					</c:choose>
+    				</td>
 				</tr>
     		</c:forEach>    
 		</tbody>

@@ -11,6 +11,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+<!-- Font Awesome 5 Icons -->
+<script src="https://kit.fontawesome.com/69a29bca1e.js" crossorigin="anonymous"></script>
+
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
 
@@ -20,11 +23,28 @@
 <!-- Optional JavaScript -->
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script>
-
+<style>
+      html,
+   /*   body {
+        width: 30%;
+        height: 30%;
+        margin: 0;
+        color:#00579c;
+      } */
+      .loader {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color:#00579c;
+      }
+    </style>
 <script type="text/javascript">
 
       $(document).ready(function(){
     	 
+    	  $(".loader").hide();
     	  $("span.error").hide();
     	  
     	  var method = "${requestScope.method}";
@@ -70,6 +90,8 @@
 		         var emailVal = $("input#email").val().trim();
 		        
 		         if( useridVal != "" && emailVal != "" ) {
+		        	$(".loader").show();
+		        	$(".FindFrm").hide();
 		            var frm = document.pwdFindFrm;
 		            frm.action = "<%= ctxPath%>/login/pwdFind.one";
 		            frm.method = "POST";
@@ -104,9 +126,14 @@
       }); 
       
 </script>
-
+<%-- CSS 로딩화면 구현한것--%>
+		   <div class="container" style="display:flex">
+		   		<div class="loader" style="margin:auto"><i class="fas fa-spinner fa-6x fa-spin"></i></div>
+				<p class="loader ml-4" style="white-space: nowrap; margin-top:20px"><b>이메일 전송 중...</b></p>
+			</div>
+<div class="FindFrm">	
 <form name="pwdFindFrm" id="pwdFindFrm" style="font-size:14px">
-   <ul style="list-style-type: none; margin-top: 50px" class="ml-2" id="pwdFindFrm">
+   <ul style="list-style-type: none; margin-top: 150px" id="pwdFindFrm">
          <li class="my-3">
             <label for="userid" style="display: none">성명</label>
 			<input type="text" name="userid" id="userid" size="50" style="height: 42px"  placeholder="아이디" autocomplete="off" required />
@@ -120,7 +147,7 @@
    </ul>
    <div class="my-4" id="div_btnFind">
         <p class="text-center">
-           <button type="button" class="btn" id="btnFind" style="margin-left:33px; background-color:#00579c; color:white; border-radius: 50px; font-size:14px; width: 390px; height:55px">
+           <button type="button" class="btn" id="btnFind" style="margin-left:37px; background-color:#00579c; color:white; border-radius: 50px; font-size:14px; width: 390px; height:55px">
            <b>비밀번호 찾기</b></button>
         </p>   
    </div>
@@ -147,7 +174,7 @@
    </div>   
       
 </form>
-
+</div>		
 
 <form name="verifyCertificationFrm">
 	<input type="hidden" name="userid" />

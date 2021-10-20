@@ -15,8 +15,6 @@
 <script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script>
 
 
-
-
 <style type="text/css">
 
    body {
@@ -88,6 +86,8 @@ function goMemberList() {
 
 
 <body>
+
+<div class="container" style="max-width:1700px;">
 		<!-- <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none; z-index:2; width:240%; min-width:300px" id="sidebarId"> -->
    <div class="container" style="float:left; color:white; background-color:#00579c; max-width:700px; height:750px; width: 1000px "> 
 	  <a class="navbar-brand" href="#"><img src="<%= ctxPath%>/images/logo2.jpg" alt="IKEA_logo" width="87" height="36" style="margin-top: 50px; margin-left: 30px"/></a>			  
@@ -200,10 +200,10 @@ function goMemberList() {
 		</c:if>
 		<button type="button" class="btn btn-info" onclick="goMemberList();" style="margin-left: 390px; margin-top: 120px;">목록으로</button>
 </div>
-             
+</div>             
 
 </body>
-
+ 
 
 <form name="verifyCertificationFrm">
 	<input type="hidden" name="userid" />
