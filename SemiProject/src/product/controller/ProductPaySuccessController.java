@@ -118,14 +118,15 @@ public class ProductPaySuccessController extends AbstractController {
         	/// *** Transaction 처리해주는 메서드 *** //
         	int isSuccess = pdao.orderAdd(paraMap);
         	
-        	JSONArray jsonArr = new JSONArray();
+        //	JSONArray jsonArr = new JSONArray();
         	JSONObject jsobj = new JSONObject();
         	
-        	jsobj.put("isSuccess", isSuccess);
         	jsobj.put("odrcode", odrcode);
         	
         	
         	if(isSuccess == 1) {
+        		
+        		jsobj.put("isSuccess", isSuccess);
         		
         		// System.out.println("isSuccess : " + isSuccess);
         		// System.out.println("odrcode : " + odrcode);
@@ -150,10 +151,10 @@ public class ProductPaySuccessController extends AbstractController {
         		jsobj.put("isSuccess", 0);
         	}
             
-        	jsonArr.put(jsobj);
+        //	jsonArr.put(jsobj);
         	
-            String json = jsonArr.toString();
-            // System.out.println("json : " + json);
+            String json = jsobj.toString();
+            // System.out.println("json : " + json);  // {"odrcode":"~~~", "isSuccess":1}
             request.setAttribute("json", json);
             
             super.setRedirect(false);
