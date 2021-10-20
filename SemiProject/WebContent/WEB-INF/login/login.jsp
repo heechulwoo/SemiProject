@@ -218,7 +218,7 @@
               <span style="font-size:15px">가입하셨던 성명과 이메일을 입력해 주세요.</span>
         </div>
        </div>
-          <div id="idFind"><iframe style="border: none; margin:145px 0 0 90px; width:450px; height: 350px;" src="<%= request.getContextPath()%>/login/idFind.one">
+          <div id="idFind"><iframe style="border: none; margin:45px 0 0 60px; width:550px; height: 650px;" src="<%= request.getContextPath()%>/login/idFind.one">
                 </iframe>
           </div>
    </nav>
@@ -234,7 +234,7 @@
               <span style="font-size:15px">이메일을 통해 비밀번호를 재설정해 주세요.</span>
         </div>
        </div>
-          <div id="pwdFind"><iframe style="border: none; margin:145px 0 0 90px; width:450px; height: 350px;" src="<%= request.getContextPath()%>/login/pwdFind.one">
+          <div id="pwdFind"><iframe style="border: none; margin:55px 0 0 48px; width:600px; height: 520px;" src="<%= request.getContextPath()%>/login/pwdFind.one">
                 </iframe>
           </div>
    </nav>

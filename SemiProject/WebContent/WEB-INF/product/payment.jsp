@@ -269,12 +269,17 @@
 				  "odcartno":$("input#odcartno").val(),
 				  "odtotalprice":$("input#odtotalprice").val(),
 				  "sumtotalprice":$("input#totalPay").val()},
+			dataType:"JSON", 	  
 		  	success:function(json) {
-		  		
-		  		console.log("확인용 : " + json);
-		  		// 확인용 : [{"odrcode":"2110207037","isSuccess":1}]
-		  		
-		  		if(json.length) {}
+		  		// console.log("확인용 : " + json);
+		  		// 확인용 : {"odrcode":"2110207040","isSuccess":1}
+		  		 
+		  		if(json.isSuccess == 1) {
+		  			location.href="<%= ctxPath%>/product/orderConfirmation.one?odrcode="+json.odrcode+"&userid=${sessionScope.loginuser.userid}"; 
+		  		}
+		  		else {
+		  			location.href="<%= ctxPath%>/";
+		  		}
 		  		
 		  	<%--
 	            if(json.isSuccess == 1) {

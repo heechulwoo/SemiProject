@@ -162,10 +162,15 @@
 				      <span class="w3-opacity" style="font-size:12px">${hotpvo.cname}</span><br>
 				                ￦<span style="font-size:20px"><b><fmt:formatNumber value="${hotpvo.price}" pattern="###,###" /> &emsp;</b></span>		        
 			        </a>
-			        <div class="hidden">
-		                <button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>
-		                <span class="pnum" style="display:none;">${hotpvo.pnum}</span>
-		            </div>
+			        <c:if test="${hotpvo.pqty > 0}">
+				        <div class="hidden">
+			                <button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>
+			                <span class="pnum" style="display:none;">${hotpvo.pnum}</span>
+			            </div>
+		            </c:if>
+			        <c:if test="${hotpvo.pqty == 0}">
+			            <br><button class='btn btn-danger btn-sm disabled'>품절</button>
+		            </c:if>
 				</div>
 			</c:forEach>
 		</c:if>
@@ -199,10 +204,15 @@
 				      <span class="w3-opacity" style="font-size:12px">${pvo.cname}</span><br>
 				                ￦<span style="font-size:20px"><b><fmt:formatNumber value="${pvo.price}" pattern="###,###" /> &emsp;</b></span>		        
 			        </a>
-			        <div class="hidden">
-		                <button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>
-		                <span class="pnum" style="display:none;">${pvo.pnum}</span>
-		            </div>
+			        <c:if test="${pvo.pqty > 0}">
+				        <div class="hidden">
+			                <button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>
+			                <span class="pnum" style="display:none;">${pvo.pnum}</span>
+			            </div>
+		            </c:if>
+			        <c:if test="${pvo.pqty == 0}">
+			            <br><button class='btn btn-danger btn-sm disabled'>품절</button>
+		            </c:if>
 				</div>
 			</c:forEach>
 		</c:if>

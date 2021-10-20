@@ -19,6 +19,8 @@ public class OrderConfirmationController extends AbstractController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
+		String userid = request.getParameter("userid");
+		
 		if("POST".equalsIgnoreCase(method)) {
 			
 			String shippingNo = request.getParameter("shippingNo");
@@ -40,9 +42,9 @@ public class OrderConfirmationController extends AbstractController {
 			super.setViewPage("/WEB-INF/product/orderConfirmation.jsp");
 			
 		}
-		else if (loginuser != null) {
+		else if (loginuser != null && userid.equals(loginuser.getUserid())) {
 			String odrcode = request.getParameter("odrcode");
-			String email = request.getParameter("email");
+			String email = loginuser.getEmail();
 			
 			InterProductDAO_kgh pdao = new ProductDAO_kgh();
 			

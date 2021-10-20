@@ -173,16 +173,21 @@
 											'<div>'+
 												'<span>'+item.cname+'</span><br>'+
 												'<span class="eachpnum" style="font-size:small;">'+item.pnum+'</span>'+
-											'</div>'+
-											'<div class="pt-2">'+
-												'<span class="price" style="display:none">'+item.price+'</span>'+
-												'<select class="badge-pill py-2 px-3 pqty">';
+											'</div>' +
+											'<div class="pt-2">';
+										if(Number(item.pqty) > 0) {
+											html += '<span class="price" style="display:none">'+item.price+'</span>'+
+													'<select class="badge-pill py-2 px-3 pqty">';
 													for(var i=1; i<=Number(item.pqty); i++) {
 														html += '<option value="'+i+'">'+i+'</option>';
 													}	
-										html +=	'</select>'+
-												'<button class="btn btn-outline-success badge-pill mb-1 savecart"><i class="fa fa-shopping-cart"></i></button>'+
-											'</div>'+
+											html += '</select>' +
+												    '<button class="btn btn-outline-success badge-pill mb-1 savecart"><i class="fa fa-shopping-cart"></i></button>';
+										}
+										else {
+											html += '<button class="btn btn-danger badge-pill mb-1 disabled">품절</button>';
+										}		
+										html +=	'</div>'+
 										'</div>'+
 										'<div class="col-3">'+
 											'<span class="productprice" style="font-weight:bold;">￦'+(item.price).toLocaleString("en")+'</span><br>'+
