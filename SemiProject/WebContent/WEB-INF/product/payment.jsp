@@ -87,19 +87,19 @@
                           extraAddr = ' (' + extraAddr + ')';
                       }
                       // 조합된 참고항목을 해당 필드에 넣는다.
-                      document.getElementById("OdextraAddress").value = extraAddr;
+                      document.getElementById("extraAddress").value = extraAddr;
                       
-                      alert(extraAddr);
+                      // alert(extraAddr);
                   
                   } else {
-                      document.getElementById("OdextraAddress").value = '';
+                      document.getElementById("extraAddress").value = '';
                   }
 
                   // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                  document.getElementById('Odpostcode').value = data.zonecode;
-                  document.getElementById("Odaddress").value = addr;
+                  document.getElementById('postcode').value = data.zonecode;
+                  document.getElementById("address").value = addr;
                   // 커서를 상세주소 필드로 이동한다.
-                  document.getElementById("OddetailAddress").focus();
+                  document.getElementById("detailAddress").focus();
                }
            }).open();               
 		});// end of $("button#searchAddress").click(function(){})
@@ -273,6 +273,8 @@
 		  		
 		  		console.log("확인용 : " + json);
 		  		// 확인용 : [{"odrcode":"2110207037","isSuccess":1}]
+		  		
+		  		if(json.length) {}
 		  		
 		  	<%--
 	            if(json.isSuccess == 1) {

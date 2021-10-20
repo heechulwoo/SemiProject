@@ -51,6 +51,20 @@
 			   $("button#prdWishList").addClass("buttonClick");
 		}
 		
+		$.ajax({
+			url:"<%= ctxPath%>/product/productReview.one",
+			dataType:"JSON",
+			success:function(json) {
+				var html = "";
+				
+				
+				
+			},
+			error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		});
+		
 		// 제품 수량에 spinner 달아주기
 		$("input#spinnerPqty").spinner({
 			spin:function(event,ui){
@@ -404,7 +418,7 @@
 			<hr>
 			
 			<h3 class="h4 font-weight-bold ml-2 mb-3">상품평</h3>
-			<div class="col-4 col-lg-6 container-fluid my-3 float-left">
+			<div id="productReview" class="col-4 col-lg-6 container-fluid my-3 float-left">
 				<table class="table col-12">
 			    <thead>
 			      <tr>
