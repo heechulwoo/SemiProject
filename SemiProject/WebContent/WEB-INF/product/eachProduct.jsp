@@ -51,6 +51,20 @@
 			   $("button#prdWishList").addClass("buttonClick");
 		}
 		
+		$.ajax({
+			url:"<%= ctxPath%>/product/productReview.one",
+			dataType:"JSON",
+			success:function(json) {
+				var html = "";
+				
+				
+				
+			},
+			error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		});
+		
 		// 제품 수량에 spinner 달아주기
 		$("input#spinnerPqty").spinner({
 			spin:function(event,ui){
@@ -142,7 +156,7 @@
 		});// end of $("button#shopBasketList").click(function() {})
 		
 		// 구매하기 버튼을 클릭할 때 구매창으로 넘어가는 함수
-		$("button#buyButton").click(function() {
+		$("button#productBuy").click(function() {
 			
 			// alert("구매버튼 확인용");
 			var odoqty = $("input#spinnerPqty").val()
@@ -180,17 +194,12 @@
 	            }
 	            
 	            
-	            
-	        //	console.log(pnum);
-	        //  console.log(price);
-	        //  console.log(oqty);
-	            
 	        	var bool = confirm("결제를 진행하시겠습니까?");
 	        	
 	        	if(bool) {
 	        		
-	        		frm.method = "GET";
-	        	    frm.action = "<%= request.getContextPath()%>/product/payment2.one";
+	        		frm.method = "POST";
+	        	    frm.action = "<%= request.getContextPath()%>/product/payment.one";
 	        	    frm.submit();
 	        	}
 	            
@@ -228,7 +237,13 @@
 	                "left=" + pop_left + ", top=" + pop_top + ", width=" + pop_width + ", height=" + pop_height);
 	 }
 	
-	 
+	function goProductPage(pnum) {
+		
+		location.href="<%=ctxPath%>/product/eachProduct.one?pnum=" + pnum;
+		
+	} 
+	
+	
 </script>
 
 <div class="container-fluid">
@@ -280,30 +295,34 @@
 					
 					<c:choose>
 						<c:when test="${pvoPqty eq 0}">
-							<button id="buyButton" class="btn btn-secondary btn-lg" disabled="disabled" style="width: 270px; height: 50px; font-weight: bold;" >품절</button>
+							<button id="buyButton" class="btn btn-secondary btn-lg mb-3" disabled="disabled" style="width: 270px; height: 50px; font-weight: bold;" >품절</button>
 						</c:when>
 						<c:otherwise>
-							<button id="buyButton" class="btn btn-primary btn-lg" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
+							<button id="productBuy" class="btn btn-primary btn-lg mb-3" style="width: 270px; height: 50px; font-weight: bold;" >구매하기</button>
 						</c:otherwise>
 					</c:choose>
 					
 					<c:choose>
 						<c:when test="${pvoPqty eq 0}">
-							<button id="shopBasketList" class='ml-2 btn btn-outline-secondary btn-sm savecart' disabled="disabled" style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
+							<button id="shopBasketList" class='ml-2 btn btn-outline-secondary mb-3 btn-sm savecart' disabled="disabled" style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
 						</c:when>
 						<c:otherwise>
-							<button id="shopBasketList" class='ml-2 btn btn-outline-success btn-sm savecart' style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
+							<button id="shopBasketList" class='ml-2 btn btn-outline-success mb-3 btn-sm savecart' style="width: 70px;  height: 50px"><i class='fa fa-shopping-cart fa-lg'></i></button>
 						</c:otherwise>
 					</c:choose>
 									
 					<c:choose>
 						<c:when test="${pvoPqty eq 0}">
-							<button id="prdWishList" class="ml-2 btn btn-outline-secondary btn-light" disabled="disabled" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
+							<button id="prdWishList" class="ml-2 btn btn-outline-secondary mb-3 btn-light" disabled="disabled" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
 						</c:when>
 						<c:otherwise>
-							<button id="prdWishList" class="ml-2 btn btn-outline-danger btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
+							<button id="prdWishList" class="ml-2 btn btn-outline-danger mb-3 btn-light" style="width: 70px;  height: 50px"><i class="far fa-heart fa-lg"></i></button>
 						</c:otherwise>
 					</c:choose>
+					
+					<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
+						<button id="" class="btn btn-warning btn-lg mb-3" onclick="location.href='<%= ctxPath%>/product/admin/productEdit.one?pnum=${requestScope.pvo.pnum}'" style="width: 270px; height: 50px; font-weight: bold;" >제품 수정</button>
+					</c:if>
 					
 					<br><br><br>
 					<i class="mr-2 fas fa-truck"></i>
@@ -329,15 +348,17 @@
 						        <div class="modal-body my-3">
 						          	<span style="font-weight: bold;">고양점</span><br>
 						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
-						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
-						          	<hr class="my-3">
-						          	<span style="font-weight: bold;">고양점</span><br>
-						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
-						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
-						          	<hr class="my-3">
-						          	<span style="font-weight: bold;">고양점</span><br>
-						          	<span style="font-size: 10pt">덕양구 권율대로 420, 고양시</span><br>
-						          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
+						          	<c:set var="pvo" value="${requestScope.pvo}"/>
+						          	
+						          	<c:choose>
+						          		<c:when test="${pvo.pqty eq 0}">
+						          			<span style="font-size: 10pt; font-weight: bold; color: red;">재고 없음</span>
+						          		</c:when>
+						          		<c:otherwise>
+								          	<span style="font-size: 10pt; font-weight: bold; color: green;">재고 있음</span>
+						          		</c:otherwise>
+						          	</c:choose>
+						          	
 						        </div>
 						        
 						        <!-- Modal footer -->
@@ -354,15 +375,15 @@
 					
 			</div>
 		</div>
+		<div class="w-100"></div>
 		
-		
-		<div class="my-5 mx-3 px-4">
-			<h5 class="my-3" style="width: 55%;">${requestScope.pvo.psummary}</h5><br>
+		<div class="my-5 mx-3 px-2">
+			<h5 class="my-3" style="width: 75%;">${requestScope.pvo.psummary}</h5><br>
 			<h6><span style="font-size: 10pt; font-weight: bold;">제품 번호</span></h6>
 			<span class="mt-0 pt-0 badge badge-dark" id="productNo">${requestScope.pvo.pnum}</span>
 		</div>
 		<hr>
-		<div class="my-4 mx-3 px-4">
+		<div class="my-4 mx-3 px-2">
 			<a href="demo1" class="my-4 ml-2" id="accordion" data-toggle="collapse" data-target="#demo1">제품 설명</a>
 			<a href="demo1" class="ml-1 mb-2" data-toggle="collapse" data-target="#demo1" ><i class="fas fa-plus"></i></a>
 			<div id="demo1" class="collapse">
@@ -396,11 +417,48 @@
 			</div>
 			<hr>
 			
-			<button class="my-3" id="accordion">상품평</button>
+			<h3 class="h4 font-weight-bold ml-2 mb-3">상품평</h3>
+			<div id="productReview" class="col-4 col-lg-6 container-fluid my-3 float-left">
+				<table class="table col-12">
+			    <thead>
+			      <tr>
+			        <th>번호</th>
+			        <th>글제목</th>
+			        <th>글내용</th>
+			        <th>작성일자</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr>
+			        <td>4</td>
+			        <td>Doe</td>
+			        <td>john@example.com</td>
+			        <td>2021-10-19</td>
+			      </tr>
+			      <tr>
+			        <td>3</td>
+			        <td>Moe</td>
+			        <td>mary@example.com</td>
+			        <td>2021-10-19</td>
+			      </tr>
+			      <tr>
+			        <td>2</td>
+			        <td>Dooley</td>
+			        <td>july@example.com</td>
+			        <td>2021-10-19</td>
+			      </tr>
+			      <tr>
+			        <td>1</td>
+			        <td>Dooley</td>
+			        <td>july@example.com</td>
+			        <td>2021-10-19</td>
+			      </tr>
+			    </tbody>
+			  	</table>
+			</div>
 			<br><br>
+			<div class="col-12 col-lg-10 container-fluid float-left">
 			<h5 class="my-2 px-2" style="font-weight: bold;">유사한 제품</h5><br>
-			
-			<div class="container-fluid">
 			
 				<div class="row justify-content-start my-2" align="center">
 					<c:if test="${not empty sameProductList}">
