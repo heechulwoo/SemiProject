@@ -152,6 +152,7 @@
 			<ul class="pagination" style="margin: auto;">${requestScope.pageBar}</ul>
 		</div>
 	</nav>
+	
 </div>
 </div>
 
