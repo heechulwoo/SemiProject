@@ -321,7 +321,7 @@
 					</c:choose>
 					
 					<c:if test="${sessionScope.loginuser.userid eq 'admin'}">
-						<button id="buyButton" class="btn btn-warning btn-lg mb-3" onclick="<%= ctxPath%>/product/admin/productEdit.one?pnum=${requestScope.pvo.pnum}" style="width: 270px; height: 50px; font-weight: bold;" >제품 수정</button>
+						<button id="" class="btn btn-warning btn-lg mb-3" onclick="location.href='<%= ctxPath%>/product/admin/productEdit.one?pnum=${requestScope.pvo.pnum}'" style="width: 270px; height: 50px; font-weight: bold;" >제품 수정</button>
 					</c:if>
 					
 					<br><br><br>
