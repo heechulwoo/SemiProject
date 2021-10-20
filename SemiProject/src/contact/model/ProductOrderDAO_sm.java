@@ -390,6 +390,62 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 	
 	
 	
+	// 배송지 상세 정보를 리스트로 보여주는 메소드(tbl_address 테이블에 select)
+	@Override
+	public ProductAddressVO_sm viewOrderAddress(String odrcode) throws SQLException {
+		
+		
+		
+		ProductAddressVO_sm addressOneDetail = null;
+		
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			
+			String sql = " select addrno, fk_odrcode, name, mobile, postcode, address, detailaddress, extraaddress "+
+					 	 " from tbl_address "+
+					 	 " where fk_odrcode = ? ";
+		
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, odrcode); // paraMap key값 주의 !
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        
+	        if(rs.next()) {
+				// 존재한다면
+				
+	        	addressOneDetail = new ProductAddressVO_sm();
+				
+	        	addressOneDetail.setAddrno(rs.getInt(1));					// 배송지번호
+	        	addressOneDetail.setFk_odrcode(rs.getString(2)); 			// 주문번호
+	        	addressOneDetail.setName(rs.getString(3));					// 성명
+	        	addressOneDetail.setMobile( aes.decrypt(rs.getString(4)) );	// 연락처(복호화 필수)
+	        	addressOneDetail.setPostcode(rs.getString(5));				// 우편번호
+	        	addressOneDetail.setAddress(rs.getString(6));				// 주소
+	        	addressOneDetail.setDetailaddress(rs.getString(7));  		// 상세주소
+	        	addressOneDetail.setExtraaddress(rs.getString(8));			// 주소참고항목
+	        	
+				
+			}// end of if------------------------------------------------	
+		
+	        
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) {	
+			e.printStackTrace();	
+		} finally {
+			close();
+		}
+		
+		return addressOneDetail;
+		
+		
+	}// end of public List<ProductAddressVO_sm> viewOrderAddress(String odrcode)------------------------
+	
+	
+	
 	
 	   
 	   

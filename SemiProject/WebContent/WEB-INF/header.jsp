@@ -205,7 +205,7 @@
 			  <div class="dropdown-menu sidedropdownmenu" aria-labelledby="navbarDropdown" >
 				    <a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/mypage.one">내정보수정</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/mypageOder.one">주문조회</a>
+					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/memberOderList.one">주문조회</a>
 			  </div>
 		  </div>	  
 	  </c:if>

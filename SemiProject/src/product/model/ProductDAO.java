@@ -541,6 +541,62 @@ public class ProductDAO implements InterProductDAO {
 		return hotProductList;
 	} // end of public List<ProductVO> hotProduct()-------------------------------
 
+	
+	// pnum에 해당하는 추가이미지파일 모두 지우기
+	@Override
+	public int deleteImages(String pnum) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " delete from tbl_imagefile where fk_pnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);		
+			pstmt.setString(1, pnum);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+	           close();
+        }
+		return result;
+		
+	}// end of public int deleteImages(String pnum)------------------
+
+	
+	// tbl_product 테이블에 제품정보 update 하기
+	@Override
+	public int updateProduct(ProductVO pvo) throws SQLException {
+		int result = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " update tbl_product set fk_cnum = ?, pname = ?, prodimage = ?, price = ?, color =?, pqty = ?, psummary = ?, pcontent = ? " +  
+	                      " where pnum = ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, pvo.getFk_cnum());    
+	         pstmt.setString(2, pvo.getPname());    
+	         pstmt.setString(3, pvo.getProdimage());
+	         pstmt.setInt(4, pvo.getPrice());   
+	         pstmt.setString(5, pvo.getColor());
+	         pstmt.setInt(6, pvo.getPqty()); 
+	         pstmt.setString(7, pvo.getPsummary());
+	         pstmt.setString(8, pvo.getPcontent());
+	         pstmt.setString(9, pvo.getPnum());
+	            
+	         result = pstmt.executeUpdate();
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;  
+	}// end of  public int updateProduct(ProductVO pvo)----------------
+
     
     
 }

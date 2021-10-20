@@ -548,6 +548,7 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 	}
 
 	
+	/*
 	// 로그인된 회원의 주문목록을 띄워주는 메소드
 	@Override
 	public List<ProductOrderVO_kgh> selectMyPageOderList(String userid) throws SQLException {
@@ -589,7 +590,7 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 		return productList;
 		
 	} // end of public List<ProductVO> selectMyPageOderList(String userid)-------------
-
+*/
 	
 	// 클릭한 주문번호를 가지고 주문상세정보를 띄워주는 메소드
 	@Override
@@ -673,6 +674,150 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 		return odrDetail;
 		
 	}// end of public List<ProductOrderDetailVO_kgh> selectBySpecName(String odrcode)---------
+
+
+	@Override
+	public List<ProductOrderVO_kgh> selectMyPageOderList(Map<String, String> paraMap) throws SQLException {
+		
+		List<ProductOrderVO_kgh> productList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select odrcode, odrdate ,odrtotalprice "+
+					     " from "+
+					     "    ( "+
+					     "        select odrcode, odrdate ,odrtotalprice, rownum AS rno "+
+					     "        from tbl_order "+
+					     "        where fk_userid = ? "+
+					     "    ) V "+
+					     " where rno between ? and ? ";
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+			
+			rs = pstmt.executeQuery();
+			
+			
+			while(rs.next()) {
+				
+				ProductOrderVO_kgh pvo = new ProductOrderVO_kgh();
+				pvo.setOdrcode(rs.getString(1));
+				pvo.setOdrdate(rs.getString(2));
+				pvo.setOdrtotalprice(rs.getInt(3));
+				
+				productList.add(pvo);
+				
+			}// end of while-----------------------
+			
+		
+		} finally {
+			close();
+		}
+			
+		return productList;
+	}
+
+	
+	// 로그인된 회원의 주문목록의 총 개수를 띄워주는 메소드(페이징바 처리)
+	@Override
+	public int getTotalOderPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select ceil(count(*)/?) " + 
+	                      " from tbl_order " + 
+	                      " where fk_userid = ? ";
+
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, paraMap.get("sizePerPage"));
+	         pstmt.setString(2, paraMap.get("userid"));
+	         
+	         
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         rs.next();
+	         
+	         totalPage = rs.getInt(1);
+
+	         
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return totalPage;
+	      
+	}
+
+
+	/*
+	// // // 로그인된 회원의 주문목록을 띄워주는 메소드(페이징바 처리) 실패!!
+	@Override
+	public List<ProductOrderVO_kgh> selectMyPageOderListPage(Map<String, String> paraMap) throws SQLException {
+		
+    List<ProductOrderVO_kgh> productList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select odrcode, odrdate ,odrtotalprice "+
+					     " from "+
+					     "    ( "+
+					     "        select odrcode, odrdate ,odrtotalprice, rownum AS rno "+
+					     "        from tbl_order "+
+					     "        where fk_userid = ? "+
+					     "    ) V "+
+					     " where rno between ? and ? ";
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage - 1));
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+			
+			rs = pstmt.executeQuery();
+			
+			
+			while(rs.next()) {
+				
+				ProductOrderVO_kgh pvo = new ProductOrderVO_kgh();
+				pvo.setOdrcode(rs.getString(1));
+				pvo.setOdrdate(rs.getString(2));
+				pvo.setOdrtotalprice(rs.getInt(3));
+				
+				productList.add(pvo);
+				
+			}// end of while-----------------------
+			
+		
+		} finally {
+			close();
+		}
+			
+		return productList;
+
+	}
+	
+	*/
 	
 }
 	

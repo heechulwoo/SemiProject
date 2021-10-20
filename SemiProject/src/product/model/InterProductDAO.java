@@ -29,5 +29,9 @@ public interface InterProductDAO {
 	int editCart(String cartno, String oqty) throws SQLException; // 장바구니 수정
 
 	List<ProductVO> hotProduct() throws SQLException; // 메인페이지에 보여줄 인기제품 4종을 판매량순으로 select 해주는 메소드
+
+	int deleteImages(String pnum) throws SQLException;  // pnum에 해당하는 추가이미지파일 모두 지우기
+
+	int updateProduct(ProductVO pvo) throws SQLException; // tbl_product 테이블에 제품정보 update 하기
 	
 }
