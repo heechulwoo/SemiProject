@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- jstl을 사용하기 위함  -->    
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
 	String ctxPath = request.getContextPath();
 %>
-<%-- 
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- jstl을 사용하기 위함  -->    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+
 <jsp:include page="/WEB-INF/header.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
@@ -32,7 +33,7 @@
 
 	$(document).ready(function(){
 		
-		/*
+		
 		if("${requestScope.searchWord}" != "") {
 			$("select#searchType").val("${requestScope.searchType}");
 			$("input#searchWord").val("${requestScope.searchWord}");
@@ -53,26 +54,26 @@
 			}
 			
 		});
-*/
+		
 		
 		$("tr.orderInfo").bind("click", function(){
 			
-				var $target = $(event.target);	
-				console.log( $target.parent().find(".odrcode").html());
-		
-				var odrcode =  $target.parent().find(".odrcode").html();		
-				
-				 goDetail(odrcode);	 
-				
-			/* 
-				var frmd = document.memberDetail;
-				frmd.action = "memberOneDetail.one"
-				frmd.method = "GET";
-				frmd.submit(); */
-				
-			location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid
+			var $target = $(event.target);	
+			console.log( $target.parent().find(".odrcode").html());
+	
+			var odrcode =  $target.parent().find(".odrcode").html();		
+			
+			 goDetail(odrcode);	 
+			
+		/* 
+			var frmd = document.memberDetail;
+			frmd.action = "memberOneDetail.one"
+			frmd.method = "GET";
+			frmd.submit(); */
+			
+		<%-- location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid --%>
 
-		});
+	});
 		
 		
 	});// end of $(document).ready(function(){})------------------
@@ -80,15 +81,12 @@
 	
 	// Function Declaration
 	
-/*
 	function goSearch(){  // sizePerPage가 넘어간다.
 		var frm = document.memberFrm;
-		frm.action = "memberList.one"
+		frm.action = "memberOderList.one"
 		frm.method = "GET";
 		frm.submit();
 	}
-*/
-
 
 	function goDetail(odrcode){
 		
@@ -99,13 +97,25 @@
 
 </script>
 
-<div  style="height: 1850px;">
-<div class="container" style="max-width:1050px; margin-top:80px">
-<h2 style="margin: 2px; font-size: 26pt">주문목록</h2>
-	<img class="w1-image" width=90% height="10" src="<%= ctxPath%>/images/yellow.PNG" style="margin-top:20px; ">	
 
-	<table id="orderTbl" class="table table-bordered" style="width: 90%; margin-top: 40px;">
-        <thead>
+<div  style="height: 850px;">
+<div class="container" style="max-width:1300px; margin-top:40px">
+<h2 style="margin: 2px; margin-top:20px; font-size: 26pt">주문목록</h2>
+	<img class="w1-image" width=90% height="10" src="<%= ctxPath%>/images/yellow.PNG" style="margin-top:20px; margin-bottom: 30px;">	
+
+	<form name="memberFrm">
+  
+	  <span style="color: black; font-weight: bold; font-size: 12pt;"></span>
+      <select id="sizePerPage" name="sizePerPage">
+         <option value="10">10</option>
+         <option value="5">5</option>
+         <option value="3">3</option>
+      </select>
+	</form>
+	
+	
+	<table id="memberTbl" class="table table-bordered" style="width: 90%; margin-top: 20px;">
+       <thead>
            <tr >
               <th>주문번호</th>
               <th>주문일자</th>
@@ -124,17 +134,20 @@
 		</tbody>
 	</table>
 
+
+
+
 	<nav>
 		<div style="display: flex; width:80;">
 			<ul class="pagination" style="margin: auto;">${requestScope.pageBar}</ul>
 		</div>
 	</nav>
-
+	
 </div>
 </div>
 
 
-<jsp:include page="/WEB-INF/footer.jsp"/>  --%>
+<jsp:include page="/WEB-INF/footer.jsp"/> 
 
 
 
