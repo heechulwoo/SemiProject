@@ -264,14 +264,16 @@ text-align: center;
 						<tr>
 							<th>매장 운영시간</th>
 							<td>
-							<input type="time" name="openinghour" class="forminput requiredInfo" />
+							<input type="time" name="openhour" class="forminput requiredInfo" />&nbsp;&nbsp;~
+							<input type="time" name="closehour" class="forminput requiredInfo" />
 							<span class="error">필수입력</span>
 							</td>
 						</tr>
 						
 						<tr>
 							<th>레스토랑 운영시간</th>
-							<td><input type="time" name="restaurant" class="forminput requiredInfo" />
+							<td><input type="time" name="ropenhour" class="forminput requiredInfo" /> &nbsp;&nbsp;~
+								<input type="time" name="rclosehour" class="forminput requiredInfo" />
 								<span class="error">필수입력</span></td>
 						</tr>
 					</tbody>	

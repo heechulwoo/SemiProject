@@ -609,8 +609,8 @@ public class AdminDAO implements InterAdminDAO {
 	         conn = ds.getConnection();
 	         
 	         String sql = " insert into tbl_shoppingmap(storeid, storename, postcode, address, detailaddress, "
-	         											+ "extraaddress, storeimg, openinghour, restaurant) " +  
-	                    " values(seq_store.nextval,?,?,?,?,?,?,?,?)";
+	         											+ "extraaddress, storeimg, openhour, closehour, ropenhour, rclosehour) " +  
+	                    " values(seq_store.nextval,?,?,?,?,?,?,?,?,?,?)";
 	         
 	         pstmt = conn.prepareStatement(sql);
 	         
@@ -620,10 +620,11 @@ public class AdminDAO implements InterAdminDAO {
 	         pstmt.setString(4, svo.getDetailaddress());
 	         pstmt.setString(5, svo.getExtraaddress());
 	         pstmt.setString(6, svo.getStoreimg());
-	         pstmt.setString(7, svo.getOpeninghour());
-	         pstmt.setString(8, svo.getRestaurant());
-	 
-	            
+	         pstmt.setString(7, svo.getOpenhour());
+	         pstmt.setString(8, svo.getClosehour());
+	         pstmt.setString(9, svo.getRopenhour());
+	         pstmt.setString(10, svo.getRclosehour());
+	         
 	         result = pstmt.executeUpdate();
 	         
 	      } finally {
