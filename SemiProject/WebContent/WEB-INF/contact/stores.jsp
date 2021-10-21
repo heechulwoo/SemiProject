@@ -101,11 +101,12 @@ span#where {
       <div class="row">
         <!-- 이케아 기흥점 시작 -->
 
-        <div id="whereStore1" class="col-md-6">
+        
 	        <c:if test="${not empty storeList}">
 		        <c:forEach var="storeList" items="${requestScope.storeList}">
+		        <div id="whereStore1" class="col-md-6">
 		          <a href="https://map.kakao.com/link/search/${storeList.storename}">
-		          	<img class="service-img d-block w-100" src="<%= ctxPath%>/image_ikea/${storeList.storeimg}" alt="${storeList.storename}" />
+		          	<img class="service-img d-block w-100" src="<%= ctxPath%>/images/${storeList.storeimg}" alt="${storeList.storename}" />
 		          </a>
 		          <br>
 		          <h4>${storeList.storename}</h4>
@@ -141,9 +142,10 @@ span#where {
 		          <a href="https://map.kakao.com/link/search/${storeList.storename}" role="button" class="btnWhere" style="margin-top: 2vw; margin-bottom: 4vw">
 		          	지도 확인하기
 		          </a>
+		          </div>
 		        </c:forEach>  
 	        </c:if>  
-        </div>
+        
         <!-- 이케아 기흥점 끝 -->
 	</div>
 	

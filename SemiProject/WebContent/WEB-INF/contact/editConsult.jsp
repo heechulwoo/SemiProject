@@ -22,7 +22,7 @@ div#consultWrite {
 table#tblConsultWrite {
   width: 93%;
   border: solid 1px gray;
-  margin: 10px;
+  margin: auto;
 }
 tr {
   margin-bottom: 10px;

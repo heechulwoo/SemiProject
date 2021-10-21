@@ -18,6 +18,29 @@
 
 <style>
 
+/* 로더 */
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #0058AB;
+  border-bottom: 16px solid #FBD92F;
+  width: 10px;
+  height: 10px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
 td{
 padding: 0 0 0 3%;
 border-bottom: 2px solid #F7F7F8;
@@ -43,6 +66,8 @@ let regcheck1 = true; // 정규표현식 위배 확인하는 용도
 let regcheck2 = true; // 정규표현식 위배 확인하는 용도
 
 	$(document).ready(function(){
+		
+	$(".loader").hide();
 	
 	$("span.error").hide();
 
@@ -188,20 +213,28 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 				
 		if(!regcheck1 || !regcheck2){ // 하나라도 정규표현식에 위배되면
 			alert("올바르게 입력해주세요😫 ");
+			boolFlag = false; 
 			return false; // submit 취소
 		}
 		
 		let agreeCheck = $("input:checkbox[id=agree]:checked").length; // 이용약관 체크 여부
 		if(agreeCheck == 0){ // 체크안한경우
 			alert("이용약관에 동의해주세요.");
+			boolFlag = false; 
 			return; // 종료
 		}
-			
+				
+
+	if(boolFlag){
+	
+	$(".loader").show();
+		
 	var frm = document.assembleFrm;
 	frm.action = "assemble_apply.one";
 	frm.method = "post";
 	frm.submit();
 				
+	}
 		
 }// end of function goApply(){}---------------------
 
@@ -416,7 +449,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 					     	<option><c:out value="${odrcode}" /></option>
 					     </c:forEach>
 					 </select> 
-						<a href="<%= ctxPath%>/product/shipping.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
+						<a href="<%= ctxPath%>/member/memberOderList.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
 						</td>
 				</tr>
 				
@@ -457,7 +490,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 						<div>
 							<textarea name="demand" class="forminput" cols="60"
 								style="width: 80%; height: 100px" class="textarea"
-								placeholder="원하는 위치 요청이나 전달할 사항이 있다면 적어주세요."></textarea>
+								placeholder="제품 이름이나 원하는 위치 요청 등 전달할 사항이 있다면 적어주세요."></textarea>
 						</div>
 					</td>
 				</tr>
@@ -469,9 +502,11 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 				<input type="checkbox" id="agree"><label class="mylabel" for="agree">(필수)개인정보수집 및 이용에 동의합니다.</label> 
 				<a href="<%= ctxPath%>/service/privacy_policy.one" class="another" style="margin-left: 2px;" target="_blank">이용약관</a> <br>
 			</div>
+				<div class="loader" style="margin: auto;"></div>
 			<button type="button" id="btnAssemble" class="mybtn_black"
 				style="margin-top: 0.5vw; margin-bottom: 4vw;" onClick="goApply();">서비스 신청하기</button>
 			</div>
+			
 		</form>
 	</div>
 	</div>

@@ -31,7 +31,7 @@
 	<div class="row ml-2">
 		<div class="col-lg-2"></div>
 		<div class="col-11 col-md-4">
-			<h4 class="ml-2 mt-5 pt-4" style="font-weight: bold;">구매 정보</h4><br>
+			<h4 class="ml-2 mt-5 pt-4 h4" style="font-weight: bold;">구매 정보</h4><br>
 			
 			<c:forEach begin="0" end="0" var="odrDetailVO" items="${requestScope.orderList}">
 				<c:choose>
@@ -51,7 +51,12 @@
 			</c:forEach>
 			
 			<br><br><br>
-			<h4 class="mx-2" style="font-weight: bold;">${sessionScope.loginuser.name}&nbsp;님의 구매 정보</h4><br>
+			<c:if test="${not empty requestScope.orderList}">
+				<c:forEach begin="0" end="0" var="odrDetailVO" items="${requestScope.orderList}">
+					<h4 class="mx-2" style="font-weight: bold;">${odrDetailVO.mvo.name}&nbsp;님의 구매 내역</h4><br>
+				</c:forEach>
+			</c:if>
+			
 			<hr class="float-left" style="width: 400px;">
 			<br><br>
 			<div class="float-left mx-2">
@@ -70,7 +75,7 @@
 			</div>
 		</div>
 		<div class="col-11 col-lg-4 mb-5 align-self-center">
-			<h4 class="ml-2 mt-5 pt-4" style="font-weight: bold;">이 배송에 포함된 제품 ( ${requestScope.cnt} )개</h4>
+			<h4 class="ml-2 mt-5 pt-4 h4" style="font-weight: bold;">이 배송에 포함된 제품 ( ${requestScope.cnt} )개</h4>
 			<hr class="float-left" style="width: 90%;"><br><br>
 			
 			<c:if test="${not empty requestScope.orderList}">
@@ -79,8 +84,8 @@
 						<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${odrDetailVO.pvo.pnum}"><img src="<%= ctxPath%>/image_ikea/${odrDetailVO.pvo.prodimage}" style="width: 90px;"/></a>
 					</div>
 					<div class="float-left ml-2 col-lg-5">
-						<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${odrDetailVO.pvo.pnum}"><label class="mx-1 mb-2" style="font-weight: bold; cursor: pointer;">${odrDetailVO.pvo.pname}</label></a><br>
-						<span class="mx-1" style="font-size: 10pt;">${odrDetailVO.pcvo.cname}</span><br>
+						<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${odrDetailVO.pvo.pnum}"><label class="mx-1 mb-2 h6" style="font-weight: bold; cursor: pointer;">${odrDetailVO.pvo.pname}</label></a><br>
+						<span class="mx-1" style="font-size: 9pt;">${odrDetailVO.pcvo.cname}, ${odrDetailVO.pvo.color}</span><br>
 						<span class="mx-1" style="font-size: 10pt;">제품 번호 : ${odrDetailVO.pvo.pnum}</span><br>
 						<span class="mx-1" style="font-size: 10pt; font-weight: bold;">제품 가격 : ￦<fmt:formatNumber value="${odrDetailVO.pvo.price}" /></span><br><br>
 						<span class="mx-1" style="font-size: 10pt;">수량 : ${odrDetailVO.oqty}</span><br>
@@ -90,14 +95,6 @@
 			</c:if>
 			<div class="px-2 my-4" style="clear: both; width: 90%; font-weight: bold;">
 				<span class="my-1 float-left">합계</span>
-				<c:if test="${not empty requestScope.orderList}">
-					<c:forEach begin="0" end="0" var="odrDetailVO" items="${requestScope.orderList}">
-						<span class="my-1 float-right"><fmt:formatNumber value="${odrDetailVO.povo.odrtotalprice}"/>&nbsp;원</span><br>
-					</c:forEach>
-				</c:if>
-			</div>
-			<div class="px-2 my-4" style="clear: both; width: 90%; font-size: 10pt;">
-				<span class="my-1 float-left">VAT</span>
 				<c:if test="${not empty requestScope.orderList}">
 					<c:forEach begin="0" end="0" var="odrDetailVO" items="${requestScope.orderList}">
 						<span class="my-1 float-right"><fmt:formatNumber value="${odrDetailVO.povo.odrtotalprice}"/>&nbsp;원</span><br>

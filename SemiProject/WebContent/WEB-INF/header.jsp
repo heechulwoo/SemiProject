@@ -169,7 +169,14 @@
 			goSearch();
 		}
 	}
-	
+	 // 마이페이지 우측 사이드바 function 
+   	function my_open() {
+	     document.getElementById("sidebarMy").style.display = "block";
+   	}
+	    
+   	function my_close() {
+	     document.getElementById("sidebarMy").style.display = "none";
+   	}
 </script>
 </head>
 
@@ -251,9 +258,9 @@
 		 
 	    <form name="searchFrm" onsubmit="return false;" class="mx-2 my-auto d-inline w-100">
 	        <div class="input-group">
-	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; " placeholder="검색어 입력" onkeyup="enterkey()">
+	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; height:50px; width:290px; background-color:#f5f5f5" placeholder="&emsp;검색어 입력" onkeyup="enterkey()">
 	            <span class="input-group-append">
-	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button" onClick="goSearch();">
+	                <button class="btn btn-outline-secondary border ml-1" style=" border-radius: 20px; color:black; width:47px" type="button" onClick="goSearch();">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            </span>
@@ -262,10 +269,79 @@
 	    
 		<ul class="navbar-nav w-25 list-group-horizontal mt-sm-0 mt-2 mx-auto nav_text">
 	    	<li class="nav-item text" style="margin-left:50px"><a class="nav-link text-body text-dark fa fa-truck fa-lg" href="<%= ctxPath%>/product/shipping.one"></a></li>
-	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" href="<%= ctxPath%>/member/mypage.one"></a></li>
+	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" onclick="my_open()" style="cursor:pointer"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-heart fa-lg" href="<%= ctxPath%>/product/wishlistDetail.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-shopping-bag fa-lg" href="<%= ctxPath%>/product/shoppingCart.one"></a></li>
 	   	</ul>	  
 	</nav>
 </div>
 <!-- 상단 네비게이션 끝 --> 
+
+<!-- 마이페이지 우측 사이드바 시작 -->
+   <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-right w3-light" style="display:none; z-index:2; width:100%; max-width:530px; position:fixed; overflow:hidden; right:0px" id="sidebarMy" >
+      <div class="container" style="float:right; background-color:#00579c;  max-width:530px; height:380px"> 
+        <a href="javascript:void(0)" onclick="my_close()"class=" w3-button myclose" style="border-radius: 70px; margin-left:435px; margin-top:20px"><i class="fas fa-times"></i></a>
+		
+		<!-- 로그인 하지 않았을 때 메뉴 -->
+		<c:if test="${loginuser == null}">
+		<form name="mypageFrm" id="mypageFrm" style="font-size:14px; margin-top:70px; margin-left:40px">
+		
+			<div style="font-size:30pt; color:white"><span><b>Hello</b></span>
+			<a href="<%= ctxPath %>/login/login.one">
+				 <button type="button" class="btn btn-light" id="btnMy" style="margin-left:220px; margin-top:10px; border-radius: 50px; font-size:14px; width: 90px; height:43px">
+		           <b>로그인</b></button></a>
+		           </div>
+		  </form>  
+
+		     	<a href="<%= ctxPath %>/member/register.one" class="btn btn-link text-left" style="font-size:11pt; margin:60px 0 0 28px; color:white">
+		     	 <table> 
+		     	 <th style="width:390px">
+		     		<b>IKEA 계정 생성하기</b> </th>
+		     		<tr><td>계정을 생성하여 IKEA Family에 지금 가입해보세요. </td>
+		     	
+		     		 <td><button type="button" class="btn btn-light" id="btnMy" style=" border-radius: 50px; width: 45px; height:45px">
+		              <i class="fas fa-chevron-right"></i></button></td></tr>
+		        </table> 
+		     	</a>
+			   <div class="page__body-content" style="margin-top:100px; font-size:11pt">
+				   <ul class="list" style="list-style: none">
+				   	<li><a tabindex="0" href="<%= ctxPath %>/login/login.one" class="link">로그인</a></li>
+				   	<li style="margin-top:20px"><a tabindex="0" href="<%= ctxPath%>/product/shipping.one" class="link">주문 조회</a></li>
+				   	<li style="margin-top:20px"><a tabindex="0" href="<%= ctxPath%>/service/support.one" class="link">고객 지원</a></li>
+				   </ul>
+			   </div>
+			</c:if>
+			
+			<!-- 로그인 했을 때 메뉴 -->
+			<c:if test="${loginuser != null}">
+			<form name="mypageFrm" id="mypageFrm" style="font-size:14px; margin-top:70px; margin-left:40px">
+		
+			<div style="font-size:30pt; color:white"><span><b>Hello</b></span>
+			<a href="<%= ctxPath %>/login/logout.one">
+				 <button type="button" class="btn btn-light" id="btnMy" style="margin-left:220px; margin-top:10px; border-radius: 50px; font-size:14px; width: 90px; height:43px">
+		           <b>로그아웃</b></button></a>
+		           </div>
+		   </form>  
+		   <a href="<%= ctxPath %>/member/mypage.one" class="btn btn-link text-left" style="font-size:11pt; margin:60px 0 0 28px; color:white">
+		     	 <table> 
+		     	 <th style="width:390px; color:#fadb4d" class="h1">
+		     		<b>${loginuser.name}</b> </th>
+		     		<tr><td><b>나의 IKEA 계정관리</b> </td>
+		     	
+		     		 <td><button type="button" class="btn btn-light" id="btnMy" style=" border-radius: 50px; width: 45px; height:45px">
+		              <i class="fas fa-chevron-right"></i></button></td></tr>
+		        </table> 
+		     </a>
+			
+			<div class="page__body-content" style="margin-top:100px; font-size:11pt">
+				   <ul class="list" style="list-style: none">
+				   	<li><a tabindex="0" href="<%= ctxPath %>/login/logout.one" class="link">로그아웃</a></li>
+				   	<li style="margin-top:20px"><a tabindex="0" href="<%= ctxPath%>/member/memberOderList.one" class="link">주문 조회</a></li>
+				   	<li style="margin-top:20px"><a tabindex="0" href="<%= ctxPath%>/service/support.one" class="link">고객 지원</a></li>
+				   </ul>
+			   </div>
+			</c:if>		
+		
+       </div>  
+   </nav>
+ <!-- 마이페이지 우측 사이드바 끝-->

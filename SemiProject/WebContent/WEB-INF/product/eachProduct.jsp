@@ -290,7 +290,7 @@
 </script>
 
 <div class="container-fluid">
-	<h6 class="my-3 py-2 px-5 ml-3" style="font-size: 10pt;"><a href="<%= ctxPath%>/index.one">제품</a> > <a href="<%= ctxPath%>/product/productAll.one">의자</a> > <a href="<%= ctxPath%>/product/productByCategory.one?cnum=${requestScope.pvo.fk_cnum}">스툴의자</a> > ${requestScope.pvo.pname}</h6>
+	<h6 class="my-3 py-2 px-5 ml-3" style="font-size: 10pt;"><a href="<%= ctxPath%>/index.one">제품</a> > <a href="<%= ctxPath%>/product/productAll.one">의자</a> > <a href="<%= ctxPath%>/product/productByCategory.one?cnum=${requestScope.pvo.fk_cnum}">${requestScope.pvo.categvo.cname}</a> > ${requestScope.pvo.pname}</h6>
 	
 	<div class="container-fluid mx-2 px-5">
 		<div class="row my-2">
@@ -302,7 +302,7 @@
 					<c:if test="${not empty pimgList}">
 						<c:forEach var="pimgList" items="${requestScope.pimgList}">
 							<c:if test="${not empty pimgList.imgfilename}">
-								<div class="col-6 col-md-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 95%;"/></div>
+								<div class="col-6 col-md-6 mx-0 my-3" style="display: flex; align-items: center;"><img src="<%= ctxPath%>/image_ikea/${pimgList.imgfilename}" style="width: 95%;"/></div>
 							</c:if>
 						</c:forEach>
 					</c:if>
@@ -416,7 +416,7 @@
 		<div class="w-100"></div>
 		
 		<div class="my-5 mx-3 px-2">
-			<h5 class="my-3" style="width: 75%;">${requestScope.pvo.psummary}</h5><br>
+			<h5 class="my-3" style="width: 60%;">${requestScope.pvo.psummary}</h5><br>
 			<h6><span style="font-size: 10pt; font-weight: bold;">제품 번호</span></h6>
 			<span class="mt-0 pt-0 badge badge-dark" id="productNo">${requestScope.pvo.pnum}</span>
 		</div>

@@ -150,8 +150,8 @@ justify-content: center;
 }
 
 .page-item{
-	margin: auto !important;
-}
+ display: inline-block;
+} 
 
 
 .page-item.active .page-link  {

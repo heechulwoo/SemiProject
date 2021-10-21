@@ -1,5 +1,7 @@
 package product.model;
 
+import member.model.MemberVO;
+
 public class ProductOrderDetailVO_kgh {
 	
 	private int odrseqnum; 			// 주문상세번호
@@ -13,7 +15,8 @@ public class ProductOrderDetailVO_kgh {
 	private ProductVO_kgh pvo;				// 제품 VO
 	private ProductOrderVO_kgh povo;		// 주문 VO	
 	private ProductCategoryVO_kgh pcvo;		// 카테고리 VO
-	
+	private MemberVO mvo;					// 회원 VO
+
 
 	public ProductOrderDetailVO_kgh() {}
 	
@@ -116,5 +119,13 @@ public class ProductOrderDetailVO_kgh {
 
 	public void setPcvo(ProductCategoryVO_kgh pcvo) {
 		this.pcvo = pcvo;
+	}
+	
+	public MemberVO getMvo() {
+		return mvo;
+	}
+
+	public void setMvo(MemberVO mvo) {
+		this.mvo = mvo;
 	}
 }

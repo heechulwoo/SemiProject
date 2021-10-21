@@ -212,6 +212,14 @@
 				   </tr>
 				   
 				   <tr>
+				      <td width="25%" class="oDetail" style="padding-top: 10px;">상품 이미지</td>
+				      <td width="75%" align="left" class="detailcontent" style="padding-top: 10px;" >
+				         <img src="<%= ctxPath%>/image_ikea/${requestScope.ivo.imgfilename}" style="width: 100%;"/>
+				         <input type="hidden" name="imgfilename" value="${requestScope.ivo.imgfilename}" />
+				      </td>   
+				   </tr>
+				   
+				   <tr>
 				      <td width="25%" class="oDetail">주문수량</td>
 				      <td width="75%" align="left" class="detailcontent" style="border-top: hidden; border-bottom: hidden;">
 				         ${requestScope.ovo.oqty}&nbsp;개

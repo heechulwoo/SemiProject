@@ -36,6 +36,9 @@ public interface InterProductOrderDAO_sm {
 	
 	// 유저 아이디 알아오기
 	Map<String, String> getUserEmail(String fk_odrcode) throws SQLException;
+	
+	// fk_pnum으로 이미지 보여주기(select)
+	ProductOrderImgVO_sm viewOrderImg(String fk_pnum) throws SQLException;
 
 	
 	

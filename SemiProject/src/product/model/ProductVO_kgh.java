@@ -119,4 +119,5 @@ public class ProductVO_kgh {
 	public void setCategvo(ProductCategoryVO_kgh categvo) {
 		this.categvo = categvo;
 	}
+	
 }
