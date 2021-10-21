@@ -21,7 +21,7 @@ public class OrderConfirmationController extends AbstractController {
 		
 		String userid = request.getParameter("userid");
 		
-		if("POST".equalsIgnoreCase(method)) {
+		if("POST".equalsIgnoreCase(method) && loginuser != null) {
 			
 			String shippingNo = request.getParameter("shippingNo");
 			String shippingEmail = request.getParameter("shippingEmail");
@@ -55,7 +55,7 @@ public class OrderConfirmationController extends AbstractController {
 		}
 		else {
 			// 로그인을 하지 않았을 때
-			String message = "비정상적인 접근을 하지 마세요!!";
+			String message = "로그인을 정상적으로 한 후 이용하세요!!";
 			String loc = "javascript:history.back()";
 			
 			request.setAttribute("message", message);
