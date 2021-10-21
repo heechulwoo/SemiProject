@@ -95,36 +95,50 @@
 <script>
 	$(document).ready(function(){
 	
-	$("div.product").hover(function(){
+		$("div.product").hover(function(){
+			
+			$(this).children("div.hidden").css("visibility","visible");
+			
+		},function(){
+			$(this).children("div.hidden").css("visibility","hidden");
+		})
 		
-		$(this).children("div.hidden").css("visibility","visible");
 		
-	},function(){
-		$(this).children("div.hidden").css("visibility","hidden");
-	})
-	
-	/* 관리자메뉴 드롭다운 반응형   */
-	$(window).resize(function() { // 창 사이즈 변화감지
-		var widthnow = window.innerWidth;
-		var element = document.getElementById("dropdown");
-		// console.log(widthnow)
-		if(widthnow < 1200) {
-		//창 가로 크기가 1200 미만일 경우
-	    element.classList.remove("dropright"); // 오른쪽으로 열리는 드롭다운 속성 삭제			
+		var loginuser = "${sessionScope.loginuser}";
+		var loginuser_id = "${sessionScope.loginuser.userid}";
+		// console.log(loginuser);
+		// console.log(loginuser_id);
+		/* 관리자메뉴 드롭다운 반응형   */
+		if (loginuser != null && loginuser_id == "admin"){
+			$(window).resize(function() { // 창 사이즈 변화감지
+				var widthnow = window.innerWidth;
+				var element = document.getElementById("sidedropdown");
+				// console.log(widthnow)
+				if(widthnow < 1200) {
+				//창 가로 크기가 1200 미만일 경우
+			    element.classList.remove("dropright"); // 오른쪽으로 열리는 드롭다운 속성 삭제			
+				}
+				
+				if(widthnow > 1200) {
+					//창 가로 크기가 1200 초과일 경우
+				element.classList.add("dropright"); // 오른쪽으로 열리는 드롭다운 속성 추가			
+					}
+			});
 		}
-		
-		if(widthnow > 1200) {
-			//창 가로 크기가 1200 초과일 경우
-		element.classList.add("dropright"); // 오른쪽으로 열리는 드롭다운 속성 추가			
-			}
-	});
 	
+		/* 검색  */
+		
+		// 검색어에서 엔터를 하면 검색하러 가도록 한다.
+		$("input#searchWord").bind("keyup", function(event){
+			if(event.keyCode == 13){ 
+				goSearch();
+			}
+		});
+		
 	}); // end of $(document).ready(function(){}----------------------
-});
-</script>
 
-<!-- 사이드바 function -->    
-<script>
+			
+	// Function Declaration  
 	function w3_open() {
 	  document.getElementById("mySidebar").style.display = "block";
 	}
@@ -132,6 +146,38 @@
 	function w3_close() {
 	  document.getElementById("mySidebar").style.display = "none";
 	}
+
+
+	function goSearch(){	
+	
+		// console.log($("input#searchWord").val());
+		
+		if( $("input#searchWord").val() == ""){ // 검색어가 없다면
+			alert("💡 검색어를 입력해주세요")
+			return false;// 검색이 취소된다.
+		}
+		 
+		var frm = document.searchFrm;
+		frm.action = "<%= ctxPath%>/product/admin/searchResult.one";
+		frm.method = "GET";
+		frm.submit();
+		
+	}// end of goSearch ------------------------------
+
+	// 검색어에서 엔터를 하면 검색하러 가도록 한다.
+	/*
+	$("input#searchWord").bind("keyup", function(event){
+		if(event.keyCode == 13){ 
+			goSearch();
+		}
+	}); ==> 이 방식 안됨 */
+	
+	function enterkey(){
+		if(window.event.keyCode == 13){
+			goSearch();
+		}
+	}
+	
 </script>
 </head>
 
@@ -152,24 +198,39 @@
 	  <a href="<%= ctxPath%>/service/support.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">고객지원</a>
 	  <a href="<%= ctxPath%>/product/shipping.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">배송조회</a>
 
-	  <a href="<%= ctxPath%>/member/mypage.one" onclick="w3_close()" class="w3-bar-item w3-button text-dark">마이페이지</a>	  
+	  <c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid != 'admin'}">
+		  <div style="color: black">
+		  	  <a class="nav-link dropdown-toggle menufont_size sidetoggle" href="#" id="navbarDropdown" data-toggle="dropdown" > 
+					마이페이지	                            
+			  </a>
+			  <div class="dropdown-menu sidedropdownmenu" aria-labelledby="navbarDropdown" >
+				    <a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/mypage.one">내정보수정</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/memberOderList.one">주문조회</a>
+					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/myrequest.one">나의 문의신청</a>	
+			  </div>
+		  </div>	  
+	  </c:if>
+	  
  	  <c:if test="${loginuser == null}"><div style="margin:40px 0 0 15px"><a href="<%= ctxPath %>/login/login.one" class="text-dark">로그인</a></div></c:if>
  	  <c:if test="${loginuser == null}"><div style="margin:15px 0 0 15px"><a href="<%= ctxPath %>/member/register.one" class="text-dark">회원가입</a></div></c:if>
 	  <c:if test="${loginuser != null}"><div style="margin:40px 0 0 15px; font-weight: bolder; " >${loginuser.name}님</div></c:if>
 	  
 	  <c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid == 'admin'}">
-		<li style="list-style: none;" class="nav-item dropdown dropright" id="dropdown">
+		<li style="list-style: none;" class="nav-item dropdown dropright" id="sidedropdown">
 			<a class="nav-link dropdown-toggle menufont_size sidetoggle" href="#" id="navbarDropdown" data-toggle="dropdown"> 
 			   	관리자 메뉴		                            
 			</a>
 		<div class="dropdown-menu sidedropdownmenu" aria-labelledby="navbarDropdown">
 		    <a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/memberList.one">회원 목록</a>
 			<div class="dropdown-divider"></div>
-			<a class="dropdown-item" href="<%= ctxPath %>/product/admin/productRegister.one">제품 등록</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/product/admin/productRegister.one">제품 등록</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/storeRegister.one">매장 등록</a>
 			<div class="dropdown-divider"></div>
-			<a class="dropdown-item" href="<%= ctxPath %>/contact/consultList.one">문의글 조회</a>
-			<a class="dropdown-item" href="<%= ctxPath %>/service/assembleList.one">조립 서비스 신청 조회</a>
-			<a class="dropdown-item" href="<%= ctxPath %>/contact/selfReturnList.one">셀프 반품 신청 조회</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/consultList.one">문의글 조회</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/assembleList.one">조립 서비스 신청 조회</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/selfReturnList.one">셀프 반품 신청 조회</a>
+					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/productOrderList.one">주문내역 조회</a>
 		 </div>
 		</li>
       </c:if>
@@ -196,17 +257,17 @@
 		    </li>
 		  </ul>
 		 
-	    <form class="mx-2 my-auto d-inline w-100">
+	    <form name="searchFrm" onsubmit="return false;" class="mx-2 my-auto d-inline w-100">
 	        <div class="input-group">
-	            <input type="text" class="form-control border" style=" border-radius: 25px; " placeholder="검색어 입력">
+	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; " placeholder="검색어 입력" onkeyup="enterkey()">
 	            <span class="input-group-append">
-	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button">
+	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button" onClick="goSearch();">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            </span>
 	        </div>
 	    </form>
-
+	    
 		<ul class="navbar-nav w-25 list-group-horizontal mt-sm-0 mt-2 mx-auto nav_text">
 	    	<li class="nav-item text" style="margin-left:50px"><a class="nav-link text-body text-dark fa fa-truck fa-lg" href="<%= ctxPath%>/product/shipping.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" href="<%= ctxPath%>/member/mypage.one"></a></li>
