@@ -37,11 +37,20 @@
 		color: white;
 	}
 	
+	div#productReview {
+		width: 100%;
+		text-align: left;
+		max-height: 200px;
+		overflow: auto;
+	}
+	
 </style>
 
 <script	type="text/javascript">
 
 	$(document).ready(function() {
+		
+		goProductReview()
 		
 		var pnum = "${requestScope.pvo.pnum}";
 		
@@ -50,20 +59,6 @@
 		if(JSON.parse(localStorage.getItem('wishlist')) != null && JSON.parse(localStorage.getItem('wishlist')).indexOf(pnum)>=0 ){
 			   $("button#prdWishList").addClass("buttonClick");
 		}
-		
-		$.ajax({
-			url:"<%= ctxPath%>/product/productReview.one",
-			dataType:"JSON",
-			success:function(json) {
-				var html = "";
-				
-				
-				
-			},
-			error: function(request, status, error){
-	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	        }
-		});
 		
 		// 제품 수량에 spinner 달아주기
 		$("input#spinnerPqty").spinner({
@@ -213,7 +208,7 @@
 	});// end of $(document).ready(function() {})
 	
 	// == Function Declaration == //
-	// === 제품 색상 선택하기 함수 === //
+	// === 제품 색상 선택하기 팝업창 함수 === //
 	function goEditPersonal() {
 		
 		var pname = $("h5#pname").text();
@@ -237,12 +232,62 @@
 	                "left=" + pop_left + ", top=" + pop_top + ", width=" + pop_width + ", height=" + pop_height);
 	 }
 	
+	// 팝업창에서 색상 클릭시 해당 제품 페이지로 이동하는 함수
 	function goProductPage(pnum) {
 		
 		location.href="<%=ctxPath%>/product/eachProduct.one?pnum=" + pnum;
 		
 	} 
 	
+	// 리뷰를 보여주는 함수
+	function goProductReview() {
+		$.ajax({
+			url:"<%= ctxPath%>/product/productReview.one",
+			type:"GET",
+	        data:{"fk_pnum":"${requestScope.pvo.pnum}"},
+			dataType:"JSON",
+			success:function(json) {
+				var html = "<table class='table col-12'>"
+			    			+"<thead>"
+						      +"<tr>"
+						        +"<th>번호</th>"
+						        +"<th>글제목</th>"
+						        +"<th>글내용</th>"
+						        +"<th>작성일자</th>"
+						      +"</tr>"
+						    +"</thead>"
+			    			+"<tbody>";
+				
+				console.log(json);
+				console.log(json.length);
+				if(json.length > 0) {
+					$.each(json, function(index, item) {
+						
+						html += "<tr>"
+							        +"<td>" + item.review_seq + "</td>"
+							        +"<td>" + item.title + "</td>"
+							        +"<td>" + item.content + "</td>"
+							        +"<td>" + item.registerdate + "</td>"
+							    "</tr>";
+					});
+				}
+				else {
+					html += "<tr class='text-center'>"
+							  +"<td colspan='4'>등록된 상품 후기가 없습니다.</td>"
+						   +"</tr>";
+				}
+				
+				html += "</tbody>"
+				  	+"</table>";
+				
+				  	$("div#productReview").html(html);
+				
+			},
+			error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		});
+	}
 	
 </script>
 
@@ -418,44 +463,20 @@
 			<hr>
 			
 			<h3 class="h4 font-weight-bold ml-2 mb-3">상품평</h3>
-			<div id="productReview" class="col-4 col-lg-6 container-fluid my-3 float-left">
-				<table class="table col-12">
-			    <thead>
-			      <tr>
-			        <th>번호</th>
-			        <th>글제목</th>
-			        <th>글내용</th>
-			        <th>작성일자</th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			      <tr>
-			        <td>4</td>
-			        <td>Doe</td>
-			        <td>john@example.com</td>
-			        <td>2021-10-19</td>
-			      </tr>
-			      <tr>
-			        <td>3</td>
-			        <td>Moe</td>
-			        <td>mary@example.com</td>
-			        <td>2021-10-19</td>
-			      </tr>
-			      <tr>
-			        <td>2</td>
-			        <td>Dooley</td>
-			        <td>july@example.com</td>
-			        <td>2021-10-19</td>
-			      </tr>
-			      <tr>
-			        <td>1</td>
-			        <td>Dooley</td>
-			        <td>july@example.com</td>
-			        <td>2021-10-19</td>
-			      </tr>
-			    </tbody>
-			  	</table>
+			
+			<div id="productReview" class="col-12 col-lg-6 container-fluid my-3 float-left">
+			<%-- 상품 후기들이 들어오는 div --%>
+				<div style="display: flex; width: 70%;">
+					<ul class="pagination" style="margin: auto;">
+					    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+					    <li class="page-item"><a class="page-link" href="#">1</a></li>
+					    <li class="page-item"><a class="page-link" href="#">2</a></li>
+					    <li class="page-item"><a class="page-link" href="#">3</a></li>
+					    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+					</ul>
+				</div>
 			</div>
+			
 			<br><br>
 			<div class="col-12 col-lg-10 container-fluid float-left">
 			<h5 class="my-2 px-2" style="font-weight: bold;">유사한 제품</h5><br>

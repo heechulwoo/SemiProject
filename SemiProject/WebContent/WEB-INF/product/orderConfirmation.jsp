@@ -40,11 +40,11 @@
 					<h5 class="mx-1 my-1 float-left" style="font-weight: bold;">주문 접수됨</h5>
 				</c:when>
 				<c:when test="${odrDetailVO.deliverstatus eq '2'}">
-					<i class="fas fa-receipt fa-lg mx-2 my-2 float-left"></i>
+					<i class="fas fa-truck fa-lg mx-2 my-2 float-left"></i>
 					<h5 class="mx-1 my-1 float-left" style="font-weight: bold;">배송중</h5>
 				</c:when>
 				<c:when test="${odrDetailVO.deliverstatus eq '3'}">
-					<i class="fas fa-receipt fa-lg mx-2 my-2 float-left"></i>
+					<i class="fas fa-home fa-lg mx-2 my-2 float-left"></i>
 					<h5 class="mx-1 my-1 float-left" style="font-weight: bold;">배송완료</h5>
 				</c:when>
 			</c:choose>

@@ -106,13 +106,13 @@ public class ConsultWriteDAO_sm implements InterConsultWriteDAO_sm {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select askno, fk_userid, asktitle, name, to_char(askdate, 'yyyy-mm-dd') AS askdate " + 
+			String sql = " select askno, fk_userid, asktitle, name, to_char(askdate, 'yyyy-mm-dd') AS askdate , ask_systemFileName" + 
 						 " from " + 
 						 " ( " + 
-						 "    select rownum AS rno, askno, fk_userid, asktitle, name, askdate " + 
+						 "    select rownum AS rno, askno, fk_userid, asktitle, name, askdate, ask_systemFileName " + 
 						 "    from " + 
 						 "    ( " + 
-						 "    select askno, fk_userid, asktitle, name, askdate " + 
+						 "    select askno, fk_userid, asktitle, name, askdate, ask_systemFileName " + 
 						 "    from tbl_ask " + 
 						 "    where fk_userid != 'admin' ";
 			
@@ -176,7 +176,7 @@ public class ConsultWriteDAO_sm implements InterConsultWriteDAO_sm {
 					cvo.setAsktitle(rs.getString(3));
 					cvo.setName(rs.getString(4));
 					cvo.setAskdate(rs.getString(5));
-					
+					cvo.setAsk_systemFileName(rs.getString(6));
 					
 					consultList.add(cvo); // cvo 값을 List에 담아서 보내주기
 					

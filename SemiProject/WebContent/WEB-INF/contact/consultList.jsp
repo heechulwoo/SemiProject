@@ -226,7 +226,7 @@
 	        		<tr class="consultInfo">
 	        			<td class="askno">${cvo.askno}</td>
 	        			<td class="fk_userid">${cvo.fk_userid}</td>
-	        			<td>${cvo.asktitle}</td>
+	        			<td>${cvo.asktitle}&nbsp;<c:if test="${not empty cvo.ask_systemFileName}"><span style="color: #0099ff;"><i class="far fa-save"></i></span></c:if></td>
 	        			<td>${cvo.name}</td>
 	        			<td>${cvo.askdate}</td>
 	        		</tr>
