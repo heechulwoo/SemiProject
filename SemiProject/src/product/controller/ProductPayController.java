@@ -15,21 +15,13 @@ public class ProductPayController extends AbstractController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
 		
-		String email = request.getParameter("email");
+		String userid = request.getParameter("userid");
 		
-			if(super.checkLogin(request)) {
+			if(super.checkLogin(request) && userid.equals(loginuser.getUserid())) {
 				
 				String totalPay = request.getParameter("totalPay");
-				String name = request.getParameter("name");
-				String mobile = request.getParameter("mobile");
-				String userid = loginuser.getUserid();
 
 //				System.out.println(sumTotalPrice);
-//				System.out.println(email);
-//				System.out.println(name);
-//				System.out.println(mobile);
-//				System.out.println(userid);
-				
 				
 				request.setAttribute("totalPay", totalPay);
 				request.setAttribute("email", loginuser.getEmail());

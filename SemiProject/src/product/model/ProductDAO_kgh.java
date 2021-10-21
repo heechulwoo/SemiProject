@@ -690,6 +690,37 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 	}// end of public List<ProductReviewVO> reviewList(String fk_pnum)
 
 	
+	// DB에서 특정 제품(fk_pnum)에 대한 리뷰의 총 개수 알아오기(select)
+	@Override
+	public int getTotalCountReviews(String fk_pnum) throws SQLException {
+
+		int totalCountReviews = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) AS CNT " + 
+						 " from tbl_review " + 
+						 " where fk_pnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fk_pnum);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalCountReviews = rs.getInt("CNT");
+			
+		} finally {
+			close();
+		}
+		
+		return totalCountReviews;
+		
+	}// end of public int getTotalCountReviews(String fk_pnum)
+
+	
 
 	
 }

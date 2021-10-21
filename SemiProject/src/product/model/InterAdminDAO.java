@@ -1,10 +1,15 @@
 package product.model;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import contact.model.SelfReturnVO;
+import service.model.AssembleVO;
+import service.model.StoreVO;
 
 public interface InterAdminDAO {
 
@@ -29,6 +34,27 @@ public interface InterAdminDAO {
 
 	// tbl_imagefile 테이블에 제품의 크기 이미지 파일명 insert 해주기 
 	public int product_lastimg_Insert(ProductVO pvo, String lastimg)throws SQLException;
+
+	// 내 문의내역 목록 가져오기(마이페이지)
+	public List<HashMap<String, String>> selectmyask(Map<String, String> paraMap)throws SQLException;
+
+	// 내 환불신청 목록 가져오기(마이페이지)
+	public List<SelfReturnVO> myReturnList(Map<String, String> paraMap)throws SQLException;
+
+	// 내 조립신청 목록 가져오기(마이페이지)
+	public List<AssembleVO> myAssembleList(Map<String, String> paraMap)throws SQLException;
+
+	// 내 문의내역 총페이지 알아오기
+	public int getTotalPage1(String userid, String sizePerPage1)throws SQLException;
+
+	// 내 환불신청 총페이지 알아오기
+	public int getTotalPage2(String userid, String sizePerPage2)throws SQLException;
+
+	// 내 조립신청 총페이지 알아오기
+	public int getTotalPage3(String userid, String sizePerPage3)throws SQLException;
+
+	// 매장테이블에 새로운 매장 정보 insert해주기
+	public int storeInsert(StoreVO svo)throws SQLException;
 	
 	
 	
