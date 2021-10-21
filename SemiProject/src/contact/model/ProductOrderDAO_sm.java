@@ -536,7 +536,55 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 		
 		return map;
 		
-	}// end of 
+	}// end of public Map<String, String> getUserEmail(String fk_odrcode)-----------------------------------------------------
+	
+	
+	
+	// fk_pnum으로 이미지 보여주기(select)
+	@Override
+	public ProductOrderImgVO_sm viewOrderImg(String fk_pnum) throws SQLException {
+		
+		ProductOrderImgVO_sm ivo = null;
+
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			
+			String sql = " select imgfileno, fk_pnum, imgfilename "+
+					 	 " from tbl_imagefile "+
+					 	 " where fk_pnum = ? ";
+		
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fk_pnum);
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        
+	        if(rs.next()) {
+				// 존재한다면
+				
+	        	ivo = new ProductOrderImgVO_sm();
+				
+	        	ivo.setImgfileno(rs.getInt(1));
+	        	ivo.setFk_pnum(rs.getString(2));
+	        	ivo.setImgfilename(rs.getString(3));
+	        	
+				
+			}// end of if------------------------------------------------	
+		
+	        
+			
+		} finally {
+			close();
+		}
+		
+		return ivo;
+		
+		
+	}// end of public ProductOrderImgVO_sm viewOrderImg(String fk_pnum)------------------
 	
 	
 	
