@@ -182,17 +182,17 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			conn = ds.getConnection();
 			
 			String sql = " select cnum, cname, pnum, pname, prodimage, price, odrcode, " + 
-						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate, deliverstatus " + 
+						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate, deliverstatus, color " + 
 						 " from " + 
 						 " ( " + 
 						 "     select cnum , cname, pnum, pname, prodimage, price, fk_odrcode AS odrcode, " + 
-						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate, deliverstatus " + 
+						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate, deliverstatus, color " + 
 						 "     from " + 
 						 "     ( " + 
-						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice, deliverstatus " + 
+						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice, deliverstatus, color " + 
 						 "         from " + 
 						 "         ( " + 
-						 "             select cnum , cname, pnum, pname, prodimage, price " + 
+						 "             select cnum , cname, pnum, pname, prodimage, price, color " + 
 						 "             from tbl_category G " + 
 						 "             JOIN tbl_product P " + 
 						 "             ON G.cnum = P.fk_cnum " + 
@@ -226,6 +226,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 				pdvo.setPname(rs.getString("pname"));
 				pdvo.setProdimage(rs.getString("prodimage"));
 				pdvo.setPrice(rs.getInt("price"));
+				pdvo.setColor(rs.getString("color"));
 				podvo.setPvo(pdvo);
 				
 				ProductOrderVO_kgh povo = new ProductOrderVO_kgh();	// 주문
