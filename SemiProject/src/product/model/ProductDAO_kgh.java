@@ -10,6 +10,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import member.model.MemberVO;
 import util.security.AES256;
 import util.security.SecretMyKey;
 
@@ -181,7 +182,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select cnum, cname, pnum, pname, prodimage, price, odrcode, " + 
+			String sql = " select cnum, cname, pnum, pname, prodimage, price, odrcode, name, " + 
 						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate, deliverstatus, color " + 
 						 " from " + 
 						 " ( " + 
@@ -239,6 +240,9 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 				podvo.setOdrprice(rs.getInt("odrprice"));
 				podvo.setDeliverstatus(rs.getInt("deliverstatus"));
 				
+				MemberVO mvo = new MemberVO();			// 회원
+				mvo.setName(rs.getString("name"));
+				podvo.setMvo(mvo);
 				
 				orderList.add(podvo);
 				

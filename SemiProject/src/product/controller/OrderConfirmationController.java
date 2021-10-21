@@ -30,6 +30,10 @@ public class OrderConfirmationController extends AbstractController {
 			
 			List<ProductOrderDetailVO_kgh> orderList = pdao.selectOrderConfirmation(shippingNo, shippingEmail);
 
+			for(ProductOrderDetailVO_kgh odrDetailVO : orderList) {
+				System.out.println("확인용 odrDetailVO.getMvo().getName() : " + odrDetailVO.getMvo().getName());
+			}
+			
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("cnt", orderList.size());
 			
@@ -43,11 +47,11 @@ public class OrderConfirmationController extends AbstractController {
 			InterProductDAO_kgh pdao = new ProductDAO_kgh();
 			
 			List<ProductOrderDetailVO_kgh> orderList = pdao.selectOrderConfirmation(odrcode, email);
-	/*		
+			
 			for(ProductOrderDetailVO_kgh odrDetailVO : orderList) {
-				System.out.println("확인용 odrDetailVO.getPovo().getOdrdate() : " + odrDetailVO.getPovo().getOdrdate());
+				System.out.println("확인용 odrDetailVO.getMvo().getName() : " + odrDetailVO.getMvo().getName());
 			}
-	 */		
+	 		
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("cnt", orderList.size());
 			
