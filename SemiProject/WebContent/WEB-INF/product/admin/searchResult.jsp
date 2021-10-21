@@ -185,7 +185,7 @@
 	function displayProd(start) {
 		      
 		$.ajax({
-			url:"/SemiProject/product/SearchResultJSON.one",
+			url:"/SemiProject/product/searchResultJSON.one",
 			data:{"range":range
 				 ,"start":start     
 				 ,"len":lenHIT

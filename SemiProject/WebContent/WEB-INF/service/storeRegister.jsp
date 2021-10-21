@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<jsp:include page="../../header.jsp" />
-
+    
+<jsp:include page="../header.jsp" />
 
 <!-- 달력 -->
 <link rel="stylesheet"
@@ -12,64 +9,16 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+<title>매장 등록</title>
+
+<!-- 직접 만든 CSS -->
+<link rel="stylesheet" href="../css/assemble_form.css" />
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
 		
 		$("span.error").hide();
-		
-		// 제품 수량에 스피너 달아주기
-		$("input#spinnerPqty").spinner({
-			spin:function(event,ui){
-	            if(ui.value > 50) {
-	               $(this).spinner("value", 50);
-	               return false;
-	            }
-	            else if(ui.value < 1) {
-	               $(this).spinner("value", 1);
-	               return false;
-	            }
-			}  
-		}); // end of $("input#spinnerPqty").spinner()-----------------------
-		
-		
-		// #### 스피너의 이벤트는 click 도 아니고 change 도 아니고 "spinstop" 이다. #### //
-		$("input#spinnerImgQty").bind("spinstop", function(){
-			
-			var html = "";
-			var cnt = $(this).val();
-			
-			// console.log("확인용 cnt : " + cnt);
-			// console.log("확인용 typeof cnt : " + typeof cnt); ==> String
-			
-			for(var i=0; i<parseInt(cnt); i++){
-				html += "<br>";
-				html += "<input type='file' name='attach"+i+"' class='btn btn-default' />";	
-				
-				
-			}// end of for-------------------
-			
-			$("div#divfileattach").html(html);
-			
-			$("input#attachCount").val(cnt);
-				
-		});
-		
-		
-		// 추가 이미지파일에 스피너 달아주기
-		$("input#spinnerImgQty").spinner({
-			spin:function(event,ui){
-	            if(ui.value > 10) {
-	               $(this).spinner("value", 10);
-	               return false;
-	            }
-	            else if(ui.value < 0) {
-	               $(this).spinner("value", 0);
-	               return false;
-	            }
-			}  
-		}); // end of $("input#spinnerImgQty").spinner()------------------
 		
 		
 	// 등록하기 버튼
@@ -87,15 +36,9 @@
 					}
 				});
 				
-				if($("input#attachCount").val() < 2){
-					alert("추가 이미지는 2개 이상 필수 첨부해야 합니다.")
-					flag = true;
-					return false;
-				}
-				
 				
 			if(!flag){
-				var frm = document.prodInputFrm;
+				var frm = document.storeInputFrm;
 				frm.submit();
 				// 파일이 첨부되었으므로 method는 post로 간다.
 			}
@@ -206,11 +149,6 @@ $(function() {
 </script>
 
 
-<title>제품 등록</title>
-
-<!-- 직접 만든 CSS -->
-<link rel="stylesheet" href="../../css/assemble_form.css" />
-
 <style>
 td{
 padding: 0 0 0 3%;
@@ -223,127 +161,126 @@ text-align: center;
 
 </style>
 
+<!-- 다음 주소 찾기 -->
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+	function execDaumPostcode() {
+
+		new daum.Postcode({
+			oncomplete : function(data) {
+				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+				// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				var addr = ''; // 주소 변수
+				var extraAddr = ''; // 참고항목 변수
+
+				//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+				if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+					addr = data.roadAddress;
+				} else { // 사용자가 지번 주소를 선택했을 경우(J)
+					addr = data.jibunAddress;
+				}
+
+				// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+				if (data.userSelectedType === 'R') {
+					// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+					// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+					if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+						extraAddr += data.bname;
+					}
+					// 건물명이 있고, 공동주택일 경우 추가한다.
+					if (data.buildingName !== '' && data.apartment === 'Y') {
+						extraAddr += (extraAddr !== '' ? ', '
+								+ data.buildingName : data.buildingName);
+					}
+					// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+					if (extraAddr !== '') {
+						extraAddr = ' (' + extraAddr + ')';
+					}
+					// 조합된 참고항목을 해당 필드에 넣는다.
+					document.getElementById("detailAddress").value = extraAddr;
+
+				} else {
+					document.getElementById("detailAddress").value = '';
+				}
+
+				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+				document.getElementById('postcode').value = data.zonecode;
+				document.getElementById("address").value = addr;
+				// 커서를 상세주소 필드로 이동한다.
+				document.getElementById("extraAddress").focus();
+			}
+		}).open();
+	}
+</script>
 
 <body>
 	<div class="mycontainer" data-theme="a">
-		<h1 class="main-title">제품 등록</h1>
+		<h1 class="main-title">IKEA 신매장 등록</h1>
 		<hr />
 		<div class="wrapper" style="margin-top: 5%;">
 		<small style="display:inline-block; margin:auto; padding:1%; color:#0058AB;">※ 모든 필드는 필수 입력입니다.</small>
 			<%-- !!!!! ==== 중요 ==== !!!!! --%>
 			<%-- 폼에서 파일을 업로드 하려면 반드시 method 는 POST 이어야 하고 
      		enctype="multipart/form-data" 으로 지정해주어야 한다.!! --%>
-			<form name="prodInputFrm"
-				action="<%=request.getContextPath()%>/product/admin/productRegister.one"
+			<form name="storeInputFrm"
+				action="<%=request.getContextPath()%>/service/storeRegister.one"
 				method="POST" enctype="multipart/form-data">
 
-				<table id="tblProdInput" class="formtable">
+				<table id="tblstoreInput" class="formtable">
 					<tbody>
 						<tr>
-							<th style="border-top: 2px solid #0058AB;" >카테고리</th>
+							<th style="border-top: 2px solid #0058AB;" >매장이름</th>
 							<td style="border-top: 2px solid lightgray;">
-								<select name="fk_cnum" class="forminput requiredInfo">
-					            <option value="">▽&nbsp;선택하세요&nbsp;▽</option>
-					            <c:forEach var="list" items="${requestScope.categoryList}">
-					               <option value="${list.cnum}">${list.cname}</option>
-					            </c:forEach>
-					         </select>
+							<input type="text" name="storename" class="forminput requiredInfo" />
 							<span class="error">필수입력</span>
 							</td>
 						</tr>
 
 						<tr>
-							<th>제품명</th>
+								<th>매장 주소</th>
 							<td>
-								<input type="text" name="pname" class="forminput requiredInfo" />
-	         					<span class="error">필수입력</span>
+								<input type="text" id="postcode" name="postcode" class="forminput requiredInfo" readonly> 
+								<span class="error">필수입력</span>
+								<input type="button" class="mybtn" name="searchpost" onclick="execDaumPostcode()" value="우편번호 찾기";><br>
+								<input type="text" id="address" name="address" class="forminput" readonly>
+								<span class="error">필수입력</span>
+								<small> - 우편번호 찾기로 주소를 입력해주세요. </small> <br>
+								<input type="text" id="detailAddress" name="detailAddress" class="forminput" readonly> 
+								<input type="text" id="extraAddress"  name="extraAddress" class="forminput">
 							</td>
 						</tr>
 
 						<tr>
-							<th>제품 대표 이미지</th>
+							<th>매장 대표 이미지</th>
 							<td>
-								<input type="file" name="pimage1" class="forminput requiredInfo " />
-								<span class="error">필수입력</span> 
-							</td>
-						</tr>
-
-						<tr>
-							<th>가격</th>
-							<td><input type="text" name="price" class="forminput requiredInfo" />
-								<span class="error">필수입력</span></td>
-						</tr>
-						
-						<tr>
-							<th>색상</th>
-							<td><input type="text" name="color" class="forminput requiredInfo" />
-								<span class="error">필수입력</span></td>
-						</tr>
-						
-						<tr>
-							<th>입고일자</th>
-							<td><input type="text" name="stockdate"
-								class="forminput requiredInfo" id="stockdate" size="33"
-								placeholder="클릭해서 입고일자를 입력해주세요"
-								style="max-width: 250px; width: 80%;" class="hasDatepicker"
-								readonly>
-								<span class="error">필수입력</span></td>
-						</tr>
-						
-						<tr>
-							<th>재고량</th>
-							<td>&nbsp;<input type="text" id="spinnerPqty" name="pqty" value="1" style="width:30px;" class="requiredInfo" />
-								<span class="error">필수입력</span></td>
-						</tr>
-						
-						<tr>
-							<th>제품 요약</th>
-							<td>
-								<textarea name="productSummary" class="forminput requiredInfo" cols="60"
-								style="width: 80%; height: 40px"></textarea>
-								<span class="error">필수입력</span>
-							</td>
-						</tr>
-						
-						<tr>
-							<th>제품 설명</th>
-							<td>
-								<textarea name="productInfo" class="forminput requiredInfo" cols="60" 
-								style="width: 80%; height: 100px"></textarea>
-								<span class="error">필수입력</span>
-							</td>
-						</tr>
-						
-						<%-- ==== 첨부파일 타입 추가하기 ==== --%>
-						<tr>
-							<th>추가 이미지 파일</th>
-							<td><label for="spinnerImgQty" style="font-size: 0.9rem; width:70px;">파일수 : </label>
-							<input id="spinnerImgQty" value="0" class="forminput requiredInfo" style="display: inline; width: 40px; height: 20px;">
-							<div id="divfileattach"></div> 
-							<input type="hidden" name="attachCount" id="attachCount" />
-							<small style="color:#0058AB;">추가 이미지는 2개 이상 첨부해주세요.</small>
-							<span class="error">필수첨부</span>
-							</td>
-						</tr>
-						
-						<tr>
-							<th>제품 크기 이미지</th>
-							<td>
-								<input type="file" name="lastimg" class="forminput requiredInfo " />
+								<input type="file" name="storeimage" class="forminput requiredInfo " />
 								<span class="error">필수입력</span> 
 							</td>
 						</tr>
 						
-
-					</tbody>
+						<tr>
+							<th>매장 운영시간</th>
+							<td>
+							<input type="time" name="openinghour" class="forminput requiredInfo" />
+							<span class="error">필수입력</span>
+							</td>
+						</tr>
+						
+						<tr>
+							<th>레스토랑 운영시간</th>
+							<td><input type="time" name="restaurant" class="forminput requiredInfo" />
+								<span class="error">필수입력</span></td>
+						</tr>
+					</tbody>	
 				</table>
 				<br><br>
-				<div class="updateprogress">
-					<div class="submitORnot" style="margin-top: 2vw;">
-					<input type="button" value="제품 등록" id="btnRegister" class="mybtn_black"
-					style="margin-top: 3%; margin: 3% auto;">
-					<input type="reset" value=" 취소 " class="mybtn_black"
-					style="margin-top: 3%; margin: 3% auto;">
+			<div class="updateprogress" style="text-align: center;">
+				<div class="submitORnot" style="margin-top: 2vw; display:inline-block; margin:auto;">
+					<input type="button" value="매장 등록" id="btnRegister" class="mybtn_black">
+					<input type="reset" value=" 취소 " class="mybtn_black">
 				</div>
 			</div>
 			</form>
@@ -352,4 +289,4 @@ text-align: center;
 
 <!-- 줄 띄우기 용 -->
 <br><br><br><br><br>
-<jsp:include page="../../footer.jsp" />
+<jsp:include page="../footer.jsp" />
