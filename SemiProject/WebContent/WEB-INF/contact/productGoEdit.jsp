@@ -184,6 +184,7 @@
 				      <td width="75%" align="left" class="detailcontent" style="padding-top: 10px;" >
 				         ${requestScope.ovo.odrseqnum}
 				         <input type="hidden" name="odrseqnum" value="${requestScope.ovo.odrseqnum}" />
+				         <input type="hidden" name="email" value="${requestScope.map.email}" />
 				      </td>   
 				   </tr>
 				   <tr>
@@ -206,7 +207,7 @@
 				      <td width="25%" class="oDetail" style="padding-top: 10px;">상품명</td>
 				      <td width="75%" align="left" class="detailcontent" style="padding-top: 10px;" >
 				         ${requestScope.ovo.pvosm.pname}
-				         <input type="hidden" name="fk_pnum" value="${requestScope.ovo.pvosm.pname}" />
+				         <input type="hidden" name="pname" value="${requestScope.ovo.pvosm.pname}" />
 				      </td>   
 				   </tr>
 				   

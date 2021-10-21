@@ -96,9 +96,10 @@
 		$("tr.orderDetailInfo").click(function() {
 			
 			
-			var odrseqnum = $(this).children(".odrseqnum").text(); 
+			var odrseqnum = $(this).children(".odrseqnum").text();
+			var fk_odrcode = $(this).children(".fk_odrcode").text();
 			
-			location.href="<%= ctxPath%>/contact/productGoEdit.one?odrseqnum="+odrseqnum+"&goBackURL=${requestScope.goBackURL}";
+			location.href="<%= ctxPath%>/contact/productGoEdit.one?odrseqnum="+odrseqnum+"&fk_odrcode="+fk_odrcode+"&goBackURL=${requestScope.goBackURL}";
 			
 		});  
 		  
