@@ -258,7 +258,7 @@
 		 
 	    <form name="searchFrm" onsubmit="return false;" class="mx-2 my-auto d-inline w-100">
 	        <div class="input-group">
-	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; " placeholder="검색어 입력" onkeyup="enterkey()">
+	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; height:50px; width:290px; background-color:#f5f5f5" placeholder="&emsp;검색어 입력" onkeyup="enterkey()">
 	            <span class="input-group-append">
 	                <button class="btn btn-outline-secondary border ml-1" style=" border-radius: 20px; color:black; width:47px" type="button" onClick="goSearch();">
 	                    <i class="fa fa-search"></i>
