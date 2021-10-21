@@ -116,7 +116,7 @@ span#where {
 		          </p>
 		          <br>
 		          <ul>
-		          	<li>${storeList.openinghour} ~ 22 : 00</li>
+		          	<li>${storeList.openhour} ~ 22 : 00</li>
 		          </ul>
 		          <br><br>
 		          <p id="boldft">
@@ -127,7 +127,7 @@ span#where {
 		          </p>
 		          <br>
 		          <ul>
-		          	<li>월요일 - 일요일 ${storeList.openinghour} ~ 21 : 00</li>
+		          	<li>월요일 - 일요일 ${storeList.openhour} ~ ${storeList.closehour}</li>
 		          </ul>
 		          <br>
 		          <p id="boldft">
@@ -135,7 +135,7 @@ span#where {
 		          </p>
 		          <br>
 		          <ul>
-		          	<li>월요일 - 일요일 09 : 30 ~ ${storeList.restaurant}<br>
+		          	<li>월요일 - 일요일  ${storeList.ropenhour} ~  ${storeList.rclosehour}<br>
 					</li>
 		          </ul>
 		          <a href="https://map.kakao.com/link/search/${storeList.storename}" role="button" class="btnWhere" style="margin-top: 2vw; margin-bottom: 4vw">

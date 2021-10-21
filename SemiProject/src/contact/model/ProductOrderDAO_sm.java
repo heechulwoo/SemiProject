@@ -459,7 +459,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select storeid, storename, postcode, address, detailaddress, extraaddress, openinghour, restaurant, storeimg "+
+			String sql = " select storeid, storename, postcode, address, detailaddress, extraaddress, openhour, closehour, ropenhour, rclosehour, storeimg "+
 					 	 " from tbl_shoppingmap ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -477,9 +477,11 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 				svo.setAddress(rs.getString(4));
 				svo.setDetailaddress(rs.getString(5));
 				svo.setExtraaddress(rs.getString(6));
-				svo.setOpeninghour(rs.getString(7));
-				svo.setRestaurant(rs.getString(8));
-				svo.setStoreimg(rs.getString(9));
+				svo.setOpenhour(rs.getString(7));
+				svo.setClosehour(rs.getString(8));
+				svo.setRopenhour(rs.getString(9));
+				svo.setRclosehour(rs.getString(10));
+				svo.setStoreimg(rs.getString(11));
 				
 				storeList.add(svo);
 			}
