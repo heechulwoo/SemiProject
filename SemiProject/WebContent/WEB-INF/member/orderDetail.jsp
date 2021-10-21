@@ -51,6 +51,12 @@
            font-size: 12pt;
    } 
    
+   .review {
+   		cursor: pointer;
+   		font-weight: bold;
+   		color: blue;
+   }
+   
    
 </style>
 
@@ -59,9 +65,42 @@
 <script type="text/javascript">
 	
 	
-function goOderList() {
-	window.history.back();
-}
+  $(document).ready(function() {
+		
+	  $("tr.orderInfo").bind("click", function(){
+			
+			var $target = $(event.target);	
+	
+			var pnum =  $target.parent().find(".odrcode").html();		
+
+			$('input[name=pnum]').attr('value',pnum);
+			
+	
+			var frmd = document.reviewfrm;
+			frmd.action = "oderReview.one"
+			frmd.method = "GET";
+			frmd.submit(); 
+			
+
+		<%-- location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid --%>
+
+	});
+	
+
+		
+	  
+	  
+	});
+	
+	
+	
+	
+	function goOderList() {
+		window.history.back();
+	}
+	
+
+
 	
 	
 </script>
@@ -84,18 +123,20 @@ function goOderList() {
   <table id="orderTbl" class="table table-bordered" style="width:100%; margin-top: 40px;">
         <thead>
            <tr >
+           	  <th>제품코드</th>
               <th>제품명</th>
               <th>제품금액</th>
               <th>주문개수</th>
               <th>배송상태</th>
-              <th>배송완료일자</th>
+              <th  style="padding-left:20px">제품후기</th>
            </tr>
         </thead>
         
         <tbody>
     		<c:forEach var="odrDetail" items="${requestScope.odrDetail}">
     			<tr class="orderInfo" >
-    				<td class="odrcode">${odrDetail.pvo.pname}</td>
+    			    <td class="odrcode">${odrDetail.pvo.pnum}</td>
+    				<td >${odrDetail.pvo.pname}</td>
     				<td><fmt:formatNumber value="${odrDetail.pvo.price}" pattern="###,###" />원</td>
     				<td>${odrDetail.oqty}개</td>
     				<td>
@@ -111,13 +152,13 @@ function goOderList() {
     						</c:otherwise>
     					</c:choose>
 					</td>
-    				<td>
+    				<td class="review">
     				<c:choose>
-    					<c:when test="${odrDetail.deliverstatus eq ''}">
-    							-
+    					<c:when test="${odrDetail.deliverstatus eq '3'}">
+    						작성하기
     					</c:when>
     						<c:otherwise>
-    							${odrDetail.deliverdate}
+    							-
     						</c:otherwise>
     					</c:choose>
     				</td>
@@ -125,14 +166,18 @@ function goOderList() {
     		</c:forEach>    
 		</tbody>
 	</table>
-
-	     
+	
+<form name="reviewfrm">
+	<input type="hidden" name="pnum" value="" />
+</form>
+ 
 
 <button type="button" class="btn btn-warning" onclick="goOderList();" style="margin-left: 390px; margin-top: 50px;  font-weight:bolder;">목록으로</button>    
-		  	
-			
 
 </div>
+
+
+
 
 
 

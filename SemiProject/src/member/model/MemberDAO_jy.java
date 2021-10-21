@@ -601,7 +601,7 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select pname, price, oqty, odrprice, deliverstatus, fk_odrcode, deliverdate, odrtotalprice " + 
+			String sql = " select pname, price, oqty, odrprice, deliverstatus, fk_odrcode, deliverdate, odrtotalprice, pnum " + 
 						 " from tbl_order_detail O join tbl_product P " + 
 						 " on P.pnum = O.fk_pnum " + 
 						 " join tbl_order R " + 
@@ -633,14 +633,14 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 				String fk_odrcode = rs.getString(6); // 주문코드
 				String deliverdate = rs.getString(7); // 배송일자
 				int odrtotalprice = rs.getInt(8);
-				
+				String pnum = rs.getString(9);
 				
 				ProductVO_kgh pvo = new ProductVO_kgh();
 				 // pname, price
 				
 				pvo.setPname(pname);
 				pvo.setPrice(price);
-				
+				pvo.setPnum(pnum);
 				
 				
 				ProductOrderDetailVO_kgh pdvo = new ProductOrderDetailVO_kgh();  // 기본값
@@ -761,6 +761,35 @@ public class MemberDAO_jy implements InterMemberDAO_jy {
 	      
 	      return totalPage;
 	      
+	}
+
+	
+	// 회원 주문목록 조회에서 리뷰를 작성해주는 메소드
+	@Override
+	public int updateReview(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " insert into tbl_review(review_seq , fk_userid, fk_pnum, title, content, registerdate) " + 
+	         		      " values(SEQ_REVIEW.nextval, ?, ?, ?, ?, sysdate) ";
+
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, paraMap.get("fk_userid"));
+	         pstmt.setString(2, paraMap.get("fk_pnum"));
+	         pstmt.setString(3, paraMap.get("title"));
+	         pstmt.setString(4, paraMap.get("content"));
+	         
+	         n = pstmt.executeUpdate();
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return n;
 	}
 
 
