@@ -15,6 +15,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import product.model.ProductImageVO_kgh;
 import util.security.AES256;
 import util.security.SecretMyKey;
 
@@ -324,7 +325,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 	
 	
 	
-	// 배송상태 변경해주기(deliverstatus == 1 또는 3 인 경우)
+	// 배송상태 변경해주기(deliverstatus == 1 또는 2 인 경우)
 	@Override
 	public int updateDeliverStatus1(Map<String, String> paraMap) throws SQLException {
 
@@ -357,7 +358,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 	
 	
 	
-	// 배송상태 변경해주기(deliverstatus == 2 인 경우)
+	// 배송상태 변경해주기(deliverstatus == 3 인 경우)
 	@Override
 	public int updateDeliverStatus2(Map<String, String> paraMap) throws SQLException {
 		
@@ -368,7 +369,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 			
 			conn = ds.getConnection();
 			
-			String sql = " update tbl_order_detail set deliverstatus = ? , deliverdate = to_char(sysdate + 7 , 'yyyy-mm-dd') "
+			String sql = " update tbl_order_detail set deliverstatus = ? , deliverdate = to_char(sysdate , 'yyyy-mm-dd') "
 	                   + " where odrseqnum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -443,6 +444,54 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 		
 		
 	}// end of public List<ProductAddressVO_sm> viewOrderAddress(String odrcode)------------------------
+	
+	
+	
+	// 매장 정보를 불러오는 메소드
+	@Override
+	public List<ShoppingmapVO_sm> selectStoresInfo() throws SQLException {
+		
+		List<ShoppingmapVO_sm> storeList = new ArrayList<>();
+		
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select storeid, storename, postcode, address, detailaddress, extraaddress, openinghour, restaurant, storeimg "+
+					 	 " from tbl_shoppingmap ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				ShoppingmapVO_sm svo = new ShoppingmapVO_sm();
+				
+				svo.setStoreid(rs.getInt(1));
+				svo.setStorename(rs.getString(2));
+				svo.setPostcode(rs.getString(3));
+				svo.setAddress(rs.getString(4));
+				svo.setDetailaddress(rs.getString(5));
+				svo.setExtraaddress(rs.getString(6));
+				svo.setOpeninghour(rs.getString(7));
+				svo.setRestaurant(rs.getString(8));
+				svo.setStoreimg(rs.getString(9));
+				
+				storeList.add(svo);
+			}
+			
+			
+		} finally {
+			close();
+		}
+		
+		
+		return storeList;
+		
+	}// end of public List<ShoppingmapVO_sm> selectStoresInfo()-----------------------------------------
 	
 	
 	
