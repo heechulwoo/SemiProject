@@ -53,6 +53,9 @@ public interface InterMemberDAO_jy {
 	// 로그인된 회원의 주문목록의 총 개수를 띄워주는 메소드(페이징바 처리)
 	int getTotalOderPage(Map<String, String> paraMap) throws SQLException;
 	
+	// 회원 주문목록 조회에서 리뷰를 작성해주는 메소드
+	int updateReview(Map<String, String> paraMap) throws SQLException;
+	
 	
 	
 	

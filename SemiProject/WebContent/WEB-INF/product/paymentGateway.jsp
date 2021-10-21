@@ -59,7 +59,7 @@ $(document).ready(function() {
 		//	opener.location.href = "javascript:goCoinUpdate('${requestScope.userid}','${coinmoney}');";
 		//	window.opener.goCoinUpdate('${requestScope.userid}','${requestScope.sumTotalPrice}');
 		//  $(opener.location).attr("href", "javascript:goCoinUpdate('${requestScope.userid}','${coinmoney}');");
-			
+			alert("결제가 완료되었습니다.");
 			opener.location.href = "javascript:goProductPaySuccess();";
 		    self.close();	// 팝업창 닫기
 			

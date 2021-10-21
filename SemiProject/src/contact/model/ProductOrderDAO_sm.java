@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -458,7 +459,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select storeid, storename, postcode, address, detailaddress, extraaddress, openinghour, restaurant, storeimg "+
+			String sql = " select storeid, storename, postcode, address, detailaddress, extraaddress, openhour, closehour, ropenhour, rclosehour, storeimg "+
 					 	 " from tbl_shoppingmap ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -476,9 +477,11 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 				svo.setAddress(rs.getString(4));
 				svo.setDetailaddress(rs.getString(5));
 				svo.setExtraaddress(rs.getString(6));
-				svo.setOpeninghour(rs.getString(7));
-				svo.setRestaurant(rs.getString(8));
-				svo.setStoreimg(rs.getString(9));
+				svo.setOpenhour(rs.getString(7));
+				svo.setClosehour(rs.getString(8));
+				svo.setRopenhour(rs.getString(9));
+				svo.setRclosehour(rs.getString(10));
+				svo.setStoreimg(rs.getString(11));
 				
 				storeList.add(svo);
 			}
@@ -492,6 +495,48 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 		return storeList;
 		
 	}// end of public List<ShoppingmapVO_sm> selectStoresInfo()-----------------------------------------
+	
+	
+	
+	// 유저 아이디 알아오기
+	@Override
+	public Map<String, String> getUserEmail(String fk_odrcode) throws SQLException {
+		
+		Map<String, String> map = new HashMap<>();
+		
+		try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select email "+
+		        		  " from "+
+		        		  " ( "+
+		        		  " select email, userid, odrcode "+
+		        		  " from tbl_member M join tbl_order O "+
+		        		  " on M.userid = O.fk_userid "+
+		        		  " ) "+
+		        		  " where odrcode = ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, fk_odrcode);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         if(rs.next()) {
+	            map.put("email", aes.decrypt(rs.getString(1)) ); 
+	            // 유저 이메일값 가져오기 
+	            
+	         }
+	      
+	         
+		  } catch(GeneralSecurityException | UnsupportedEncodingException e) {	
+			e.printStackTrace();   
+	      } finally {
+	         close();
+	      }
+		
+		return map;
+		
+	}// end of 
 	
 	
 	

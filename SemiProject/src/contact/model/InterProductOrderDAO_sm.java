@@ -31,6 +31,11 @@ public interface InterProductOrderDAO_sm {
 	
 	// 매장 정보를 불러오는 메소드
 	List<ShoppingmapVO_sm> selectStoresInfo() throws SQLException;
+	
+	
+	
+	// 유저 아이디 알아오기
+	Map<String, String> getUserEmail(String fk_odrcode) throws SQLException;
 
 	
 	

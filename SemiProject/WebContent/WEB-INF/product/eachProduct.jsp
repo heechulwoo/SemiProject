@@ -18,8 +18,6 @@
 	   font-weight: normal;
 	   color: black;}
 
-	
-	
 	#accordion {
 		  background-color: white;
 		  cursor: pointer;
@@ -40,7 +38,7 @@
 	div#productReview {
 		width: 100%;
 		text-align: left;
-		max-height: 200px;
+		max-height: 250px;
 		overflow: auto;
 	}
 	
@@ -308,12 +306,7 @@
 							</c:if>
 						</c:forEach>
 					</c:if>
-				<%-- 
-					<div class="col-6 col-md-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/마리우스_화이트1.webp" style="width: 95%;"/></div>
-					<div class="col-6 col-md-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/마리우스_화이트2.webp" style="width: 95%;"/></div>
-					<div class="col-6 col-lg-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/마리우스_화이트3.webp" style="width: 95%;"/></div>
-					<div class="col-6 col-lg-6 mx-0 my-3"><img src="<%= ctxPath%>/image_ikea/마리우스_화이트4.webp" style="width: 95%;"/></div>				
-				--%>	
+				
 				</div>
 			</div>
 			<div class="col-9 col-lg-4 ml-5 pl-4 my-4" style="float: right; width: 30%;">
@@ -434,13 +427,7 @@
 			<div id="demo1" class="collapse">
 			   <p class="ml-3 my-3" style="width: 50%;">
 			   		${requestScope.pvo.pcontent}
-			<%-- 고밀도폼을 사용하여 오랫동안 의자를 편안하게 사용할 수 있어요.<br><br>
-				 의자의 높이를 조절하여 편안하게 앉을 수 있습니다.<br><br>
-				 안전바퀴가 압력 감지 잠금 메커니즘을 갖추고 있어 일어나면 안전하게 고정되고, 앉으면 자동으로 잠금이 해제됩니다.<br><br>
-				 가정용 적합성 테스트를 한 제품입니다.<br><br>
-				 부드러운 바닥에서 사용하는 바퀴입니다.<br>
-			  --%>
-			  </p>
+			   </p>
 			</div>
 			  
 			<hr>
@@ -466,54 +453,22 @@
 			
 			<div id="productReview" class="col-12 col-lg-6 container-fluid my-3 float-left">
 			<%-- 상품 후기들이 들어오는 div --%>
-				<div style="display: flex; width: 70%;">
-					<ul class="pagination" style="margin: auto;">
-					    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-					    <li class="page-item"><a class="page-link" href="#">1</a></li>
-					    <li class="page-item"><a class="page-link" href="#">2</a></li>
-					    <li class="page-item"><a class="page-link" href="#">3</a></li>
-					    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-					</ul>
-				</div>
 			</div>
 			
 			<br><br>
 			<div class="col-12 col-lg-10 container-fluid float-left">
 			<h5 class="my-2 px-2" style="font-weight: bold;">유사한 제품</h5><br>
 			
-				<div class="row justify-content-start my-2" align="center">
-					<c:if test="${not empty sameProductList}">
-						<c:forEach var="sameProductVO" items="${requestScope.sameProductList}">
-							<div class="col-6 col-lg-2 px-0 my-3">
-								<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${sameProductVO.pnum}"><img class="my-1" src="<%= ctxPath%>/image_ikea/${sameProductVO.prodimage}" style="width: 90%;"/></a><br>
-								<a href="#" style="font-weight: bold; color: black; text-align: center;">${sameProductVO.pname}</a><br>
-								<span><fmt:formatNumber value="${sameProductVO.price}"/>원</span>
-							</div>
-						</c:forEach>
-					</c:if>
-			<%--		
-					<div class="col-6 col-lg-2 px-0 my-3">
-						<a href="#"><img class="my-1" src="/SemiProject1/image_ikea/잉올프_앤티크스테인1.webp" style="width: 90%;"/></a><br>
-						<a href="#" style="font-weight: bold; color: black; text-align: center;">INGOLF 잉올프</a><br>
-						<span>49,900원</span>
-					</div>
-					<div class="col-6 col-lg-2 px-0 my-3">
-						<a href="#"><img class="my-1" src="/SemiProject1/image_ikea/닐솔레_자작나무1.webp" style="width: 90%;"/></a><br>
-						<a href="#" style="font-weight: bold; color: black; text-align: center;">NILSOLLE 닐솔레</a><br>
-						<span>49,900원</span>
-					</div>
-					<div class="col-6 col-lg-2 px-0 my-3">
-						<a href="#"><img class="my-1" src="/SemiProject1/image_ikea/쉬레_자작나무1.webp" style="width: 90%;"/></a><br>
-						<a href="#" style="font-weight: bold; color: black; text-align: center;">KYRRE 쉬레</a><br>
-						<span>14,900원</span>
-					</div>
-					<div class="col-6 col-lg-2 px-0 my-3">
-						<a href="#"><img class="my-1" src="/SemiProject1/image_ikea/쿨라베리_브라운1.webp" style="width: 90%;"/></a><br>	
-						<a href="#" style="font-weight: bold; color: black; text-align: center;">KULLABERG 쿨라베리</a><br>
-						<span>59,000원</span>
-					</div>
-				</div>
-			 --%>
+			<div class="row justify-content-start my-2" align="center">
+				<c:if test="${not empty sameProductList}">
+					<c:forEach var="sameProductVO" items="${requestScope.sameProductList}">
+						<div class="col-6 col-lg-2 px-0 my-3">
+							<a href="<%= ctxPath%>/product/eachProduct.one?pnum=${sameProductVO.pnum}"><img class="my-1" src="<%= ctxPath%>/image_ikea/${sameProductVO.prodimage}" style="width: 90%;"/></a><br>
+							<a href="#" style="font-weight: bold; color: black; text-align: center;">${sameProductVO.pname}</a><br>
+							<span><fmt:formatNumber value="${sameProductVO.price}"/>원</span>
+						</div>
+					</c:forEach>
+				</c:if>
 			</div>
 			<br><br><hr><br><br><br>
 			
