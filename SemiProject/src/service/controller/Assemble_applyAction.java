@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import common.controller.AbstractController;
 
 import member.model.MemberVO;
+import my.util.MyUtil_jay;
 import service.model.*;
 
 public class Assemble_applyAction extends AbstractController {
@@ -27,6 +28,8 @@ public class Assemble_applyAction extends AbstractController {
 			
 		// 카테고리 목록 얻어오기 
 		super.getCategoryList(request);
+	
+		super.goBackURL(request);
 			 
 		 // 조립 서비스를 신청하려면 로그인 먼저 해야 함
 			if(loginuser != null) {
@@ -59,6 +62,14 @@ public class Assemble_applyAction extends AbstractController {
 			} // end of if(loginuser != null)-----------
 			else {
 				// 로그인을 안한 경우
+				
+				// *** 현재 페이지를 돌아갈 페이지(goBackURL)로 주소 지정하기 *** // 
+				String currentURL = MyUtil_jay.getCurrentURL(request); 
+				// 목록으로 돌아가기를 했을시 현재 그 페이지로 그대로 되돌아가길 위한 용도로 쓰임. 
+			 
+				currentURL = currentURL.replaceAll("&"," ");
+				request.setAttribute("goBackURL", currentURL);
+				
 				String loc = ctxPath+"/login/login.one"; // 로그인 페이지로 이동
 				
 				request.setAttribute("loc", loc);
