@@ -27,7 +27,7 @@
 	table#orderTbl {
 	  width: 93%;
 	  border: solid 1px gray;
-	  margin: 10px;
+	  margin: auto;
 	  text-align: center;
 	}
 

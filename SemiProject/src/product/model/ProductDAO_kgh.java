@@ -182,17 +182,17 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			conn = ds.getConnection();
 			
 			String sql = " select cnum, cname, pnum, pname, prodimage, price, odrcode, " + 
-						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate, deliverstatus " + 
+						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate, deliverstatus, color " + 
 						 " from " + 
 						 " ( " + 
 						 "     select cnum , cname, pnum, pname, prodimage, price, fk_odrcode AS odrcode, " + 
-						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate, deliverstatus " + 
+						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate, deliverstatus, color " + 
 						 "     from " + 
 						 "     ( " + 
-						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice, deliverstatus " + 
+						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice, deliverstatus, color " + 
 						 "         from " + 
 						 "         ( " + 
-						 "             select cnum , cname, pnum, pname, prodimage, price " + 
+						 "             select cnum , cname, pnum, pname, prodimage, price, color " + 
 						 "             from tbl_category G " + 
 						 "             JOIN tbl_product P " + 
 						 "             ON G.cnum = P.fk_cnum " + 
@@ -226,6 +226,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 				pdvo.setPname(rs.getString("pname"));
 				pdvo.setProdimage(rs.getString("prodimage"));
 				pdvo.setPrice(rs.getInt("price"));
+				pdvo.setColor(rs.getString("color"));
 				podvo.setPvo(pdvo);
 				
 				ProductOrderVO_kgh povo = new ProductOrderVO_kgh();	// 주문
@@ -649,6 +650,76 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 		
 		return odrcode;
 	}
+
+	
+	// 제품 번호에 해당하는 제품의 리뷰 글 select 하기
+	@Override
+	public List<ProductReviewVO> reviewList(String fk_pnum) throws SQLException {
+		
+		List<ProductReviewVO> reviewList = new ArrayList<>();	
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select rownum, fk_userid, title, content, to_char(registerdate, 'yyyy-mm-dd') AS registerdate " + 
+						 " from tbl_review R " +
+						 " where R.fk_pnum = ? " + 
+						 " order by rownum desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fk_pnum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductReviewVO reviewvo = new ProductReviewVO();
+				reviewvo.setReview_seq(rs.getInt(1));
+				reviewvo.setFk_userid(rs.getString(2));
+				reviewvo.setTitle(rs.getString(3));
+				reviewvo.setContent(rs.getString(4));
+				reviewvo.setRegisterdate(rs.getString(5));
+			
+				reviewList.add(reviewvo);
+			}
+			
+		} finally {
+			close();
+		}
+
+		return reviewList;
+		
+	}// end of public List<ProductReviewVO> reviewList(String fk_pnum)
+
+	
+	// DB에서 특정 제품(fk_pnum)에 대한 리뷰의 총 개수 알아오기(select)
+	@Override
+	public int getTotalCountReviews(String fk_pnum) throws SQLException {
+
+		int totalCountReviews = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) AS CNT " + 
+						 " from tbl_review " + 
+						 " where fk_pnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fk_pnum);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalCountReviews = rs.getInt("CNT");
+			
+		} finally {
+			close();
+		}
+		
+		return totalCountReviews;
+		
+	}// end of public int getTotalCountReviews(String fk_pnum)
 
 	
 

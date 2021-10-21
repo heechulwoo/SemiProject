@@ -11,6 +11,8 @@
 
 <title>조립 서비스 온라인 신청</title>
 
+<jsp:include page="../header.jsp" />
+
 <!-- 직접 만든 CSS -->
 <link rel="stylesheet" href="../css/assemble_form.css" />
 
@@ -28,10 +30,11 @@ border-bottom: 2px solid #F7F7F8;
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- 달력 -->
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
 
 <script type="text/javascript">
 
@@ -288,7 +291,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 			,
 			dayNames : [ '일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일' ]
 		//달력의 요일 부분 Tooltip 텍스트
-		// ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+		    ,minDate: "+3D" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
 		// ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)                    
 		});
 
@@ -361,10 +364,8 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 
 
 
-<jsp:include page="../header.jsp" />
-
 <body>
-<div class="mycontainer">
+<div class="mycontainer" data-theme="a">
 	<h1 class="main-title">조립 서비스 온라인 신청</h1>
 	<hr />
 	<div class="wrapper">
@@ -415,7 +416,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 					     	<option><c:out value="${odrcode}" /></option>
 					     </c:forEach>
 					 </select> 
-						<a href="<%= ctxPath%>/product/shipping.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
+						<a href="<%= ctxPath%>/member/memberOderList.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
 						</td>
 				</tr>
 				
@@ -456,7 +457,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 						<div>
 							<textarea name="demand" class="forminput" cols="60"
 								style="width: 80%; height: 100px" class="textarea"
-								placeholder="원하는 위치 요청이나 전달할 사항이 있다면 적어주세요."></textarea>
+								placeholder="제품 이름이나 원하는 위치 요청 등 전달할 사항이 있다면 적어주세요."></textarea>
 						</div>
 					</td>
 				</tr>

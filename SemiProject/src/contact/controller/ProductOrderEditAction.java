@@ -10,9 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
 import contact.model.InterProductOrderDAO_sm;
-import contact.model.InterSelfReturnDAO_sm;
 import contact.model.ProductOrderDAO_sm;
-import contact.model.SelfReturnDAO_sm;
 import member.model.MemberVO;
 
 public class ProductOrderEditAction extends AbstractController {
@@ -44,9 +42,14 @@ public class ProductOrderEditAction extends AbstractController {
 				
 				Map<String, String> paraMap = new HashMap<>(); // map만들어서 조건을 담아서 method로 갈 것
 				
-				String odrseqnum = request.getParameter("odrseqnum");
+				String odrseqnum = request.getParameter("odrseqnum"); 	// 주문상세번호
+				String email = request.getParameter("email");		  	// 이메일
+				String fk_odrcode = request.getParameter("fk_odrcode"); // 주문번호
+				String pname = request.getParameter("pname");			// 상품명
+				String oqty = request.getParameter("oqty");				// 주문수량
 				
-				// System.out.println("확인용 odrseqnum: "+odrseqnum);
+				
+			 // System.out.println("확인용 email: "+email);
 				
 				
 				if( loginuser != null && "admin".equals(loginuser.getUserid()) ) {
@@ -61,16 +64,19 @@ public class ProductOrderEditAction extends AbstractController {
 					// DB에 보내주기 //
 					paraMap.put("odrseqnum", odrseqnum);
 					paraMap.put("deliverstatus", deliverstatus);
+					paraMap.put("email", email);
+					paraMap.put("fk_odrcode", fk_odrcode);
+					paraMap.put("pname", pname);
+					paraMap.put("oqty", oqty);
 					
 					
 					// ###### 배송 상태 수정이 성공되면 주문 내역 리스트로 넘어감 ###### //
 					try {
 						
 						
-						if("1".equals(deliverstatus) || "3".equals(deliverstatus)) {
+						if("1".equals(deliverstatus) || "2".equals(deliverstatus)) {
 							InterProductOrderDAO_sm rdao = new ProductOrderDAO_sm();
 							int n = rdao.updateDeliverStatus1(paraMap);
-							
 							
 							if(n==1) {
 								
@@ -86,15 +92,34 @@ public class ProductOrderEditAction extends AbstractController {
 							}
 						}
 						
-						else if("2".equals(deliverstatus)) {
-							// 배송중이라면 날짜 수정(도착예정일 : sysdate+7)
+						else if("3".equals(deliverstatus)) {
+							// 배송완료라면 날짜 수정(도착일 : sysdate)
 							
+							// 배송이 완료되었다는 이메일 발송
 							InterProductOrderDAO_sm rdao = new ProductOrderDAO_sm();
 							int n = rdao.updateDeliverStatus2(paraMap);
 							
+							
+							boolean sendMailSuccess = false; // 메일이 정상적으로 전송되었는지 유무를 알아오기 위한 용도
+							
+							
 							if(n==1) {
 								
-								 String message = "배송 상태가 수정이 완료되었습니다! 주문 내역 리스트에서 확인해주세요 :-)";
+								// 위의 정보를 바탕으로 사용자에게 이메일을 전송시킨다.
+								GoogleMail_sm mail = new GoogleMail_sm();
+								
+								try {
+									mail.sendShipmail(email, paraMap);
+									sendMailSuccess = true; // 메일 전송 성공했음을 기록함.
+									
+									
+								} catch(Exception e) { // 메일 전송이 실패한 경우
+									e.printStackTrace();
+									sendMailSuccess = false; // 메일 전송 실패했음을 기록함.
+								}
+								
+								
+								 String message = "배송 상태가 배송완료로 변경되었습니다! 주문 내역 리스트에서 확인해주세요 :-)";
 						         String loc = request.getContextPath()+"/contact/productOrderList.one";
 						         
 						         request.setAttribute("message", message);

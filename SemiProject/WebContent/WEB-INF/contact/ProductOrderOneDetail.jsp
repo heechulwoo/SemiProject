@@ -40,6 +40,10 @@
 	  cursor: pointer;
 	}
 	
+	#hidden {
+	 display: none;
+	}
+	
 	button#backBtn,
 	button#firstBtn {
 	  width: 12em;
@@ -96,9 +100,11 @@
 		$("tr.orderDetailInfo").click(function() {
 			
 			
-			var odrseqnum = $(this).children(".odrseqnum").text(); 
+			var odrseqnum = $(this).children(".odrseqnum").text();
+			var fk_odrcode = $(this).children(".fk_odrcode").text();
+			var fk_pnum = $(this).children(".fk_pnum").text();
 			
-			location.href="<%= ctxPath%>/contact/productGoEdit.one?odrseqnum="+odrseqnum+"&goBackURL=${requestScope.goBackURL}";
+			location.href="<%= ctxPath%>/contact/productGoEdit.one?odrseqnum="+odrseqnum+"&fk_odrcode="+fk_odrcode+"&fk_pnum="+fk_pnum+"&goBackURL=${requestScope.goBackURL}";
 			
 		});  
 		  
@@ -164,7 +170,7 @@
 				        <thead>
 				           <tr>
 				           	  <th>주문상세번호</th>
-				           	  <th>주문번호</th>
+				           	  <th id="hidden">주문번호</th> <%-- 주문번호 안보이게(위에서 보여주므로) --%>
 				           	  <th>제품코드</th>
 				              <th>주문수량</th>
 				              <th>주문총액</th>
@@ -178,10 +184,10 @@
 				        	<c:forEach var="dvo" items="${requestScope.orderDetailList}">
 				        		<tr class="orderDetailInfo">
 				        			<td class="odrseqnum">${dvo.odrseqnum}</td>
-				        			<td class="fk_odrcode">${dvo.fk_odrcode}</td>
+				        			<td class="fk_odrcode" id="hidden">${dvo.fk_odrcode}</td> <%-- 주문번호 안보이게(위에서 보여주므로) --%>
 				        			<td class="fk_pnum">${dvo.fk_pnum}</td>
-				        			<td class="oqty">${dvo.oqty}</td>
-				        			<td class="odrprice">${dvo.odrprice}</td>
+				        			<td class="oqty">${dvo.oqty}&nbsp;개</td>
+				        			<td class="odrprice">${dvo.odrprice}&nbsp;원</td>
 				        			
 				        			<%-- 만약 배송상태가 1이면 주문접수 / 3이면 배송완료이므로 배송일자 안보여주기 --%>
 				        			<c:if test="${dvo.deliverstatus == 1}">
@@ -196,10 +202,10 @@
 				        			
 				        			<%-- 만약 배송상태가 1이면 주문접수 / 3이면 배송완료이므로 배송일자 안보여주기 --%>
 				        			<c:if test="${dvo.deliverstatus == 1}">
-				        				<td class="deliverdate">주문접수일&nbsp;:&nbsp;${dvo.deliverdate}</td>
+				        				<td class="deliverdate">주문접수<%-- ${dvo.deliverdate} --%></td>
 			        				</c:if>
 			        				<c:if test="${dvo.deliverstatus == 2}">
-				        				<td class="deliverdate">도착예정일&nbsp;:&nbsp;${dvo.deliverdate}</td>
+				        				<td class="deliverdate">배송중<%-- ${dvo.deliverdate} --%></td>
 			        				</c:if>
 			        				<c:if test="${dvo.deliverstatus == 3}">
 				        				<td class="deliverdate">배송완료일&nbsp;:&nbsp;${dvo.deliverdate}</td>
@@ -241,7 +247,7 @@
 				        <thead>
 				           <tr>
 				           	  <th>배송지번호</th>
-				           	  <th>주문번호</th>
+				           	  <th id="hidden">주문번호</th> <%-- 주문번호 안보이게(위에서 보여주므로) --%>
 				           	  <th>받는분 성명</th>
 				              <th>연락처</th>
 				              <th>우편번호</th>
@@ -255,7 +261,7 @@
 				        <tbody>
 				        		<tr class="addressInfo">
 				        			<td class="odrseqnum">${requestScope.addressOneDetail.addrno}</td>
-				        			<td class="fk_odrcode">${requestScope.addressOneDetail.fk_odrcode}</td>
+				        			<td class="fk_odrcode" id="hidden">${requestScope.addressOneDetail.fk_odrcode}</td> <%-- 주문번호 안보이게(위에서 보여주므로) --%>
 				        			<td class="fk_pnum">${requestScope.addressOneDetail.name}</td>
 				        			<td class="oqty">${requestScope.addressOneDetail.mobile}</td>
 				        			<td class="odrprice">${requestScope.addressOneDetail.postcode}</td>

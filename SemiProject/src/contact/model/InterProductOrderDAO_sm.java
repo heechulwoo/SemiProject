@@ -26,6 +26,19 @@ public interface InterProductOrderDAO_sm {
 	
 	// 배송지 상세 정보를 리스트로 보여주는 메소드(tbl_address 테이블에 select)
 	ProductAddressVO_sm viewOrderAddress(String odrcode) throws SQLException;
+	
+	
+	
+	// 매장 정보를 불러오는 메소드
+	List<ShoppingmapVO_sm> selectStoresInfo() throws SQLException;
+	
+	
+	
+	// 유저 아이디 알아오기
+	Map<String, String> getUserEmail(String fk_odrcode) throws SQLException;
+	
+	// fk_pnum으로 이미지 보여주기(select)
+	ProductOrderImgVO_sm viewOrderImg(String fk_pnum) throws SQLException;
 
 	
 	

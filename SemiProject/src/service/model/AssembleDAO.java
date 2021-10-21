@@ -343,7 +343,6 @@ public class AssembleDAO implements InterServiceDAO {
 		
 		return n;
 	}
-
 	
 	
 	

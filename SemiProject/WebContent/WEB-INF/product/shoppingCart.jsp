@@ -194,45 +194,46 @@
 						// 데이터가 존재하는 경우
 						$("div#deleteAll").html('<button class="btn btn-outline-danger btn-sm badge-pill my-3 deleteAllcart">장바구니 삭제하기</button>');
 						$.each(json,function(index, item){
-							html += '<div class="row">' +
-										'<div class="col-3">' +
-											'<a href="<%= ctxPath%>/product/eachProduct.one?pnum='+item.pnum+'"><img src="<%= ctxPath%>/image_ikea/'+item.prodimage+'" style="width:100%"></a>' +
-										'</div>' +
-										'<div class="col-6">' +
-											'<div class="mb-2"><b><a href="<%= ctxPath%>/product/eachProduct.one?pnum='+item.pnum+'">'+item.pname+'</a></b></div>' +
-											'<div>'+
-												'<span>'+item.cname+'</span><br>'+
-												'<span class="eachpnum" style="font-size:small;">'+item.pnum+'</span>'+
+							if(Number(item.pqty) > 0) {
+								html += '<div class="row">' +
+											'<div class="col-3">' +
+												'<a href="<%= ctxPath%>/product/eachProduct.one?pnum='+item.pnum+'"><img src="<%= ctxPath%>/image_ikea/'+item.prodimage+'" style="width:100%"></a>' +
+											'</div>' +
+											'<div class="col-6">' +
+												'<div class="mb-2"><b><a href="<%= ctxPath%>/product/eachProduct.one?pnum='+item.pnum+'">'+item.pname+'</a></b></div>' +
+												'<div>'+
+													'<span>'+item.cname+'</span><br>'+
+													'<span class="eachpnum" style="font-size:small;">'+item.pnum+'</span>'+
+												'</div>'+
+												'<div class="pt-2">'+
+													'<span class="price" style="display:none">'+item.price+'</span>'+
+													'<select class="badge-pill py-2 px-3 oqty">';
+														for(var i=1; i<=Number(item.pqty); i++) {
+															if( i == item.oqty){
+																html += '<option value="'+i+'" selected>'+i+'</option>';
+															}
+															else{
+																html += '<option value="'+i+'">'+i+'</option>';
+															}
+														}	
+											html +=	'</select>'+
+												'<input type="hidden" value="'+item.cartno+'" name="cartno" class="cartno"/>' +
+												'</div>'+
 											'</div>'+
-											'<div class="pt-2">'+
-												'<span class="price" style="display:none">'+item.price+'</span>'+
-												'<select class="badge-pill py-2 px-3 oqty">';
-													for(var i=1; i<=Number(item.pqty); i++) {
-														if( i == item.oqty){
-															html += '<option value="'+i+'" selected>'+i+'</option>';
-														}
-														else{
-															html += '<option value="'+i+'">'+i+'</option>';
-														}
-													}	
-										html +=	'</select>'+
-											'<input type="hidden" value="'+item.cartno+'" name="cartno" class="cartno"/>' +
+											'<div class="col-3">'+
+												'<span class="productprice" style="font-weight:bold;">￦'+(item.price * item.oqty).toLocaleString("en")+'</span><br>'+
+												'<input type="hidden" value="'+(item.price * item.oqty)+'" name="totalPrice" class="totalPrice"/>' +
+												'<span style="font-size:small;">개당가격</span><br>' +
+												'<span class="eachprice" style="font-size:small;">￦'+item.price.toLocaleString("en")+'</span><br>'+
+												'<button class="btn btn-outline-danger btn-sm badge-pill mt-5 deletecart">삭제하기</button>'+
+												'<input type="hidden" value="'+item.pnum+'" name="pnum" class="pnum"/>' +
+										//		'<span class="pnum" style="display:none;">'+item.pnum+'</span>'+
 											'</div>'+
 										'</div>'+
-										'<div class="col-3">'+
-											'<span class="productprice" style="font-weight:bold;">￦'+(item.price * item.oqty).toLocaleString("en")+'</span><br>'+
-											'<input type="hidden" value="'+(item.price * item.oqty)+'" name="totalPrice" class="totalPrice"/>' +
-											'<span style="font-size:small;">개당가격</span><br>' +
-											'<span class="eachprice" style="font-size:small;">￦'+item.price.toLocaleString("en")+'</span><br>'+
-											'<button class="btn btn-outline-danger btn-sm badge-pill mt-5 deletecart">삭제하기</button>'+
-											'<input type="hidden" value="'+item.pnum+'" name="pnum" class="pnum"/>' +
-									//		'<span class="pnum" style="display:none;">'+item.pnum+'</span>'+
-										'</div>'+
-									'</div>'+
-									'<hr>';
-							
-									SumtotalPrice += (item.price * item.oqty);
+										'<hr>';
 								
+										SumtotalPrice += (item.price * item.oqty);
+							}
 						}); // end of $.each(json,function(index, item){})---------
 						
 						// 상품 결과를 출력하기

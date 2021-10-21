@@ -220,22 +220,9 @@
 		var totalPay = ${requestScope.sumTotalPrice};
 		
 		console.log(totalPay);
-		
-		
-<%--	
-		console.log(name);
-		console.log(email);
-		console.log(mobile);
-		console.log(totalPay);
-		frm.action = "<%= ctxPath%>/product/productPay.one?totalPay=" + totalPay;
-		
-		
-		frm.submit();
-		$(opener.location).attr("href", "javascript:goProductPay(" + totalPay + ");");
---%>		
 
-		//제품 색상 선택 팝업창 띄우기 
-		var url = "<%= request.getContextPath()%>/product/productPay.one?totalPay=" + totalPay;
+		// 결제 팝업창 띄우기 
+		var url = "<%= request.getContextPath()%>/product/productPay.one?totalPay=" + totalPay + "&userid=${sessionScope.loginuser.userid}";
 		
 		// 너비 800, 높이 600 인 팝업창을 화면 가운데 위치시키기
 	    var pop_width = 1000;
@@ -250,8 +237,6 @@
 	
 	// 이니시스 결제 이후 함수
 	function goProductPaySuccess() {
-		alert("결제완료되었습니다!");
-
 		var name = $("input#lastname").val() + $("input#firstname").val();
 		
 		$.ajax({
@@ -269,21 +254,17 @@
 				  "odcartno":$("input#odcartno").val(),
 				  "odtotalprice":$("input#odtotalprice").val(),
 				  "sumtotalprice":$("input#totalPay").val()},
+			dataType:"JSON", 	  
 		  	success:function(json) {
-		  		
-		  		console.log("확인용 : " + json);
-		  		// 확인용 : [{"odrcode":"2110207037","isSuccess":1}]
-		  		
-		  		if(json.length) {}
-		  		
-		  	<%--
-	            if(json.isSuccess == 1) {
-	               location.href="<%= ctxPath%>/product/orderConfirmation.one?odrcode=" + ;
-	            }
-	            else {
-	               location.href="<%= ctxPath%>/";
-	            }
-	        --%>
+		  		// console.log("확인용 : " + json);
+		  		// 확인용 : {"odrcode":"2110207040","isSuccess":1}
+		  		 
+		  		if(json.isSuccess == 1) {
+		  			location.href="<%= ctxPath%>/product/orderConfirmation.one?odrcode="+json.odrcode+"&userid=${sessionScope.loginuser.userid}"; 
+		  		}
+		  		else {
+		  			location.href="<%= ctxPath%>/";
+		  		}
 	        },
 			error: function(request, status, error){
                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);

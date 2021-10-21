@@ -69,6 +69,31 @@
       border-radius: 12px;
       cursor: pointer;
    }
+   
+   /* CSS 로딩 구현 시작(bootstrap 에서 가져옴) */
+	.loader {
+	  border: 13px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 13px solid #3498db;
+	  width: 30px;
+	  height: 30px;
+	  -webkit-animation: spin 2s linear infinite; /* Safari */
+	  animation: spin 2s linear infinite;
+	}
+	
+	/* Safari */
+	@-webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+	
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+	/* CSS 로딩 구현 끝(bootstrap 에서 가져옴) */
+   
+   
 
 </style>
 
@@ -80,9 +105,14 @@
 		$("input.userid").val("${requestScope.userid}");
 		
 		
+		 $(".loader").hide(); // CSS 로딩화면 감추기
+		
+		
 		// 찾기
 		$("input#OK").click(function(){
-
+			
+			$(".loader").show();
+			
 			var useridVal = $("input#userid").val().trim();
 			var pwdVal = $("input#pwd").val().trim();
 			var emailVal = $("input#email").val().trim();
@@ -136,7 +166,7 @@
 		<div class="container">
 		<!-- <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none; z-index:2; width:240%; min-width:300px" id="sidebarId"> -->
 			   <div class="container" style="float:left; color:white; background-color:#00579c; max-width:800px; height:1000px; "> 
-				  <a class="navbar-brand" href="#"><img src="<%= ctxPath%>/images/logo2.jpg" alt="IKEA_logo" width="87" height="36" style="margin-top: 50px; margin-left: 30px"/></a>			  
+				  <a class="navbar-brand" href="<%= ctxPath%>/index.one"><img src="<%= ctxPath%>/images/logo2.jpg" alt="IKEA_logo" width="87" height="36" style="margin-top: 50px; margin-left: 30px"/></a>			  
 				  <div style="margin-top:120px; margin-left:150px; margin-right:100px">
 					  	<span style="font-size:50px; margin-left:30px;"><b>휴면해제</b></span><br>
 					  	<span style="font-size:19px; margin-left:30px; " >휴면해제 후 정상적으로 이용이 가능합니다.</span>
@@ -161,8 +191,11 @@
 			               <li style="margin-top: 10px; margin-bottom: 20px;">
 			                  <label class="title" for="email" style="color: black;">이메일</label>
 			                  <input type="email" class="myinput" name="email" id="email" style="height: 40px; width: 200px;" size="20" maxlength="20" required placeholder="인증번호를 받으실 이메일" />           
+			               	<div style="display: flex">
+   								<div class="loader" style="margin-right: 100px;"></div>
+  							</div>
 			               </li>
-			               
+			                
 			             
 							 <c:if test="${requestScope.isUserRestart == false}">
 							 	<span style="color: red; padding-left: 30px; ">사용자 정보를 바르게 입력해주세요</span>
