@@ -28,20 +28,16 @@
 	  padding-bottom: 50px;
 	}
 	
-	table#tblViewOrder {
+	table#tblViewOrder,
+	table#tblViewAddress {
 	  width:100%;
 	  text-align:center;
 	  margin:0px auto;
 	}
 	
-	tr.orderDetailInfo:hover{
+	tr.orderDetailInfo:hover {
 	  background-color: #f2f2f2;
 	  cursor: pointer;
-	}
-	
-	a#editOD:hover {
-		color: #ff1a1a;
-		font-weight: bold;
 	}
 	
 	button#backBtn,
@@ -100,9 +96,10 @@
 		$("tr.orderDetailInfo").click(function() {
 			
 			
-			var odrseqnum = $(this).children(".odrseqnum").text(); 
+			var odrseqnum = $(this).children(".odrseqnum").text();
+			var fk_odrcode = $(this).children(".fk_odrcode").text();
 			
-			location.href="<%= ctxPath%>/contact/productGoEdit.one?odrseqnum="+odrseqnum+"&goBackURL=${requestScope.goBackURL}";
+			location.href="<%= ctxPath%>/contact/productGoEdit.one?odrseqnum="+odrseqnum+"&fk_odrcode="+fk_odrcode+"&goBackURL=${requestScope.goBackURL}";
 			
 		});  
 		  
@@ -119,16 +116,6 @@
 	function productOrderList() {
 		location.href = "/SemiProject"+goBackURL;
 	}// end of function goConsultList(){}----------------------------------
-	
-	
-	
-	
-	// 배송상태 변경
-    function EditOpen(odrseqnum){
-        
-    	location.href="<%= ctxPath%>/contact/productGoEdit.one?odrseqnum="+odrseqnum+"&goBackURL=${requestScope.goBackURL}";
-		
-    }// end of function EditOpen(odrseqnum){}-------------------------------
 	
 	
 	
@@ -162,13 +149,15 @@
 			
 			
 				<c:if test="${ empty requestScope.orderDetailList }"> 
-					주문 상세 내역이 존재하지 않습니다.<br>
+					[&nbsp;주문번호&nbsp;:&nbsp;
+						<span style="color: #80ccff;">${requestScope.odrcode}</span>
+					]&nbsp;&nbsp;주문 상세 내역이 존재하지 않습니다.
 				</c:if>
 				
 				<c:if test="${ not empty requestScope.orderDetailList }">
 					<h4 class="col-md-auto" style="font-weight: bold; margin-bottom: 0px;">[&nbsp;주문번호&nbsp;:&nbsp;
 						<span style="color: #80ccff;">${requestScope.odrcode}</span>
-					]&nbsp;&nbsp;주문 상세 내역</h4>
+					]&nbsp;&nbsp;주문 상세 내역&nbsp;<i class="fas fa-clipboard-list"></i></h4>
 					
 					
 					<%-- 주문상세내역 테이블 시작 --%>
@@ -208,16 +197,73 @@
 				        			
 				        			<%-- 만약 배송상태가 1이면 주문접수 / 3이면 배송완료이므로 배송일자 안보여주기 --%>
 				        			<c:if test="${dvo.deliverstatus == 1}">
-				        				<td class="deliverdate">주문접수일&nbsp;:&nbsp;${dvo.deliverdate}</td>
+				        				<td class="deliverdate">주문접수<%-- ${dvo.deliverdate} --%></td>
 			        				</c:if>
 			        				<c:if test="${dvo.deliverstatus == 2}">
-				        				<td class="deliverdate">도착예정일&nbsp;:&nbsp;${dvo.deliverdate}</td>
+				        				<td class="deliverdate">배송중<%-- ${dvo.deliverdate} --%></td>
 			        				</c:if>
 			        				<c:if test="${dvo.deliverstatus == 3}">
 				        				<td class="deliverdate">배송완료일&nbsp;:&nbsp;${dvo.deliverdate}</td>
 			        				</c:if>
 				        		</tr>
 				        	</c:forEach>
+				        </tbody>
+				    </table>
+				</c:if>
+		    </div>
+	    </form>
+	    <%-- ==== 주문 상세 내역 목록 끝 ==== --%>
+	    
+	    <%-- ==== 주문 내역 배송지 테이블 시작  ==== --%>
+	    <form name="viewAddressForm" class="col-md-auto">
+			<div id="viewDetail" class="col-md-auto">
+			
+			
+				<c:if test="${ empty requestScope.addressOneDetail }"> 
+					[&nbsp;주문번호&nbsp;:&nbsp;
+						<span style="color: #80ccff;">${requestScope.odrcode}</span>
+					]&nbsp;&nbsp;배송 정보가 존재하지 않습니다.
+					<br><br><br>
+					<div id="buttons" class="col-md-auto">
+						<button style="margin-top: 50px;" type="button" id="backBtn" class="btn" onclick="productOrderList()">주문내역 목록</button>
+					   	&nbsp;&nbsp;
+					   	<button style="margin-top: 50px;" type="button" id="firstBtn" class="btn" onclick="javascript:location.href='productOrderList.one'">처음으로</button>
+					</div>
+				</c:if>
+				
+				<c:if test="${ not empty requestScope.addressOneDetail }">
+					<h4 class="col-md-auto" style="font-weight: bold; margin-bottom: 0px;">[&nbsp;주문번호&nbsp;:&nbsp;
+						<span style="color: #80ccff;">${requestScope.odrcode}</span>
+					]&nbsp;&nbsp;<span style="color: #ffcc80;">배송 정보&nbsp;<i class="fas fa-truck"></i></span></h4>
+					
+					
+					<%-- 배송정보내역 테이블 시작 --%>
+					<table id="tblViewAddress" class="table table-bordered col-md-auto" style="width: 100%; margin-top: 35px;">
+				        <thead>
+				           <tr>
+				           	  <th>배송지번호</th>
+				           	  <th>주문번호</th>
+				           	  <th>받는분 성명</th>
+				              <th>연락처</th>
+				              <th>우편번호</th>
+				              <th>주소</th>
+				              <th>상세주소</th>
+				              <th>주소참고항목</th>
+				           </tr>
+				        </thead>
+				        
+				        <%-- 반복문으로 배송정보내역 뽑아오기 --%>
+				        <tbody>
+				        		<tr class="addressInfo">
+				        			<td class="odrseqnum">${requestScope.addressOneDetail.addrno}</td>
+				        			<td class="fk_odrcode">${requestScope.addressOneDetail.fk_odrcode}</td>
+				        			<td class="fk_pnum">${requestScope.addressOneDetail.name}</td>
+				        			<td class="oqty">${requestScope.addressOneDetail.mobile}</td>
+				        			<td class="odrprice">${requestScope.addressOneDetail.postcode}</td>
+				        			<td class="odrprice">${requestScope.addressOneDetail.address}</td>
+				        			<td class="odrprice">${requestScope.addressOneDetail.detailaddress}</td>
+				        			<td class="odrprice">${requestScope.addressOneDetail.extraaddress}</td>
+				        		</tr>
 				        </tbody>
 				    </table>
 				    
@@ -231,10 +277,10 @@
 				</c:if>
 		    </div>
 	    </form>
+	    <%-- ==== 주문 내역 배송지 테이블 끝  ==== --%>
+	    
     </c:if>
-    <%-- ==== 주문 상세 내역 목록 끝 ==== --%>
-	
-		
+    
 </div>
 <!-- .container 끝 -->
 

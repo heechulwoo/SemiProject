@@ -19,6 +19,8 @@ public class OrderConfirmationController extends AbstractController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
+		String userid = request.getParameter("userid");
+		
 		if("POST".equalsIgnoreCase(method)) {
 			
 			String shippingNo = request.getParameter("shippingNo");
@@ -27,38 +29,41 @@ public class OrderConfirmationController extends AbstractController {
 			InterProductDAO_kgh pdao = new ProductDAO_kgh();
 			
 			List<ProductOrderDetailVO_kgh> orderList = pdao.selectOrderConfirmation(shippingNo, shippingEmail);
-/*			
-			for(ProductOrderDetailVO_kgh odrDetailVO : orderList) {
-				System.out.println("확인용 odrDetailVO.getPovo().getOdrdate() : " + odrDetailVO.getPovo().getOdrdate());
-			}
-*/			
+
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("cnt", orderList.size());
-
-			
 			
 			super.setViewPage("/WEB-INF/product/orderConfirmation.jsp");
 			
 		}
-		else if (loginuser != null) {
+		else if (loginuser != null && userid.equals(loginuser.getUserid())) {
 			String odrcode = request.getParameter("odrcode");
-			String email = request.getParameter("email");
+			String email = loginuser.getEmail();
 			
 			InterProductDAO_kgh pdao = new ProductDAO_kgh();
 			
 			List<ProductOrderDetailVO_kgh> orderList = pdao.selectOrderConfirmation(odrcode, email);
-/*			
+	/*		
 			for(ProductOrderDetailVO_kgh odrDetailVO : orderList) {
 				System.out.println("확인용 odrDetailVO.getPovo().getOdrdate() : " + odrDetailVO.getPovo().getOdrdate());
 			}
-*/			
+	 */		
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("cnt", orderList.size());
 			
 			super.setViewPage("/WEB-INF/product/orderConfirmation.jsp");
 		}
-		
-		
+		else {
+			// 로그인을 하지 않았을 때
+			String message = "비정상적인 접근을 하지 마세요!!";
+			String loc = "javascript:history.back()";
+			
+			request.setAttribute("message", message);
+			request.setAttribute("loc", loc);
+			
+			//   super.setRedirect(false);
+			super.setViewPage("/WEB-INF/msg.jsp");
+		}
 	}
 
 }

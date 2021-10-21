@@ -651,6 +651,76 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 	}
 
 	
+	// 제품 번호에 해당하는 제품의 리뷰 글 select 하기
+	@Override
+	public List<ProductReviewVO> reviewList(String fk_pnum) throws SQLException {
+		
+		List<ProductReviewVO> reviewList = new ArrayList<>();	
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select rownum, fk_userid, title, content, to_char(registerdate, 'yyyy-mm-dd') AS registerdate " + 
+						 " from tbl_review R " +
+						 " where R.fk_pnum = ? " + 
+						 " order by rownum desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fk_pnum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductReviewVO reviewvo = new ProductReviewVO();
+				reviewvo.setReview_seq(rs.getInt(1));
+				reviewvo.setFk_userid(rs.getString(2));
+				reviewvo.setTitle(rs.getString(3));
+				reviewvo.setContent(rs.getString(4));
+				reviewvo.setRegisterdate(rs.getString(5));
+			
+				reviewList.add(reviewvo);
+			}
+			
+		} finally {
+			close();
+		}
+
+		return reviewList;
+		
+	}// end of public List<ProductReviewVO> reviewList(String fk_pnum)
+
+	
+	// DB에서 특정 제품(fk_pnum)에 대한 리뷰의 총 개수 알아오기(select)
+	@Override
+	public int getTotalCountReviews(String fk_pnum) throws SQLException {
+
+		int totalCountReviews = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) AS CNT " + 
+						 " from tbl_review " + 
+						 " where fk_pnum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fk_pnum);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalCountReviews = rs.getInt("CNT");
+			
+		} finally {
+			close();
+		}
+		
+		return totalCountReviews;
+		
+	}// end of public int getTotalCountReviews(String fk_pnum)
+
+	
 
 	
 }

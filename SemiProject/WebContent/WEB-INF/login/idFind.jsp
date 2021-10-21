@@ -13,7 +13,6 @@
 <!-- Font Awesome 5 Icons -->
 <script src="https://kit.fontawesome.com/69a29bca1e.js" crossorigin="anonymous"></script>
 
-
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
 
@@ -27,7 +26,7 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		
+	  		
 		$("span.error").hide();
 		
 		var method = "${requestScope.method}";
@@ -77,7 +76,7 @@
 			else{
 				// 이메일이 정규표현식에 맞는 경우
 				$("span#error").hide();
-				
+							
 				var frm = document.idFindFrm;
 				frm.action = "<%= ctxPath%>/login/idFind.one";
 				frm.method = "post";
@@ -90,30 +89,28 @@
 
 </script>
 
-
-
-
-<form name="idFindFrm" style="font-size:13px">
-		   
-		   <ul style="list-style-type: none; margin-top: 70px" >
+   	
+		<form name="idFindFrm" style="font-size:14px">
+		    
+		   <ul style="list-style-type: none; margin: 170px 0 0 18px" >
 		         <li class="my-3">
 		            <label for="userid" style="display: none">성명</label>
-		            <input type="text" name="name" id="name" size="50" class="ml-4" style="height: 35px" placeholder="성명" autocomplete="off" required />
+		            <input type="text" name="name" id="name" size="50" class="ml-4" style="height: 45px" placeholder="성명" autocomplete="off" required />
 		         </li>
 		         <li class="my-4">
 		            <label for="userid" style="display: none">이메일</label>
-		            <input type="text" name="email" id="email" size="50" class="ml-4" style="height: 35px" placeholder="이메일" autocomplete="off" required /><br>
+		            <input type="text" name="email" id="email" size="50" class="ml-4" style="height: 45px" placeholder="이메일" autocomplete="off" required /><br>
 		        	<span class="error mt-2 ml-3" style="color:#cc0014">이메일 형식에 맞지 않습니다.</span>
 		         </li>
 		   </ul>
 		   
 		   <div class="my-4">
 		    <p class="text-center">
-		       <button type="button" class="btn" id="btnFind" style="margin-left:33px; background-color:#00579c; color:white; border-radius: 50px; font-size:13px; width: 354px; height:50px"><b>아이디 찾기</b></button>
+		       <button type="button" class="btn" id="btnFind" style=" background-color:#00579c; color:white; border-radius: 50px; font-size:13px; width: 390px; height:50px"><b>아이디 찾기</b></button>
 		    </p>
 		   </div>
 		
-		   
+				   
 		   <div class="my-3" id="div_findResult">
 		      <p class="text-center">
 		           	가입하신 아이디는&emsp;<span style="font-size: 16pt; font-weight: bold;">${requestScope.userid}</span>

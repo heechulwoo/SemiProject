@@ -126,14 +126,6 @@
 			});
 		}
 	
-		/* 검색  */
-		
-		// 검색어에서 엔터를 하면 검색하러 가도록 한다.
-		$("input#searchWord").bind("keyup", function(event){
-			if(event.keyCode == 13){ 
-				goSearch();
-			}
-		});
 		
 	}); // end of $(document).ready(function(){}----------------------
 
@@ -150,12 +142,13 @@
 
 	function goSearch(){	
 	
-	/* 	console.log($("input#searchWord").val());
+		// console.log($("input#searchWord").val());
 		
 		if( $("input#searchWord").val() == ""){ // 검색어가 없다면
+			alert("💡 검색어를 입력해주세요")
 			return false;// 검색이 취소된다.
 		}
-		 */
+		 
 		var frm = document.searchFrm;
 		frm.action = "<%= ctxPath%>/product/admin/searchResult.one";
 		frm.method = "GET";
@@ -206,6 +199,7 @@
 				    <a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/mypage.one">내정보수정</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/memberOderList.one">주문조회</a>
+					<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/myrequest.one">나의 문의신청</a>	
 			  </div>
 		  </div>	  
 	  </c:if>
@@ -223,6 +217,7 @@
 		    <a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/member/memberList.one">회원 목록</a>
 			<div class="dropdown-divider"></div>
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/product/admin/productRegister.one">제품 등록</a>
+			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/storeRegister.one">매장 등록</a>
 			<div class="dropdown-divider"></div>
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/contact/consultList.one">문의글 조회</a>
 			<a class="dropdown-item sidedropdownitem" href="<%= ctxPath %>/service/assembleList.one">조립 서비스 신청 조회</a>

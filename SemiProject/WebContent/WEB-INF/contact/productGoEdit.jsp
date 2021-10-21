@@ -184,6 +184,7 @@
 				      <td width="75%" align="left" class="detailcontent" style="padding-top: 10px;" >
 				         ${requestScope.ovo.odrseqnum}
 				         <input type="hidden" name="odrseqnum" value="${requestScope.ovo.odrseqnum}" />
+				         <input type="hidden" name="email" value="${requestScope.map.email}" />
 				      </td>   
 				   </tr>
 				   <tr>
@@ -206,7 +207,7 @@
 				      <td width="25%" class="oDetail" style="padding-top: 10px;">상품명</td>
 				      <td width="75%" align="left" class="detailcontent" style="padding-top: 10px;" >
 				         ${requestScope.ovo.pvosm.pname}
-				         <input type="hidden" name="fk_pnum" value="${requestScope.ovo.pvosm.pname}" />
+				         <input type="hidden" name="pname" value="${requestScope.ovo.pvosm.pname}" />
 				      </td>   
 				   </tr>
 				   
@@ -232,10 +233,10 @@
 	        			
 	        			<c:choose>
         					<c:when test="${requestScope.ovo.deliverstatus eq '1'}">
-        						<span style="font-weight: bold;">주문접수일&nbsp;:&nbsp;&nbsp;${requestScope.ovo.deliverdate}&nbsp;&nbsp;/&nbsp;&nbsp;아직 배송 전 상태입니다.</span>
+        						<span style="font-weight: bold;"><%-- 주문접수일&nbsp;:&nbsp;&nbsp;${requestScope.ovo.deliverdate}&nbsp;&nbsp;/&nbsp;&nbsp; --%>주문접수만 완료된 상태로, 아직 배송 전 상태입니다.</span>
         					</c:when>
         					<c:when test="${requestScope.ovo.deliverstatus eq '2'}">
-        						<span style="font-weight: bold;">배송중&nbsp;:&nbsp;&nbsp;도착 예정일은&nbsp;${requestScope.ovo.deliverdate}&nbsp;&nbsp;입니다.</span>
+        						<span style="font-weight: bold;">배송중<%-- &nbsp;:&nbsp;&nbsp;도착 예정일은&nbsp;${requestScope.ovo.deliverdate}&nbsp;&nbsp;입니다. --%></span>
         					</c:when>
         					<c:otherwise>
         						<span style="font-weight: bold;">배송완료일&nbsp;:&nbsp;&nbsp;${requestScope.ovo.deliverdate}&nbsp;&nbsp;에 배송이 완료된 상태입니다.</span>

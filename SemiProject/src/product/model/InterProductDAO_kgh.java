@@ -54,5 +54,11 @@ public interface InterProductDAO_kgh {
 	// 주문번호 가져오는 메서드
 	String getodrCode() throws SQLException;
 
+	// 제품 번호에 해당하는 제품의 리뷰 글 select 하기
+	List<ProductReviewVO> reviewList(String fk_pnum) throws SQLException;
+
+	// DB에서 특정 제품(fk_pnum)에 대한 리뷰의 총 개수 알아오기(select)
+	int getTotalCountReviews(String fk_pnum) throws SQLException;
+
 
 }

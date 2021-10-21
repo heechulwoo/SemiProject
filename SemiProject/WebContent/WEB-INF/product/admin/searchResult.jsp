@@ -185,7 +185,7 @@
 	function displayProd(start) {
 		      
 		$.ajax({
-			url:"/SemiProject/product/SearchResultJSON.one",
+			url:"/SemiProject/product/searchResultJSON.one",
 			data:{"range":range
 				 ,"start":start     
 				 ,"len":lenHIT
@@ -221,12 +221,16 @@
 							"<a href='<%= ctxPath%>/product/eachProduct.one?pnum="+item.pnum+"'>" +
 						        "<img src='<%= ctxPath%>/image_ikea/"+item.prodimage+"' style='width:100%'>" +
 						        "<span>"+item.pname+"<br><span class='w3-opacity' style='font-size:12px'>"+item.cname+"</span><br><b>￦"+(item.price).toLocaleString('en')+"</b></span>" +
-					        "</a>" +
-					        "<div class='hide' style='visibility:hidden;'>" +
-				                "<button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
-				                '<span class="pnum" style="display:none;">'+item.pnum+'</span>'+
-				            "</div>" +
-						"</div>";	
+					        "</a>";
+						  if(Number(item.pqty) > 0){
+					        	html += "<div class='hide' style='visibility:hidden;'>" +
+				                 	   		"<button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
+							        		'<span class="pnum" style="display:none;">'+item.pnum+'</span>' +
+							            "</div>";	
+					        } else {
+				                html += "<br><button class='btn btn-danger btn-sm disabled'>품절</button>";
+					        }    
+					        html += "</div>";	
 						
 					});// end of $.each(json, function(index,item){--------------------
 			
@@ -324,7 +328,7 @@
 	
 	
 	<!-- 검색 제품 결과수  -->
-	<div class="text-center" id="result">
+	<div class="text-center" id="result" style="margin-top: 10%;">
 				<!-- <span id="end" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: red;"></span>  -->
 				<span id="countProd">0</span>&nbsp;/&nbsp;
 				<span id="totalProdCount">${requestScope.totalProdCount}</span><span>개의 결과표시</span>
