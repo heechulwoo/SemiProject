@@ -137,10 +137,9 @@ var goBackURL = "";
 				<tr>
 					<th>주문번호</th>
 					<td class="info">${avo.fk_odrcode}
-						<a href="<%= ctxPath%>/product/shipping.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
+						<a href="<%= ctxPath%>/contact/productOrderOneDetail.one?fk_userid=${avo.fk_userid}&odrcode=${avo.fk_odrcode}&goBackURL=${requestScope.goBackURL}"; class="mybtn">주문 내역 확인하기 </a>
 						</td>
 				</tr>
-				
 				<tr>
 					<th>조립서비스 희망일</th>
 					<td class="info">${avo.hopedate}</td>
@@ -195,8 +194,8 @@ var goBackURL = "";
 		
 		<div class="updateprogress">
 			<div class="check" style="margin-bottom: 1%;">
-				<input type="checkbox" name="progress" value="finish" id="finish" onclick='checkOnlyOne(this)'><label class="mylabel" for="finish" style="color:#0058AB; font-size: 0.9rem;">상담 및 예약 완료</label>&nbsp;&nbsp;
-				<input type="checkbox" name="progress" value="cancel" id="cancel" onclick='checkOnlyOne(this)'><label class="mylabel" for="cancel" style="color:#fc4958; font-size: 0.9rem;">서비스 신청 취소</label>
+				<input type="checkbox" name="progress" value="finish" id="finish" onclick='checkOnlyOne(this)'><label class="mylabel" for="finish" style="color:#0058AB; font-size: 0.9rem;"><b>상담 및 예약 완료</b></label>&nbsp;&nbsp;
+				<input type="checkbox" name="progress" value="cancel" id="cancel" onclick='checkOnlyOne(this)'><label class="mylabel" for="cancel" style="color:#fc4958; font-size: 0.9rem;"><b>서비스 신청 취소</b></label>
 			</div>
 			<button type="button" class="mybtn"
 					style="margin: auto;" onClick="goupdate();">상태 변경하기</button>	

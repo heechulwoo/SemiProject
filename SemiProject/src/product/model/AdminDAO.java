@@ -1,5 +1,7 @@
 package product.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,12 +17,22 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import contact.model.AnswerVO;
+import contact.model.ConsultWriteVO_sm;
+import contact.model.SelfReturnVO;
+import service.model.AssembleVO;
+import service.model.StoreVO;
+import util.security.AES256;
+import util.security.SecretMyKey;
+
 public class AdminDAO implements InterAdminDAO {
 	
 	private DataSource ds; // DataSource ds 는 아파치톰캣이 제공하는 DBCP(DB Connection Pool) 이다.
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
+	
+	private AES256 aes;
 	
 	// 기본생성자
 	public AdminDAO() {
@@ -31,9 +43,12 @@ public class AdminDAO implements InterAdminDAO {
 		    Context envContext  = (Context)initContext.lookup("java:/comp/env");
 		    ds = (DataSource)envContext.lookup("jdbc/semioracle");
 		    
+		    aes = new AES256(SecretMyKey.KEY); // 기본 생성자가 없고, 파라미터 생성자만 있다. 
 		    
 		}catch(NamingException e) {
-			e.printStackTrace();	
+			e.printStackTrace();
+		}catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -301,11 +316,324 @@ public class AdminDAO implements InterAdminDAO {
 	}// end of public List<ProductVO> selectSearchProduct(Map<String, String> paraMap)----
 
 	
-	
-	
-	
-	 
-	
-	   
+	// 내 문의내역 목록 가져오기(마이페이지)
+	@Override
+	public List<HashMap<String, String>> selectmyask(Map<String, String> paraMap) throws SQLException {
+		
+		List<HashMap<String, String>> askList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select asktitle, askcontent, askdate, answertitle, answercontent, answerdate "
+						+ "	from "
+						+ " ( "
+							+ " select rownum as rno, asktitle, askcontent, askdate, answertitle, answercontent, answerdate "
+							+ " from "
+							+ " ( "
+							+ " select asktitle, askcontent, to_char(askdate, 'yyyy-mm-dd') as askdate, nvl(answertitle,0) as answertitle, nvl(answercontent,0) as answercontent, to_char(nvl(answerdate,sysdate), 'yyyy-mm-dd') as answerdate " 
+							+ " from tbl_ask Q LEFT JOIN tbl_answer A ON Q.askno = A.fk_askno " 
+							+ " where Q.fk_userid = ? "
+							+ " order by askdate desc "
+							+ " ) V"
+						+ " ) T "
+						+ " where rno between ? and ? " ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPage1 = Integer.parseInt(paraMap.get("currentShowPage1")); 
+			int sizePerPage1 = Integer.parseInt(paraMap.get("sizePerPage1")); 
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2,  (currentShowPage1 * sizePerPage1) - (sizePerPage1 - 1)); 
+			pstmt.setInt(3, (currentShowPage1 * sizePerPage1));
+			
+			rs = pstmt.executeQuery();
 
+			while(rs.next()) {
+				
+			HashMap<String, String> askmap = new HashMap<String, String>();
+			
+			askmap.put("asktitle", rs.getString(1));
+			askmap.put("askcontent", rs.getString(2));
+			askmap.put("askdate", rs.getString(3));
+			askmap.put("answertitle", rs.getString(4));
+			askmap.put("answercontent", rs.getString(5));
+			askmap.put("answerdate", rs.getString(6));
+ 				
+			askList.add(askmap);
+
+			}
+			
+			
+		} finally {
+			close();
+		}
+
+		return askList;
+	}
+
+	
+	// 셀프환불신청 목록 가져오기
+	@Override
+	public List<SelfReturnVO> myReturnList(Map<String, String> paraMap)throws SQLException {
+	
+		List<SelfReturnVO> selfReturnList = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+				
+				String sql = " select fk_odrcode, wherebuy, returndate, status "
+						+ "	from "
+						+ " ( "
+							+ " select rownum as rno, fk_odrcode, wherebuy, returndate, status "
+							+ " from "
+							+ " ( "
+							+ " select fk_odrcode, wherebuy, to_char(returndate, 'yyyy-mm-dd') AS returndate, status " 
+							+ " from tbl_return " 
+							+ " where fk_userid = ? "
+							+ " order by returndate desc "
+							+ " ) V"
+						+ " ) T "
+						+ " where rno between ? and ? " ;
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPage2 = Integer.parseInt(paraMap.get("currentShowPage2")); 
+			int sizePerPage2 = Integer.parseInt(paraMap.get("sizePerPage2")); 
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setInt(2,  (currentShowPage2 * sizePerPage2) - (sizePerPage2 - 1)); 
+			pstmt.setInt(3, (currentShowPage2 * sizePerPage2));
+
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					// 존재한다면
+					
+					SelfReturnVO rvo = new SelfReturnVO();
+					
+					rvo.setFk_odrcode(rs.getString(1));
+					rvo.setWherebuy(rs.getString(2));
+					rvo.setReturndate(rs.getString(3));
+				    rvo.setStatus(rs.getInt(4));
+					
+					selfReturnList.add(rvo); // cvo 값을 List에 담아서 보내주기
+					
+					
+				}// end of while------------------------------------------------	
+			
+		} finally {
+			close();
+		}
+		
+		
+		return selfReturnList;
+
+	}
+
+	
+	// 나의 조립신청 목록 가져오기
+	@Override
+	public List<AssembleVO> myAssembleList(Map<String, String> paraMap)throws SQLException {
+		
+		List<AssembleVO> assembleList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select assembledate, fk_odrcode, Mobile, hopedate, hopehour, postcode, address, detailaddress, extraaddress, progress "
+					+ "	from "
+					+ " ( "
+						+ " select rownum as rno, assembledate, fk_odrcode, Mobile, hopedate, hopehour, postcode, address, detailaddress, extraaddress, progress "
+						+ " from "
+						+ " ( "
+						+ " select assembledate, fk_odrcode, Mobile, to_char(hopedate, 'yyyy-mm-dd') as hopedate, hopehour, postcode, address, detailaddress, extraaddress, progress " 
+						+ " from tbl_assemble " 
+						+ " where fk_userid = ? "
+						+ " order by assembledate desc "
+						+ " ) V"
+					+ " ) T "
+					+ " where rno between ? and ? " ;
+		
+		pstmt = conn.prepareStatement(sql);
+		
+		int currentShowPage3 = Integer.parseInt(paraMap.get("currentShowPage3")); 
+		int sizePerPage3 = Integer.parseInt(paraMap.get("sizePerPage3")); 
+		
+		pstmt.setString(1, paraMap.get("userid"));
+		pstmt.setInt(2,  (currentShowPage3 * sizePerPage3) - (sizePerPage3 - 1)); 
+		pstmt.setInt(3, (currentShowPage3 * sizePerPage3));
+			
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			
+				AssembleVO avo = new AssembleVO();
+				
+				avo.setAssembledate(rs.getString(1));
+				avo.setFk_odrcode(rs.getString(2));
+				avo.setMobile(aes.decrypt(rs.getString(3)) ); // 복호화
+				avo.setHopedate(rs.getString(4));
+				avo.setHopehour(rs.getString(5));
+				avo.setPostcode(rs.getString(6));
+				avo.setAddress(rs.getString(7));
+				avo.setDetailaddress(rs.getString(8));
+				avo.setExtraaddress(rs.getString(9));
+				avo.setProgress(rs.getInt(10));
+
+				assembleList.add(avo);
+			}
+			
+		}catch(GeneralSecurityException | UnsupportedEncodingException e) { // | : 또는
+			e.printStackTrace();	
+		}finally {
+			close();
+		}
+	
+		return assembleList;
+	}
+
+	// 내 문의내역 총페이지 알아오기
+	@Override
+	public int getTotalPage1(String userid, String sizePerPage1)throws SQLException {
+		
+		int totalPage1 = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/?) "+
+						 " from tbl_ask " +
+						 " where fk_userid = ? ";
+
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, sizePerPage1);
+			pstmt.setString(2, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage1 = rs.getInt(1);
+				
+		} finally {
+			close();
+		}
+		
+		return totalPage1;
+	}
+
+	
+	// 내 환불신청 총페이지 알아오기
+	@Override
+	public int getTotalPage2(String userid, String sizePerPage2)throws SQLException {
+		
+		int totalPage2  = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/?) "+
+						 " from tbl_return " +
+						 " where fk_userid = ? ";
+
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, sizePerPage2);
+			pstmt.setString(2, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage2 = rs.getInt(1);
+				
+		} finally {
+			close();
+		}
+		
+
+		return totalPage2;
+	}
+
+	
+	// 내 조립신청 총페이지 알아오기
+	@Override
+	public int getTotalPage3(String userid, String sizePerPage3)throws SQLException {
+		
+		int totalPage3 = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/?) "+
+						 " from tbl_assemble " +
+						 " where fk_userid = ? ";
+
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, sizePerPage3);
+			pstmt.setString(2, userid);
+
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage3 = rs.getInt(1);
+				
+		} finally {
+			close();
+		}
+
+		
+		return totalPage3;
+	}
+	
+	
+	// 매장테이블에 새로운 매장 정보 insert해주기
+	
+	@Override
+	public int storeInsert(StoreVO svo)throws SQLException {
+		
+		int result = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " insert into tbl_shoppingmap(storeid, storename, postcode, address, detailaddress, "
+	         											+ "extraaddress, storeimg, openinghour, restaurant) " +  
+	                    " values(seq_store.nextval,?,?,?,?,?,?,?,?)";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, svo.getStorename());    
+	         pstmt.setString(2, svo.getPostcode());    
+	         pstmt.setString(3, svo.getAddress());
+	         pstmt.setString(4, svo.getDetailaddress());
+	         pstmt.setString(5, svo.getExtraaddress());
+	         pstmt.setString(6, svo.getStoreimg());
+	         pstmt.setString(7, svo.getOpeninghour());
+	         pstmt.setString(8, svo.getRestaurant());
+	 
+	            
+	         result = pstmt.executeUpdate();
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;  
+		
+		
+		
+	}	
+	
 }
