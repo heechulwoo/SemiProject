@@ -15,6 +15,9 @@ public class MypageOderAction extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		/* 지워야함지워야함 */
+		
+		/*
 		String message = "";
         String loc = "";
 		
@@ -52,7 +55,7 @@ public class MypageOderAction extends AbstractController {
          super.setViewPage("/WEB-INF/msg.jsp");
   	   }
 		//setRedirect(false);
-		
+	*/ 	
 	}
 
 }

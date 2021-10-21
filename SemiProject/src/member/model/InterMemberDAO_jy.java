@@ -38,10 +38,20 @@ public interface InterMemberDAO_jy {
 	int idleUdate(Map<String, String> paraMap) throws SQLException ;
 	
 	// 로그인된 회원의 주문목록을 띄워주는 메소드
-	List<ProductOrderVO_kgh> selectMyPageOderList(String userid) throws SQLException ;
+////	List<ProductOrderVO_kgh> selectMyPageOderList(String userid) throws SQLException ;
 	
 	// 클릭한 주문번호를 가지고 주문상세정보를 띄워주는 메소드
 	List<ProductOrderDetailVO_kgh> selectBySpecName(String odrcode) throws SQLException;
+	
+	// // 로그인된 회원의 주문목록을 띄워주는 메소드(페이징바 처리) 실패!
+//	List<ProductOrderVO_kgh> selectMyPageOderListPage(Map<String, String> paraMap) throws SQLException;
+	
+	// 로그인된 회원의 주문목록을 띄워주는 메소드(페이징바 처리)
+	List<ProductOrderVO_kgh> selectMyPageOderList(Map<String, String> paraMap) throws SQLException ;
+	
+	
+	// 로그인된 회원의 주문목록의 총 개수를 띄워주는 메소드(페이징바 처리)
+	int getTotalOderPage(Map<String, String> paraMap) throws SQLException;
 	
 	
 	

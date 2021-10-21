@@ -15,6 +15,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import product.model.ProductImageVO_kgh;
 import util.security.AES256;
 import util.security.SecretMyKey;
 
@@ -324,7 +325,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 	
 	
 	
-	// 배송상태 변경해주기(deliverstatus == 1 또는 3 인 경우)
+	// 배송상태 변경해주기(deliverstatus == 1 또는 2 인 경우)
 	@Override
 	public int updateDeliverStatus1(Map<String, String> paraMap) throws SQLException {
 
@@ -357,7 +358,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 	
 	
 	
-	// 배송상태 변경해주기(deliverstatus == 2 인 경우)
+	// 배송상태 변경해주기(deliverstatus == 3 인 경우)
 	@Override
 	public int updateDeliverStatus2(Map<String, String> paraMap) throws SQLException {
 		
@@ -368,7 +369,7 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 			
 			conn = ds.getConnection();
 			
-			String sql = " update tbl_order_detail set deliverstatus = ? , deliverdate = to_char(sysdate + 7 , 'yyyy-mm-dd') "
+			String sql = " update tbl_order_detail set deliverstatus = ? , deliverdate = to_char(sysdate , 'yyyy-mm-dd') "
 	                   + " where odrseqnum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -387,6 +388,110 @@ public class ProductOrderDAO_sm implements InterProductOrderDAO_sm {
 		return n;
 		
 	}// end of public int updateDeliverStatus2(Map<String, String> paraMap)-----------------------------
+	
+	
+	
+	// 배송지 상세 정보를 리스트로 보여주는 메소드(tbl_address 테이블에 select)
+	@Override
+	public ProductAddressVO_sm viewOrderAddress(String odrcode) throws SQLException {
+		
+		
+		
+		ProductAddressVO_sm addressOneDetail = null;
+		
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			
+			String sql = " select addrno, fk_odrcode, name, mobile, postcode, address, detailaddress, extraaddress "+
+					 	 " from tbl_address "+
+					 	 " where fk_odrcode = ? ";
+		
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, odrcode); // paraMap key값 주의 !
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        
+	        if(rs.next()) {
+				// 존재한다면
+				
+	        	addressOneDetail = new ProductAddressVO_sm();
+				
+	        	addressOneDetail.setAddrno(rs.getInt(1));					// 배송지번호
+	        	addressOneDetail.setFk_odrcode(rs.getString(2)); 			// 주문번호
+	        	addressOneDetail.setName(rs.getString(3));					// 성명
+	        	addressOneDetail.setMobile( aes.decrypt(rs.getString(4)) );	// 연락처(복호화 필수)
+	        	addressOneDetail.setPostcode(rs.getString(5));				// 우편번호
+	        	addressOneDetail.setAddress(rs.getString(6));				// 주소
+	        	addressOneDetail.setDetailaddress(rs.getString(7));  		// 상세주소
+	        	addressOneDetail.setExtraaddress(rs.getString(8));			// 주소참고항목
+	        	
+				
+			}// end of if------------------------------------------------	
+		
+	        
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) {	
+			e.printStackTrace();	
+		} finally {
+			close();
+		}
+		
+		return addressOneDetail;
+		
+		
+	}// end of public List<ProductAddressVO_sm> viewOrderAddress(String odrcode)------------------------
+	
+	
+	
+	// 매장 정보를 불러오는 메소드
+	@Override
+	public List<ShoppingmapVO_sm> selectStoresInfo() throws SQLException {
+		
+		List<ShoppingmapVO_sm> storeList = new ArrayList<>();
+		
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select storeid, storename, postcode, address, detailaddress, extraaddress, openinghour, restaurant, storeimg "+
+					 	 " from tbl_shoppingmap ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				ShoppingmapVO_sm svo = new ShoppingmapVO_sm();
+				
+				svo.setStoreid(rs.getInt(1));
+				svo.setStorename(rs.getString(2));
+				svo.setPostcode(rs.getString(3));
+				svo.setAddress(rs.getString(4));
+				svo.setDetailaddress(rs.getString(5));
+				svo.setExtraaddress(rs.getString(6));
+				svo.setOpeninghour(rs.getString(7));
+				svo.setRestaurant(rs.getString(8));
+				svo.setStoreimg(rs.getString(9));
+				
+				storeList.add(svo);
+			}
+			
+			
+		} finally {
+			close();
+		}
+		
+		
+		return storeList;
+		
+	}// end of public List<ShoppingmapVO_sm> selectStoresInfo()-----------------------------------------
 	
 	
 	

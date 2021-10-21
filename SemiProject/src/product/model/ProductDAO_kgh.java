@@ -66,7 +66,7 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 						 " JOIN tbl_imagefile F " + 
 						 " ON P.pnum = F.fk_pnum " + 
 						 " where p.pnum = ? " + 
-						 " order by imgfilename ";
+						 " order by imgfileno ";
 			
 			pstmt = conn.prepareCall(sql);
 			pstmt.setString(1, pnum);
@@ -182,14 +182,14 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			conn = ds.getConnection();
 			
 			String sql = " select cnum, cname, pnum, pname, prodimage, price, odrcode, " + 
-						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate " + 
+						 "        oqty, odrprice, odrtotalprice, to_char(odrdate, 'yyyy.mm.dd') AS odrdate, deliverstatus " + 
 						 " from " + 
 						 " ( " + 
 						 "     select cnum , cname, pnum, pname, prodimage, price, fk_odrcode AS odrcode, " + 
-						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate " + 
+						 "            oqty, odrprice, fk_userid, odrtotalprice, odrdate, deliverstatus " + 
 						 "     from " + 
 						 "     ( " + 
-						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice " + 
+						 "         select cnum , cname, pnum, pname, prodimage, price, fk_odrcode, oqty, odrprice, deliverstatus " + 
 						 "         from " + 
 						 "         ( " + 
 						 "             select cnum , cname, pnum, pname, prodimage, price " + 
@@ -236,6 +236,8 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 					
 				podvo.setOqty(rs.getInt("oqty"));				// 주문상세
 				podvo.setOdrprice(rs.getInt("odrprice"));
+				podvo.setDeliverstatus(rs.getInt("deliverstatus"));
+				
 				
 				orderList.add(podvo);
 				
@@ -399,26 +401,166 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 	}
 
 	
-	// 해당 주문번호를 통해 배송지 insert하기
+	// ===== Transaction 처리하기 ===== // 
+    // 1. 주문 테이블에 입력한 주문전표로 주문 정보 insert하기 
+    // 2. 주문상세 테이블에 채번해온 주문전표, 제품번호, 주문량, 주문금액을 insert 하기(수동커밋처리)
+    // 3. 제품 테이블에서 제품번호에 해당하는 잔고량을 주문량 만큼 감하기(수동커밋처리) 
+    
+	// 4. 장바구니 테이블에서 cartnojoin 값에 해당하는 행들을 삭제(delete OR update)하기(수동커밋처리) 
+    // >> 장바구니에서 주문을 한 것이 아니라 특정제품을 바로주문하기를 한 경우에는 장바구니 테이블에서 행들을 삭제할 작업은 없다. << 
+	
+    // 5. 배송지 테이블에서  사용자의 주소 정보 더하기(insert)(수동커밋처리) 
+    // 6. **** 모든처리가 성공되었을시 commit 하기(commit) **** 
+    // 7. **** SQL 장애 발생시 rollback 하기(rollback) ****
 	@Override
-	public void insertAddress(Map<String, String> paraMap) throws SQLException {
+	public int orderAdd(HashMap<String, Object> paraMap) throws SQLException {
+		int isSuccess = 0;
+		int n1 = 0, n2 = 0, n3 = 0, n4 = 0, n5 = 0;
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " insert into tbl_address(addrno, fk_odrcode, name, mobile, postcode, address, detailaddress, extraaddress) " + 
-						 " values(seq_address.nextval, ?, ?, ?, ?, ?, ?, ?) ";
+			conn.setAutoCommit(false);	// 수동 커밋
+			
+			// 1. 주문 테이블에 입력한 주문전표로 주문 정보 insert하기 
+			String sql = " insert into tbl_order(odrcode, fk_userid, odrtotalprice) " + 
+						 " values(?, ?, ?) ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, paraMap.get("odrCode"));
-			pstmt.setString(2, paraMap.get("odrName"));
-			pstmt.setString(3, aes.encrypt(paraMap.get("odrMobile")));
-			pstmt.setString(4, paraMap.get("odrPostcode"));
-			pstmt.setString(5, paraMap.get("odrAddress"));
-			pstmt.setString(6, paraMap.get("odrDetailAddress"));
-			pstmt.setString(7, paraMap.get("odrExtraAddress"));
+			pstmt.setString(1, (String)paraMap.get("odrcode"));
+			pstmt.setString(2, (String)paraMap.get("userid"));
+			pstmt.setInt(3, Integer.parseInt((String)paraMap.get("sumtotalprice")));
 			
-			pstmt.executeUpdate();
+			n1 = pstmt.executeUpdate();
+			System.out.println("~~~ 확인용 n1 : " + n1);
+			
+
+			// 2. 주문상세 테이블에 채번해온 주문전표, 제품번호, 주문량, 주문금액을 insert 하기(수동커밋처리)
+			if(n1 == 1) {
+				String[] pnumArr = (String[])paraMap.get("pnumArr");
+				String[] oqtyArr = (String[])paraMap.get("oqtyArr");
+				String[] totalPriceArr = (String[])paraMap.get("totalPriceArr");
+				
+				int cnt = 0;
+
+				for (int i = 0; i < pnumArr.length; i++) {
+					
+					sql = " insert into tbl_order_detail(odrseqnum, fk_odrcode, fk_pnum, oqty, odrprice)" + 
+						  " values(seq_order_detail.nextval, ?, ?, ?, ?) ";
+					
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, (String)paraMap.get("odrcode"));
+					pstmt.setString(2, pnumArr[i]);
+					pstmt.setString(3, oqtyArr[i]);
+					pstmt.setString(4, totalPriceArr[i]);
+					
+					pstmt.executeUpdate();
+					cnt++;
+				}// end of for
+				
+				if(cnt == pnumArr.length) {
+					n2 = 1;
+				}
+
+				System.out.println("~~~ 확인용 n2 : " + n2);
+			
+			}// end of if
+			
+			// 3. 제품 테이블에서 제품번호에 해당하는 잔고량을 주문량 만큼 감하기(수동커밋처리)
+			if(n2 == 1) {
+				String[] pnumArr = (String[]) paraMap.get("pnumArr");
+				String[] oqtyArr = (String[]) paraMap.get("oqtyArr");
+				
+				int cnt = 0;
+				for (int i = 0; i < pnumArr.length; i++) {
+					sql = " update tbl_product set pqty = pqty - ? "
+			            + " where pnum = ? ";
+					
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, Integer.parseInt(oqtyArr[i]));
+					pstmt.setString(2, pnumArr[i]);
+					
+					pstmt.executeUpdate();
+					
+					cnt++;
+				}// end of for
+				
+				if(cnt == pnumArr.length) {
+					n3 = 1;
+				}
+				
+				System.out.println("~~~ 확인용 n3 : " + n3);
+				
+			}// end of if
+			
+			// 4. 장바구니 테이블에서 odcartno 값에 해당하는 행들을 삭제(delete OR update)하기(수동커밋처리) 
+		    // >> 장바구니에서 주문을 한 것이 아니라 특정제품을 바로주문하기를 한 경우에는 장바구니 테이블에서 행들을 삭제할 작업은 없다. << 
+			if(paraMap.get("odcartno") != null && n3 == 1) {
+				
+				sql = " delete from tbl_cart " + 
+					  " where cartno in(" + (String)paraMap.get("odcartno") + ") ";
+				
+				//  !!! in 절은 위와 같이 직접 변수로 처리해야 함. !!! 
+		        //  in 절에 사용되는 것들은 컬럼의 타입을 웬만하면 number 로 사용하는 것이 좋다. 
+		        //  왜냐하면 varchar2 타입으로 되어지면 데이터 값에 앞뒤로 홑따옴표 ' 를 붙여주어야 하는데 이것을 만들수는 있지만 귀찮기 때문이다.
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				n4 = pstmt.executeUpdate();
+				
+				System.out.println("~~~ 확인용 n3 : " + n3);
+			
+			}// end of if
+			
+			if(paraMap.get("odcartno") == null && n3 == 1) {
+				// "제품 상세 정보" 페이지에서 "바로주문하기" 를 한 경우 
+				// 장바구니 번호인 cartnojoin 이 없는 것이다.
+				n4 = 1;
+				
+				System.out.println("~~~ 확인용 n4 : " + n4);
+			}
+			
+			// 5. 배송지 테이블에서  사용자의 주소 정보 더하기(insert)(수동커밋처리) 
+			if(n4 > 0) {
+				sql = " insert into tbl_address(addrno, fk_odrcode, name, mobile, postcode, address, detailaddress, extraaddress) " + 
+					  " values(seq_address.nextval, ?, ?,  ?, ?, ?, ?, ?) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, (String)paraMap.get("odrcode"));
+				pstmt.setString(2, (String)paraMap.get("name"));
+				pstmt.setString(3, aes.encrypt((String)paraMap.get("mobile")));
+				pstmt.setString(4, (String)paraMap.get("postcode"));
+				pstmt.setString(5, (String)paraMap.get("address"));
+				pstmt.setString(6, (String)paraMap.get("detailAddress"));
+				pstmt.setString(7, (String)paraMap.get("extraAddress"));
+			
+				n5 = pstmt.executeUpdate();
+				
+				System.out.println("~~~ 확인용 n5 : " + n5);
+			}// end of if
+			
+			// 6. **** 모든처리가 성공되었을시 commit 하기(commit) **** 
+			if(n1 * n2 * n3 * n4 * n5 > 0) {
+				conn.commit();
+				
+				conn.setAutoCommit(true);
+				// 자동 커밋으로 전환
+				
+				System.out.println("~~ 확인용 n1 * n2 * n3 * n4 * n5 : " + n1 * n2 * n3 * n4 * n5);
+			
+				isSuccess = 1;
+			}
+			
+		} catch (SQLException e) {
+			
+			// 7. **** SQL 장애 발생시 rollback 하기(rollback) ****
+			conn.rollback();
+			
+			conn.setAutoCommit(true);
+			// 자동 커밋으로 전환
+			
+			isSuccess = 0;
 			
 		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -426,80 +568,128 @@ public class ProductDAO_kgh implements InterProductDAO_kgh {
 			close();
 		}
 		
+		
+		return isSuccess;
 	}
 
 	
-	// 주문상세 테이블에 주문 상세내역 insert 하기
+	// 주문 일자 가져오기
 	@Override
-	public int insertOrderDetail(Map<String, String> odrparaMap) throws SQLException {
-		int n = 0;
+	public String selectOrderDate(String odrcode) throws SQLException {
+		
+		String orderDate = null;
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " insert into tbl_order_detail(Odrseqnum, fk_odrcode, fk_pnum, oqty, odrprice, deliverstatus) " + 
-						 " values(seq_order_detail.nextval, ?, ?, ?, ?, 1) ";
+			String sql = " select to_char(odrdate, 'yyyy-mm-dd') AS odrdate " + 
+						 " from tbl_order " + 
+						 " where odrcode = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, odrparaMap.get("odrCode"));
-			pstmt.setString(2, odrparaMap.get("odpnumIndex"));
-			pstmt.setString(3, odrparaMap.get("odoqtyIndex"));
-			pstmt.setString(4, odrparaMap.get("odcartnoIndex"));
+			pstmt.setString(1, odrcode);
 			
-			n = pstmt.executeUpdate();
+			rs = pstmt.executeQuery();
 			
+			if(rs.next()) {
+				orderDate = rs.getString(1);
+			}
 			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		return n;
-	}
-
-	
-	// 제품 테이블의 재고 수량 update 하기
-	@Override
-	public void updatePqty(String odpnumIndex, String odoqtyIndex) throws SQLException {
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " update tbl_product set pqty = pqty - ? " + 
-						 " where pnum = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, Integer.parseInt(odoqtyIndex));
-			pstmt.setString(2, odpnumIndex);
-			
-			pstmt.executeUpdate();
-			
-		} catch (Exception e) {
+		} finally {
 			close();
 		}
+		
+		return orderDate;
 	}
 
 	
-	// 장바구니에 해당 하는 상품 목록 delete 하기
+	// 주문정보 지우기
 	@Override
-	public void deleteCartno(String odcartnoIndex) throws SQLException {
-		
+	public void deleteOrder(String odrcode) throws SQLException {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " delete from tbl_cart " + 
-						 " where cartno = ? ";
+			String sql = " delete tbl_order " + 
+						 " where odrcode = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, odcartnoIndex);
+			pstmt.setString(1, odrcode);
 			
 			pstmt.executeUpdate();
 			
 		} finally {
 			close();
 		}
-		
 	}
 
+	
+	// 주문번호 생성하는 메서드
+	@Override
+	public String getodrCode() throws SQLException {
+		
+		String odrcode = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select to_char(sysdate, 'YYMMDD')||seq_order.nextval AS odrcode " + 
+						 " from dual ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			odrcode = rs.getString(1);
+			
+		} finally {
+			close();
+		}
+		
+		return odrcode;
+	}
+
+	
+	// 제품 번호에 해당하는 제품의 리뷰 글 select 하기
+	@Override
+	public List<ProductReviewVO> reviewList(String fk_pnum) throws SQLException {
+		
+		List<ProductReviewVO> reviewList = new ArrayList<>();	
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select rownum, fk_userid, title, content, to_char(registerdate, 'yyyy-mm-dd') AS registerdate " + 
+						 " from tbl_review R " +
+						 " where R.fk_pnum = ? " + 
+						 " order by rownum desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fk_pnum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductReviewVO reviewvo = new ProductReviewVO();
+				reviewvo.setReview_seq(rs.getInt(1));
+				reviewvo.setFk_userid(rs.getString(2));
+				reviewvo.setTitle(rs.getString(3));
+				reviewvo.setContent(rs.getString(4));
+				reviewvo.setRegisterdate(rs.getString(5));
+			
+				reviewList.add(reviewvo);
+			}
+			
+		} finally {
+			close();
+		}
+
+		return reviewList;
+		
+	}// end of public List<ProductReviewVO> reviewList(String fk_pnum)
+
+	
 
 	
 }

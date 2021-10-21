@@ -163,12 +163,16 @@
 									"<a href='<%= ctxPath%>/product/eachProduct.one?pnum="+item.pnum+"'>" +
 								        "<img src='<%= ctxPath%>/image_ikea/"+item.prodimage+"' style='width:100%'>" +
 								        "<span>"+item.pname+"<br><span class='w3-opacity' style='font-size:12px'>"+item.cname+"</span><br><b>￦"+(item.price).toLocaleString('en')+"</b></span>" +
-							        "</a>" +
-							        "<div class='hide' style='visibility:hidden;'>" +
-						                "<button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
-						                '<span class="pnum" style="display:none;">'+item.pnum+'</span>'+
-						            "</div>" +
-								"</div>";
+							        "</a>";
+							        if(Number(item.pqty) > 0){
+							        	html += "<div class='hide' style='visibility:hidden;'>" +
+						                 	   		"<button class='btn btn-outline-success btn-sm savecart'>Cart&ensp;<i class='fa fa-shopping-cart'></i></button>" +
+									        		'<span class="pnum" style="display:none;">'+item.pnum+'</span>' +
+									            "</div>";	
+							        } else {
+						                html += "<br><button class='btn btn-danger btn-sm disabled'>품절</button>";
+							        }    
+							        html += "</div>";
 					}); // end of $.each(json,function(index, item){})---------
 					
 					// 상품 결과를 출력하기

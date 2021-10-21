@@ -67,7 +67,7 @@ public class ProductOrderEditAction extends AbstractController {
 					try {
 						
 						
-						if("1".equals(deliverstatus) || "3".equals(deliverstatus)) {
+						if("1".equals(deliverstatus) || "2".equals(deliverstatus)) {
 							InterProductOrderDAO_sm rdao = new ProductOrderDAO_sm();
 							int n = rdao.updateDeliverStatus1(paraMap);
 							
@@ -86,8 +86,8 @@ public class ProductOrderEditAction extends AbstractController {
 							}
 						}
 						
-						else if("2".equals(deliverstatus)) {
-							// 배송중이라면 날짜 수정(도착예정일 : sysdate+7)
+						else if("3".equals(deliverstatus)) {
+							// 배송완료라면 날짜 수정(도착일 : sysdate)
 							
 							InterProductOrderDAO_sm rdao = new ProductOrderDAO_sm();
 							int n = rdao.updateDeliverStatus2(paraMap);
