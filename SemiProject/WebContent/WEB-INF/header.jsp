@@ -258,9 +258,9 @@
 		 
 	    <form name="searchFrm" onsubmit="return false;" class="mx-2 my-auto d-inline w-100">
 	        <div class="input-group">
-	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; " placeholder="검색어 입력" onkeyup="enterkey()">
+	            <input type="text" class="form-control border" name="searchWord" id="searchWord" style=" border-radius: 25px; height:50px; width:290px; background-color:#f5f5f5" placeholder="&emsp;검색어 입력" onkeyup="enterkey()">
 	            <span class="input-group-append">
-	                <button class="btn btn-outline-secondary border" style=" border-radius: 20px;" type="button" onClick="goSearch();">
+	                <button class="btn btn-outline-secondary border ml-1" style=" border-radius: 20px; color:black; width:47px" type="button" onClick="goSearch();">
 	                    <i class="fa fa-search"></i>
 	                </button>
 	            </span>
@@ -269,7 +269,7 @@
 	    
 		<ul class="navbar-nav w-25 list-group-horizontal mt-sm-0 mt-2 mx-auto nav_text">
 	    	<li class="nav-item text" style="margin-left:50px"><a class="nav-link text-body text-dark fa fa-truck fa-lg" href="<%= ctxPath%>/product/shipping.one"></a></li>
-	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" href="<%= ctxPath%>/member/mypage.one"></a></li>
+	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-user fa-lg" onclick="my_open()" style="cursor:pointer"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-heart fa-lg" href="<%= ctxPath%>/product/wishlistDetail.one"></a></li>
 	    	<li class="nav-item ml-2 text"><a class="nav-link text-body text-dark fa fa-shopping-bag fa-lg" href="<%= ctxPath%>/product/shoppingCart.one"></a></li>
 	   	</ul>	  
@@ -336,7 +336,7 @@
 			<div class="page__body-content" style="margin-top:100px; font-size:11pt">
 				   <ul class="list" style="list-style: none">
 				   	<li><a tabindex="0" href="<%= ctxPath %>/login/logout.one" class="link">로그아웃</a></li>
-				   	<li style="margin-top:20px"><a tabindex="0" href="<%= ctxPath%>/product/shipping.one" class="link">주문 조회</a></li>
+				   	<li style="margin-top:20px"><a tabindex="0" href="<%= ctxPath%>/member/memberOderList.one" class="link">주문 조회</a></li>
 				   	<li style="margin-top:20px"><a tabindex="0" href="<%= ctxPath%>/service/support.one" class="link">고객 지원</a></li>
 				   </ul>
 			   </div>

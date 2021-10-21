@@ -20,8 +20,9 @@ public class OrderConfirmationController extends AbstractController {
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
 		String userid = request.getParameter("userid");
+		String email = request.getParameter("shippingEmail");
 		
-		if("POST".equalsIgnoreCase(method) && loginuser != null) {
+		if("POST".equalsIgnoreCase(method) && loginuser != null && email.equals(loginuser.getEmail())) {
 			
 			String shippingNo = request.getParameter("shippingNo");
 			String shippingEmail = request.getParameter("shippingEmail");
@@ -36,18 +37,14 @@ public class OrderConfirmationController extends AbstractController {
 			super.setViewPage("/WEB-INF/product/orderConfirmation.jsp");
 			
 		}
-		else if (loginuser != null && userid.equals(loginuser.getUserid())) {
+		else if ("GET".equalsIgnoreCase(method) && loginuser != null && userid.equals(loginuser.getUserid())) {
 			String odrcode = request.getParameter("odrcode");
-			String email = loginuser.getEmail();
+			email = loginuser.getEmail();
 			
 			InterProductDAO_kgh pdao = new ProductDAO_kgh();
 			
 			List<ProductOrderDetailVO_kgh> orderList = pdao.selectOrderConfirmation(odrcode, email);
-	/*		
-			for(ProductOrderDetailVO_kgh odrDetailVO : orderList) {
-				System.out.println("확인용 odrDetailVO.getPovo().getOdrdate() : " + odrDetailVO.getPovo().getOdrdate());
-			}
-	 */		
+			
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("cnt", orderList.size());
 			

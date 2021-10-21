@@ -51,7 +51,12 @@
 			</c:forEach>
 			
 			<br><br><br>
-			<h4 class="mx-2" style="font-weight: bold;">${sessionScope.loginuser.name}&nbsp;님의 구매 내역</h4><br>
+			<c:if test="${not empty requestScope.orderList}">
+				<c:forEach begin="0" end="0" var="odrDetailVO" items="${requestScope.orderList}">
+					<h4 class="mx-2" style="font-weight: bold;">${odrDetailVO.mvo.name}&nbsp;님의 구매 내역</h4><br>
+				</c:forEach>
+			</c:if>
+			
 			<hr class="float-left" style="width: 400px;">
 			<br><br>
 			<div class="float-left mx-2">
