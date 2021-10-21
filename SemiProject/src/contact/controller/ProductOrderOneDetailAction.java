@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
 import contact.model.InterProductOrderDAO_sm;
+import contact.model.ProductAddressVO_sm;
 import contact.model.ProductOrderDAO_sm;
 import contact.model.ProductOrderDetailVO_sm;
 import member.model.MemberVO;
@@ -39,14 +40,16 @@ public class ProductOrderOneDetailAction extends AbstractController {
 				
 				// 주문 상세 정보 보여주는 메소드
 				InterProductOrderDAO_sm odao = new ProductOrderDAO_sm();
-				List<ProductOrderDetailVO_sm> orderDetailList = odao.viewDetailOrder(odrcode); // 댓글이 여러 개일 수도 있으므로 리스트로 받기
+				List<ProductOrderDetailVO_sm> orderDetailList = odao.viewDetailOrder(odrcode); // 여러 개 이므로 리스트로 받기
 				
-				
+				// 배송지 상세 정보 보여주는 메소드
+				ProductAddressVO_sm addressOneDetail = odao.viewOrderAddress(odrcode);		   
 					
 				if(orderDetailList != null) {
 					// 주문 상세 정보가 있을 경우
 					
 					request.setAttribute("orderDetailList", orderDetailList);
+					request.setAttribute("addressOneDetail", addressOneDetail);
 					request.setAttribute("odrcode", odrcode);
 					
 					// *** 현재 페이지를 돌아갈 페이지(goBackURL)로 주소 지정하기 *** // 

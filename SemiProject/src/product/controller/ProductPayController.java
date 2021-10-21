@@ -32,10 +32,10 @@ public class ProductPayController extends AbstractController {
 				
 				
 				request.setAttribute("totalPay", totalPay);
-				request.setAttribute("email", email);
-				request.setAttribute("name", name);
-				request.setAttribute("mobile", mobile);
-				request.setAttribute("userid", userid);
+				request.setAttribute("email", loginuser.getEmail());
+				request.setAttribute("name", loginuser.getName());
+				request.setAttribute("mobile", loginuser.getMobile());
+				request.setAttribute("userid", loginuser.getUserid());
 				
 //				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/product/paymentGateway.jsp");

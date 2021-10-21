@@ -60,7 +60,7 @@ $(document).ready(function() {
 		//	window.opener.goCoinUpdate('${requestScope.userid}','${requestScope.sumTotalPrice}');
 		//  $(opener.location).attr("href", "javascript:goCoinUpdate('${requestScope.userid}','${coinmoney}');");
 			
-			opener.location.goProductPaySuccess();
+			opener.location.href = "javascript:goProductPaySuccess();";
 		    self.close();	// 팝업창 닫기
 			
         } else {

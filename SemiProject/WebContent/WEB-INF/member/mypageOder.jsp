@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- jstl을 사용하기 위함  -->    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+
 
 <%
 	String ctxPath = request.getContextPath();
 %>
-
+<%-- 
 <jsp:include page="/WEB-INF/header.jsp"/>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/bootstrap-4.6.0-dist/css/bootstrap.min.css" > 
@@ -67,7 +70,7 @@
 				frmd.method = "GET";
 				frmd.submit(); */
 				
-			<%-- location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid --%>
+			location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid
 
 		});
 		
@@ -96,10 +99,10 @@
 
 </script>
 
-<div  style="height: 850px;">
-<div class="container" style="max-width:1300px; margin-top:80px">
+<div  style="height: 1850px;">
+<div class="container" style="max-width:1050px; margin-top:80px">
 <h2 style="margin: 2px; font-size: 26pt">주문목록</h2>
-	<img class="w1-image" width="1140" height="20" src="<%= ctxPath%>/images/yellow.PNG" style="margin-top:20px">	
+	<img class="w1-image" width=90% height="10" src="<%= ctxPath%>/images/yellow.PNG" style="margin-top:20px; ">	
 
 	<table id="orderTbl" class="table table-bordered" style="width: 90%; margin-top: 40px;">
         <thead>
@@ -115,23 +118,23 @@
     			<tr class="orderInfo" >
     				<td class="odrcode">${pvo.odrcode}</td>
     				<td>${pvo.odrdate}</td>
-    				<td>${pvo.odrtotalprice}원</td>
+    				<td><fmt:formatNumber value="${pvo.odrtotalprice}" pattern="###,###" />원</td>
     			</tr>
     		</c:forEach>    
 		</tbody>
 	</table>
-<%-- 
+
 	<nav>
 		<div style="display: flex; width:80;">
 			<ul class="pagination" style="margin: auto;">${requestScope.pageBar}</ul>
 		</div>
 	</nav>
-	 --%>
+
 </div>
 </div>
 
 
-<jsp:include page="/WEB-INF/footer.jsp"/> 
+<jsp:include page="/WEB-INF/footer.jsp"/>  --%>
 
 
 

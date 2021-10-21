@@ -17,7 +17,7 @@ public class PwdUpdateEndAction extends AbstractController {
 		
 		String method = request.getMethod();
 		// "GET" or "POST"
-		
+
 		if("POST".equalsIgnoreCase(method)) {
 			String pwd = request.getParameter("pwd");
 			
@@ -32,7 +32,6 @@ public class PwdUpdateEndAction extends AbstractController {
 		}
 		
 		request.setAttribute("userid", userid);
-		
 		request.setAttribute("method", method);
 		
 	//	super.setRedirect(false);

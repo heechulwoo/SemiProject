@@ -38,6 +38,9 @@
            font-size: 13pt;
    }
    
+   div#container {
+   font-family: Arial
+   }
    
    
 </style>
@@ -426,9 +429,9 @@
 
 
   <!-- 상단 컨텐츠 시작 -->
-  <div class="container" style="max-width:850px; margin-top:40px; height:1500px">
+  <div class="container" style="max-width:850px; margin-top:40px; height:1500px; font-family:'Verdana'">
 	<div class="row custom-topcontents">
-		<h2>&nbsp;<b>회원 가입</b></h2>
+		<h1>&nbsp;<b>회원 가입</b></h1>
 			<img class="w3-image" width="1000" height="300" src="<%= ctxPath%>/images/제목 없음.png" style="margin-top:40px">	
 		</div>
 	

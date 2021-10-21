@@ -68,7 +68,7 @@ public class MemberDAO_sj implements InterMemberDAO_sj {
 					   + "                     , postcode = ? "
 					   + "                     , address = ? "
 					   + "                     , detailaddress = ? "
-					   + "                     , extraaddress = ? "
+					   + "                     , extraaddress = ? " 
 					   + "                     , lastpwdchangedate = sysdate "
 					   + " where userid = ? ";
 			
@@ -172,7 +172,7 @@ public class MemberDAO_sj implements InterMemberDAO_sj {
 			conn = ds.getConnection();
 			
 			String sql = " update tbl_member set pwd = ? "
-					   + "                     , lastpwdchagedate = sysdate "
+					   + "                     , lastpwdchangedate = sysdate "
 					   + " where userid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -189,6 +189,107 @@ public class MemberDAO_sj implements InterMemberDAO_sj {
 		
 		return n;
 	}// end of public int pwdUpdate(Map<String, String> paraMap)-----------
+	
+	
+	// 비밀번호가 기존의 비밀번호인지 체크 해주는 메소드
+	@Override
+	public boolean checkPwd(MemberVO member) throws SQLException {
+			
+		 boolean c = false; // 비밀번호가 기존의 비밀번호면 true, 아니면 false
+		
+		  try {
+		         conn = ds.getConnection();
+		         
+		         String sql = " select userid "
+		                    + " from tbl_member "
+		                    + " where status = 0 and userid = ? and pwd = ? ";
+		         
+		         pstmt = conn.prepareStatement(sql);
+		         pstmt.setString(1, member.getUserid() );
+		         pstmt.setString(2, Sha256.encrypt(member.getPwd()) );
+		       
+		         
+		         rs = pstmt.executeQuery();
+
+		         c = rs.next();
+		         
+		      } finally {
+		         close();
+		      }
+		
+
+		return c;
+	}
+	
+	
+	// 마이페이지에서 개인정보 수정하기(비밀번호가 기존의 비밀번호인 경우, 마지막 비밀번호날짜 업데이트 x)
+	@Override
+	public int updateMemberNotPwd(MemberVO member) throws SQLException {
+		
+		int n = 0;
+		
+		try {		
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_member set name = ? "
+					   + "                     , pwd = ? "
+					   + "                     , email = ? "
+					   + "                     , mobile = ? "
+					   + "                     , postcode = ? "
+					   + "                     , address = ? "
+					   + "                     , detailaddress = ? "
+					   + "                     , extraaddress = ? " 
+					   + " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, member.getName()); 
+	        pstmt.setString(2, Sha256.encrypt(member.getPwd()) );
+	        pstmt.setString(3, aes.encrypt(member.getEmail()) );
+	        pstmt.setString(4, aes.encrypt(member.getMobile()) );
+	        pstmt.setString(5, member.getPostcode() );
+	        pstmt.setString(6, member.getAddress() );
+	        pstmt.setString(7, member.getDetailaddress() );
+	        pstmt.setString(8, member.getExtraaddress() );
+	        pstmt.setString(9, member.getUserid() );
+			
+			n = pstmt.executeUpdate();
+		
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) {   
+	         e.printStackTrace();
+	    } finally {
+			close();
+		}
+		
+		
+		return n;
+	}// end of public int updateMemberNotPwd(MemberVO member)--------------
+
+	
+	// 마이페이지에서 계정 탈퇴 (status를 1로 업데이트한다)
+	@Override
+	public int deleteMember(Map<String, String> paraMap) throws SQLException {
+	
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_member set status = 1 "
+					   + " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			
+			n = pstmt.executeUpdate();
+				
+		} finally {
+			close();
+		}
+		
+		
+		return n;
+	}// end of public int deleteMember(Map<String, String> paraMap)----------------
 
 
 }

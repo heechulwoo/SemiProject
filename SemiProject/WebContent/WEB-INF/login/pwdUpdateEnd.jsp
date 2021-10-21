@@ -92,6 +92,7 @@
 			if(pwd != pwd2){
 				// 비밀번호가 일치하지 않는 경우
 				$("span.error2").show();
+				$("input#pwd").val("");
 				$(this).val("");
 				$(this).focus();
 			}
@@ -103,7 +104,7 @@
 		});// end of $("input#pwd2").blur(function(){})-----------
 		
 		
-		 // === 새 비밀번호로 업데이트 === 
+		 // === 새 비밀번호 저장 클릭 === 
 		 $("button#btnUpdate").click(function(){ 
 		    	
 		 	var pwd = $("input#pwd").val().trim();
@@ -127,29 +128,28 @@
 
 </script>
 
-<form name="pwdUpdateEndFrm" class="mt-3">
+<form name="pwdUpdateEndFrm" style="margin-top:116px">
    <div id="div_pwd">
-      <input type="password" id="pwd" size="46" style="height: 40px; margin:40px 0 0 7px; font-size: 12pt" placeholder="새로운 비밀번호" required />
-   	  <span style="font-size:9pt; white-space : nowrap; color:#cc0014" class="error1 ml-2">암호는 영문자, 숫자, 특수기호가 혼합된 8~15 글자로 입력하세요.</span>
+      <input type="password" name="pwd" id="pwd" size="46" style="height: 45px; margin:40px 0 0 53px; font-size: 12pt" placeholder="새로운 비밀번호" required />
+   	  <span style="font-size:9pt; white-space : nowrap; color:#cc0014; margin-left:54px" class="error1">암호는 영문자, 숫자, 특수기호가 혼합된 8~15 글자로 입력하세요.</span>
    </div>
    
    <div id="div_pwd2">
-      <input type="password" id="pwd2" size="46" style="height: 40px; margin:30px 0 0 7px; font-size: 12pt" placeholder="새로운 비밀번호 확인" required />
-   	  <br><span style="font-size:9pt; color:#cc0014" class="error2 ml-2">암호가 일치하지 않습니다.</span>
+      <input type="password" name="pwd2" id="pwd2" size="46" style="height: 45px; margin:7px 0 0 53px; font-size: 12pt" placeholder="새로운 비밀번호 확인" required />
+   	  <br><span style="font-size:9pt; color:#cc0014; margin-left:54px" class="error2">암호가 일치하지 않습니다.</span>
    </div>
    
    <input type="hidden" name="userid" value="${requestScope.userid}" /> 
 	
 	<c:if test="${requestScope.method == 'GET'}">
-		<div id="div_btnUpdate" align="center" class="mt-5">		
-			<button type="button" class="btn" id="btnUpdate" style="margin-left:5px; background-color:#00579c; color:white; border-radius: 50px; font-size:14px; width: 398px; height:50px">
+		<div id="div_btnUpdate" align="center" >		
+			<button type="button" class="btn" id="btnUpdate" style=" background-color:#00579c; color:white; margin-left:53px; border-radius: 50px; font-size:14px; width: 396px; height:53px">
 			<b>새로운 비밀번호 저장</b></button>
      	</div>
 	</c:if>	
 	
 	<c:if test="${requestScope.method == 'POST' && requestScope.n == 1}">
-		<div id="div_updateResult" align="center">
-           	${requestScope.userid}님의 비밀번호가 변경되었습니다.<br>
+		<div id="div_updateResult" align="center" class="mt-4"><b>${requestScope.userid}님의 비밀번호가 변경되었습니다.</b><br>
         </div> 
 	</c:if>
 	

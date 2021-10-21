@@ -128,6 +128,30 @@ button#goOrderView:hover {
   opacity: 0.8;
   text-decoration: none;
 }
+
+
+/* CSS 로딩 구현 시작(bootstrap 에서 가져옴) 시작 */
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #80ccff;
+  border-bottom: 16px solid #80ccff;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* CSS 로딩 구현 시작(bootstrap 에서 가져옴) 끝 */
 	
 </style>
 
@@ -137,11 +161,14 @@ button#goOrderView:hover {
 	
 	$(document).ready(function(){
 		
+		$(".loader").hide(); // CSS 로딩화면 감추기
+		
 		$("span.error").hide();
 		
 		
 		<%-- 주문번호 odrcode --%>
 	
+	<%--	
 		$("select#odrcode").blur(function(){
 				
 				var odrcode = $(this).val();
@@ -162,7 +189,7 @@ button#goOrderView:hover {
 				}
 				
 			});// 아이디가 odrcode 인 것은 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
-	
+	--%>
 		
 		
 		
@@ -335,11 +362,21 @@ button#goOrderView:hover {
 		}
 		
 		
-	    <%-- 셀프 반품에 대한 이메일을 보내주기 --%>
-		var frm = document.returnFrm;
-		frm.action = "<%= ctxPath%>/contact/selfReturnSend.one";
-		frm.method = "POST";
-		frm.submit();
+		var bool = confirm("셀프 반품을 신청하시겠습니까?");
+		
+		if(bool) {
+			
+			$(".loader").show(); // CSS 로딩화면 보여주기
+			
+		    <%-- 셀프 반품에 대한 이메일을 보내주기 --%>
+			var frm = document.returnFrm;
+			frm.action = "<%= ctxPath%>/contact/selfReturnSend.one";
+			frm.method = "POST";
+			frm.submit();
+			
+		}
+		
+		
 		
 	}// end of function goEdit() {}---------------------------------------
 	
@@ -363,6 +400,11 @@ button#goOrderView:hover {
         <br>
       </div>
       <!-- 이케아 셀프반품 끝 -->
+      
+      <%-- CSS 로딩화면 구현한것--%>
+	  <div style="display: flex;">
+		<div class="loader" style="margin: auto;"></div>
+	  </div>
 
       <!-- 상담 글쓰기 폼 시작 -->
       <div class="row justify-content-center" id="selfReturnFrm">
@@ -444,11 +486,6 @@ button#goOrderView:hover {
                   <td id="detail" style="width: 80%; text-align: left">
                     <input type="text" name="email" id="email" value="${sessionScope.loginuser.email}" class="requiredInfo" required />
                     <span class="error">이메일 형식에 맞지 않습니다. 다시 입력해주세요!</span>
-					
-					<%-- 
-						<span style="display: inline-block; width: 80px; height: 30px; border: solid 1px gray; border-radius: 5px; font-size: 8pt; text-align: center; margin-left: 10px; cursor: pointer;" onclick="isExistEmailCheck();">이메일중복확인</span>
-	                    <span id="emailCheckResult"></span>
-                    --%>
                   </td>
                 </tr>
                 <tr>

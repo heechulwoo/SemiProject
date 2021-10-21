@@ -32,6 +32,23 @@
 		<div class="col-lg-2"></div>
 		<div class="col-11 col-md-4">
 			<h4 class="ml-2 mt-5 pt-4" style="font-weight: bold;">구매 세부 정보</h4><br>
+			
+			
+			<c:choose>
+				<c:when test="${odrDetailVO.deliverstatus eq '1'}">
+					<i class="fas fa-receipt fa-lg mx-2 my-2 float-left"></i>
+					<h5 class="mx-1 my-1 float-left" style="font-weight: bold;">주문 접수됨</h5>
+				</c:when>
+				<c:when test="${odrDetailVO.deliverstatus eq '2'}">
+					<i class="fas fa-truck fa-lg mx-2 my-2 float-left"></i>
+					<h5 class="mx-1 my-1 float-left" style="font-weight: bold;">배송중</h5>
+				</c:when>
+				<c:when test="${odrDetailVO.deliverstatus eq '3'}">
+					<i class="fas fa-home fa-lg mx-2 my-2 float-left"></i>
+					<h5 class="mx-1 my-1 float-left" style="font-weight: bold;">배송완료</h5>
+				</c:when>
+			</c:choose>
+			
 			<i class="fas fa-receipt fa-lg mx-2 my-2 float-left"></i>
 			<h5 class="mx-1 my-1 float-left" style="font-weight: bold;">주문 접수됨</h5>
 			<br><br><br>

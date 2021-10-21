@@ -20,9 +20,10 @@ public class MypageOderDetailAction extends AbstractController {
 		
 		// 카테고리 목록 얻어오기 
 	      super.getCategoryList(request);
+	      
 
 		
-		 String odrcode = request.getParameter("odrcode");
+		String odrcode = request.getParameter("odrcode");
 		
 		// ProductOrderVO_kgh (tbl_order) --주문
 		
@@ -37,13 +38,10 @@ public class MypageOderDetailAction extends AbstractController {
 		
 		List<ProductOrderDetailVO_kgh> odrDetail = mdao.selectBySpecName(odrcode);
 		
-		ProductOrderDetailVO_kgh pname = odrDetail.get(1);
-		
-		
-		
+
 		request.setAttribute("odrDetail", odrDetail);
-		request.setAttribute("pname", pname);
 		request.setAttribute("odrcode", odrcode);
+
 		
 		super.setViewPage("/WEB-INF/member/orderDetail.jsp");   
 		   

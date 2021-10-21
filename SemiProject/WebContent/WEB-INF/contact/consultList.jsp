@@ -188,7 +188,7 @@
 	      
 	      <button type="button" id="goSearchBtn" class="btn" onclick="goSearch();" style="margin-right: 40px;">검색</button>
 	      
-	      <span style="font-weight: bold; font-size: 10pt;">페이지 당 회원명수 : </span>
+	      <span style="font-weight: bold; font-size: 10pt;">페이지 당 문의글 수 : </span>
 	      <select id="sizePerPage" name="sizePerPage"> <!-- name이 DB에 들어가는 것과 같은지 꼭 유의 -->
 	         <option value="10">10</option>
 	         <option value="5">5</option>
@@ -226,7 +226,7 @@
 	        		<tr class="consultInfo">
 	        			<td class="askno">${cvo.askno}</td>
 	        			<td class="fk_userid">${cvo.fk_userid}</td>
-	        			<td>${cvo.asktitle}</td>
+	        			<td>${cvo.asktitle}&nbsp;<c:if test="${not empty cvo.ask_systemFileName}"><span style="color: #0099ff;"><i class="far fa-save"></i></span></c:if></td>
 	        			<td>${cvo.name}</td>
 	        			<td>${cvo.askdate}</td>
 	        		</tr>
