@@ -139,7 +139,7 @@ function goSearch(){
 		
 		<nav class="pagebar">
 		
-				<ul class="pagination" style="margin: auto;">${requestScope.pageBar}</ul>
+				<ul class="pagination" style="margin: auto; display: inline-block;">${requestScope.pageBar}</ul>
 			
 		</nav>
 	</div>

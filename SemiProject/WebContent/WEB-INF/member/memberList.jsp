@@ -21,7 +21,6 @@
 	 }
 
 
-
 </style>
 
 
@@ -86,8 +85,14 @@
 
 	function goDetail(userid){
 		
-		location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid;
-
+		<%-- location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid; --%>
+	
+	    var url = "<%= ctxPath%>/member/memberOneDetail.one?userid="+userid;
+	      
+	      // 팝업창 띄우기
+	      window.open(url, "memberInfo",
+	                "width=600px, height=800px, top=100px, left=500px");
+		
 	}
 	
 

@@ -173,7 +173,7 @@
 									<span>희망일자:&nbsp; ${assemble.hopedate}&nbsp;
 									<c:if test="${not empty assemble.hopehour}">
 										&nbsp;${assemble.hopehour}
-										</c:if></span><br>
+										</c:if></span><br><br>
 									<c:choose>
 										<c:when test ="${assemble.progress eq 0}">
 											<span>진행상태:&nbsp; <b><span>접수완료</span></b> &nbsp;</span>&nbsp;&nbsp;

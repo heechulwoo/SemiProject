@@ -57,7 +57,7 @@
 					<p class="my_p" style="margin-bottom: 5%;">
 						월요일-일요일<br> 오전 10시 - 오후 9시
 					</p>
-					<a href="contactUs.html" role="button" class="my_btn">문의하기</a>
+					<a href="<%=ctxPath%>/contact/contactUs.one" role="button" class="my_btn">문의하기</a>
 				</div>
 
 				<div class="flex_item">
