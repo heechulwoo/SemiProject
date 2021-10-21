@@ -153,14 +153,14 @@
     					</c:choose>
 					</td>
     				<td class="review">
-    				<c:choose>
-    					<c:when test="${odrDetail.deliverstatus eq '3'}">
-    						작성하기
-    					</c:when>
-    						<c:otherwise>
-    							-
-    						</c:otherwise>
-    					</c:choose>
+	    				<c:choose>
+	    					<c:when test="${odrDetail.deliverstatus eq '3'}">
+	    						작성하기
+	    					</c:when>
+	    						<c:otherwise>
+	    							-
+	    						</c:otherwise>
+	    				</c:choose>
     				</td>
 				</tr>
     		</c:forEach>    
