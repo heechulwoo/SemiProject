@@ -22,7 +22,7 @@ public class OrderConfirmationController extends AbstractController {
 		String userid = request.getParameter("userid");
 		String email = request.getParameter("shippingEmail");
 		
-		if("POST".equalsIgnoreCase(method) && email.equals(loginuser.getEmail())) {
+		if("POST".equalsIgnoreCase(method) && loginuser != null && email.equals(loginuser.getEmail())) {
 			
 			String shippingNo = request.getParameter("shippingNo");
 			String shippingEmail = request.getParameter("shippingEmail");
@@ -37,7 +37,7 @@ public class OrderConfirmationController extends AbstractController {
 			super.setViewPage("/WEB-INF/product/orderConfirmation.jsp");
 			
 		}
-		else if ("GET".equalsIgnoreCase(method) && userid.equals(loginuser.getUserid())) {
+		else if ("GET".equalsIgnoreCase(method) && loginuser != null && userid.equals(loginuser.getUserid())) {
 			String odrcode = request.getParameter("odrcode");
 			email = loginuser.getEmail();
 			
