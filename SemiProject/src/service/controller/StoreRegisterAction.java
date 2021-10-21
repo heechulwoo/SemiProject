@@ -81,8 +81,10 @@ public class StoreRegisterAction extends AbstractController {
 				  String address = mtrequest.getParameter("address");
 				  String detailaddress = mtrequest.getParameter("detailaddress");
 				  String extraaddress = mtrequest.getParameter("extraaddress");
-				  String openinghour = mtrequest.getParameter("openinghour");
-				  String restaurant = mtrequest.getParameter("restaurant");
+				  String openhour = mtrequest.getParameter("openhour");
+				  String closehour = mtrequest.getParameter("closehour");
+				  String ropenhour = mtrequest.getParameter("ropenhour");
+				  String rclosehour = mtrequest.getParameter("rclosehour");
 				  
 				  // 업로드되어진 시스템의 첨부파일 이름(파일서버에 업로드 되어진 실제파일명)을 얻어 올때는 
 				  // cos.jar 라이브러리에서 제공하는 MultipartRequest 객체의 getFilesystemName("form에서의 첨부파일 name명") 메소드를 사용 한다. 
@@ -97,8 +99,10 @@ public class StoreRegisterAction extends AbstractController {
 				  svo.setAddress(address);
 				  svo.setDetailaddress(detailaddress);
 				  svo.setExtraaddress(extraaddress);
-				  svo.setOpeninghour(openinghour);
-				  svo.setRestaurant(restaurant);
+				  svo.setOpenhour(openhour);
+				  svo.setClosehour(closehour);
+				  svo.setRopenhour(ropenhour);
+				  svo.setRclosehour(rclosehour);
 				  svo.setStoreimg(storeimage);
 				  
 				  String message = ""; String loc= "";
@@ -113,7 +117,7 @@ public class StoreRegisterAction extends AbstractController {
 				  
 				  catch(SQLException e){ 
 					  e.printStackTrace(); message = "SQL오류로 매장등록을 실패했습니다.";
-					  loc = request.getContextPath()+"/product/admin/productRegister.one"; 
+					  loc = request.getContextPath()+"/service/storeRegister.one"; 
 				  }
 				  
 				  request.setAttribute("message", message); 

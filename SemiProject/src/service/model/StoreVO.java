@@ -8,8 +8,10 @@ public class StoreVO {
 	private String address;
 	private String detailaddress;
 	private String extraaddress;
-	private String openinghour;
-	private String restaurant;
+	private String openhour;
+	private String closehour;
+	private String ropenhour;
+	private String rclosehour;
 	private String storeimg;
 	
 	
@@ -50,17 +52,30 @@ public class StoreVO {
 	public void setExtraaddress(String extraaddress) {
 		this.extraaddress = extraaddress;
 	}
-	public String getOpeninghour() {
-		return openinghour;
+	
+	public String getOpenhour() {
+		return openhour;
 	}
-	public void setOpeninghour(String openinghour) {
-		this.openinghour = openinghour;
+	public void setOpenhour(String openhour) {
+		this.openhour = openhour;
 	}
-	public String getRestaurant() {
-		return restaurant;
+	public String getClosehour() {
+		return closehour;
 	}
-	public void setRestaurant(String restaurant) {
-		this.restaurant = restaurant;
+	public void setClosehour(String closehour) {
+		this.closehour = closehour;
+	}
+	public String getRopenhour() {
+		return ropenhour;
+	}
+	public void setRopenhour(String ropenhour) {
+		this.ropenhour = ropenhour;
+	}
+	public String getRclosehour() {
+		return rclosehour;
+	}
+	public void setRclosehour(String rclosehour) {
+		this.rclosehour = rclosehour;
 	}
 	public String getStoreimg() {
 		return storeimg;
