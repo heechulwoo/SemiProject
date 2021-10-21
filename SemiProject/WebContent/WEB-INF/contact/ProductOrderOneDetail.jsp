@@ -196,10 +196,10 @@
 				        			
 				        			<%-- 만약 배송상태가 1이면 주문접수 / 3이면 배송완료이므로 배송일자 안보여주기 --%>
 				        			<c:if test="${dvo.deliverstatus == 1}">
-				        				<td class="deliverdate">주문접수일&nbsp;:&nbsp;${dvo.deliverdate}</td>
+				        				<td class="deliverdate">주문접수<%-- ${dvo.deliverdate} --%></td>
 			        				</c:if>
 			        				<c:if test="${dvo.deliverstatus == 2}">
-				        				<td class="deliverdate">도착예정일&nbsp;:&nbsp;${dvo.deliverdate}</td>
+				        				<td class="deliverdate">배송중<%-- ${dvo.deliverdate} --%></td>
 			        				</c:if>
 			        				<c:if test="${dvo.deliverstatus == 3}">
 				        				<td class="deliverdate">배송완료일&nbsp;:&nbsp;${dvo.deliverdate}</td>
