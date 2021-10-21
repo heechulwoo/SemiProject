@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
@@ -118,11 +117,8 @@ public class ProductPaySuccessController extends AbstractController {
         	/// *** Transaction 처리해주는 메서드 *** //
         	int isSuccess = pdao.orderAdd(paraMap);
         	
-        //	JSONArray jsonArr = new JSONArray();
         	JSONObject jsobj = new JSONObject();
-        	
         	jsobj.put("odrcode", odrcode);
-        	
         	
         	if(isSuccess == 1) {
         		
@@ -131,7 +127,7 @@ public class ProductPaySuccessController extends AbstractController {
         		// System.out.println("isSuccess : " + isSuccess);
         		// System.out.println("odrcode : " + odrcode);
         		
-        		System.out.println("주문 처리 성공");
+        		// System.out.println("주문 처리 성공");
         		
         		// 주문일자 가져오기
         		String orderdate = pdao.selectOrderDate(odrcode);
@@ -151,8 +147,6 @@ public class ProductPaySuccessController extends AbstractController {
         		jsobj.put("isSuccess", 0);
         	}
             
-        //	jsonArr.put(jsobj);
-        	
             String json = jsobj.toString();
             // System.out.println("json : " + json);  // {"odrcode":"~~~", "isSuccess":1}
             request.setAttribute("json", json);
