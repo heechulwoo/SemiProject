@@ -416,7 +416,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 					     	<option><c:out value="${odrcode}" /></option>
 					     </c:forEach>
 					 </select> 
-						<a href="<%= ctxPath%>/product/shipping.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
+						<a href="<%= ctxPath%>/member/memberOderList.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
 						</td>
 				</tr>
 				
@@ -457,7 +457,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 						<div>
 							<textarea name="demand" class="forminput" cols="60"
 								style="width: 80%; height: 100px" class="textarea"
-								placeholder="원하는 위치 요청이나 전달할 사항이 있다면 적어주세요."></textarea>
+								placeholder="제품 이름이나 원하는 위치 요청 등 전달할 사항이 있다면 적어주세요."></textarea>
 						</div>
 					</td>
 				</tr>
