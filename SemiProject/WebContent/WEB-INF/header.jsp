@@ -126,14 +126,6 @@
 			});
 		}
 	
-		/* 검색  */
-		
-		// 검색어에서 엔터를 하면 검색하러 가도록 한다.
-		$("input#searchWord").bind("keyup", function(event){
-			if(event.keyCode == 13){ 
-				goSearch();
-			}
-		});
 		
 	}); // end of $(document).ready(function(){}----------------------
 
