@@ -111,8 +111,8 @@ button#backBtn:hover {
   text-decoration: none;
 }
 
-button#goOrderView {
-  width: 12em;
+a#goOrderView {
+  width: 15em;
   text-align: center;
   display: inline-block;
   font-weight: bold;
@@ -124,7 +124,7 @@ button#goOrderView {
   justify-content: center;
 }
 
-button#goOrderView:hover {
+a#goOrderView:hover {
   opacity: 0.8;
   text-decoration: none;
 }
@@ -449,7 +449,8 @@ button#goOrderView:hover {
 					          <option>${item}</option>
 					     </c:forEach>
                     </select>
-                    <span class="notice"><button type="button" id="goOrderView" class="btn" onclick="goOrder();" style="margin-left: 17px;">주문번호 조회하기</button></span>
+                    <!-- <span class="notice"><button type="button" id="goOrderView" class="btn" onclick="goOrder();" style="margin-left: 17px;">주문번호 조회하기</button></span> -->
+                    <a href="<%= ctxPath%>/member/memberOderList.one" class="mybtn" id="goOrderView" target="_blank">주문 내역 확인하기 </a>
                     <span class="error">주문번호는 필수입력 사항입니다.</span>
                   </td>
                   
