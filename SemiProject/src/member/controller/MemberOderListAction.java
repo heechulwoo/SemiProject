@@ -131,8 +131,8 @@ public class MemberOderListAction extends AbstractController {
 			// **** [다음] [마지막] 만들기  **** //
 			// while문을 나올때 pageNo ==> 11이다.
 			if(pageNo <= totalPage) {
-				pageBar += "<li class='page-item'><a class='page-link' href='memberList.one?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"&searchType="+searchType+"&searchWord="+searchWord+"'>[다음]</a></li>";   
-				pageBar += "<li class='page-item'><a class='page-link' href='memberList.one?currentShowPageNo="+totalPage+"&sizePerPage="+sizePerPage+"&searchType="+searchType+"&searchWord="+searchWord+"'>[마지막]</a></li>";
+				pageBar += "<li class='page-item'><a class='page-link' href='memberOderList.one?currentShowPageNo="+pageNo+"&sizePerPage="+sizePerPage+"&searchType="+searchType+"&searchWord="+searchWord+"'>[다음]</a></li>";   
+				pageBar += "<li class='page-item'><a class='page-link' href='memberOderList.one?currentShowPageNo="+totalPage+"&sizePerPage="+sizePerPage+"&searchType="+searchType+"&searchWord="+searchWord+"'>[마지막]</a></li>";
 			}
 			
 			
