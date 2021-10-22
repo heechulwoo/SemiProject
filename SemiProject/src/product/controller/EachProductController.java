@@ -13,6 +13,9 @@ public class EachProductController extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
+		// 카테고리 목록을 조회하기
+		super.getCategoryList(request);
+		
 		String pnum = request.getParameter("pnum");
 		
 		String cnum = request.getParameter("pnum").substring(0, 4);

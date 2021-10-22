@@ -95,7 +95,7 @@
 			return; // 종료
 		}
 		else {
-			
+			// 구매 내역 페이지로 이동
 			$.ajax({
 				url:"<%= ctxPath%>/product/shippingNoCheck.one",
 				type:"post",

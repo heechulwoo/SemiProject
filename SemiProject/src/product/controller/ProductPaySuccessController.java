@@ -124,15 +124,9 @@ public class ProductPaySuccessController extends AbstractController {
         		
         		jsobj.put("isSuccess", isSuccess);
         		
-        		// System.out.println("isSuccess : " + isSuccess);
-        		// System.out.println("odrcode : " + odrcode);
-        		
-        		// System.out.println("주문 처리 성공");
-        		
         		// 주문일자 가져오기
         		String orderdate = pdao.selectOrderDate(odrcode);
         		
-        		// System.out.println(orderdate);
         		
         		paraMap.put("orderdate", orderdate);
         		
