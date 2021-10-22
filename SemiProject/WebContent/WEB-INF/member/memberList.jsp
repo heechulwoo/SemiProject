@@ -91,7 +91,7 @@
 	      
 	      // 팝업창 띄우기
 	      window.open(url, "memberInfo",
-	                "width=600px, height=800px, top=100px, left=500px");
+	                "width=600px, height=812px, top=100px, left=530px");
 		
 	}
 	
