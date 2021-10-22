@@ -160,7 +160,7 @@
 	      
 	      <button type="button" id="goSearchBtn" class="btn" onclick="goSearch();" style="margin-right: 40px;">검색</button>
 	      
-	      <span style="font-weight: bold; font-size: 10pt;">페이지 당 회원명수 : </span>
+	      <span style="font-weight: bold; font-size: 10pt;">페이지 당 주문내역수 : </span>
 	      <select id="sizePerPage" name="sizePerPage"> <!-- name이 DB에 들어가는 것과 같은지 꼭 유의 -->
 	         <option value="10">10</option>
 	         <option value="5">5</option>
