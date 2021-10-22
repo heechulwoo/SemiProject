@@ -128,31 +128,30 @@
 
 </script>
 
-<form name="pwdUpdateEndFrm" style="margin-top:116px">
+<form name="pwdUpdateEndFrm" style="margin-top:90px">
    <div id="div_pwd">
-      <input type="password" name="pwd" id="pwd" size="46" style="height: 45px; margin:40px 0 0 53px; font-size: 12pt" placeholder="새로운 비밀번호" required />
-   	  <span style="font-size:9pt; white-space : nowrap; color:#cc0014; margin-left:54px" class="error1">암호는 영문자, 숫자, 특수기호가 혼합된 8~15 글자로 입력하세요.</span>
+      <input type="password" name="pwd" id="pwd" size="40" style="height: 60px; margin:40px 0 0 53px; font-size: 18pt" placeholder="새로운 비밀번호" required />
+   	  <span style="font-size:14pt; white-space : nowrap; color:#cc0014; margin-left:54px" class="error1">암호는 영문자, 숫자, 특수기호가 혼합된 8~15 글자로 입력하세요.</span>
    </div>
    
    <div id="div_pwd2">
-      <input type="password" name="pwd2" id="pwd2" size="46" style="height: 45px; margin:7px 0 0 53px; font-size: 12pt" placeholder="새로운 비밀번호 확인" required />
+      <input type="password" name="pwd2" id="pwd2" size="40" style="height: 60px; margin:7px 0 0 53px; font-size: 18pt" placeholder="새로운 비밀번호 확인" required />
    	  <br><span style="font-size:9pt; color:#cc0014; margin-left:54px" class="error2">암호가 일치하지 않습니다.</span>
    </div>
    
    <input type="hidden" name="userid" value="${requestScope.userid}" /> 
 	
 	<c:if test="${requestScope.method == 'GET'}">
-		<div id="div_btnUpdate" align="center" >		
-			<button type="button" class="btn" id="btnUpdate" style=" background-color:#00579c; color:white; margin-left:53px; border-radius: 50px; font-size:14px; width: 396px; height:53px">
+		<div id="div_btnUpdate" >		
+			<button type="button" class="btn" id="btnUpdate" style=" background-color:#00579c; color:white; margin-left:50px; border-radius: 50px; font-size:18px; width: 520px; height:70px">
 			<b>새로운 비밀번호 저장</b></button>
      	</div>
 	</c:if>	
 	
-	<c:if test="${requestScope.method == 'POST' && requestScope.n == 1}">
-		<div id="div_updateResult" align="center" class="mt-4"><b>${requestScope.userid}님의 비밀번호가 변경되었습니다.</b><br>
+<c:if test="${requestScope.method == 'POST' && requestScope.n == 1}">
+		<div id="div_updateResult" style="font-size: 18pt; margin-left:50px" class="mt-4"><b>${requestScope.userid}님의 비밀번호가 변경되었습니다.</b><br>
         </div> 
-	</c:if>
-	
+</c:if>
 </form>
 
 
