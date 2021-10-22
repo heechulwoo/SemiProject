@@ -71,6 +71,8 @@
 		window.history.back();
 	}
 	
+	
+	
 	function goEdit(){
 		
 	 	var frm = document.editFrm;
@@ -79,6 +81,8 @@
 		frm.submit(); 
 		
 	}
+	
+	
 	
 	
 	

@@ -209,18 +209,9 @@
 			alert("결제 사항에 동의하셔야 합니다.");
 			return; // 종료
 		}
-		
-//		var odcartno = "${requestScope.odcartno}";
-//		var odoqty = "${requestScope.odoqty}";
-//		var name = $("input#lastname").val() + $("input#firstname").val();
-//		var email = $("input#email").val();
-//		var mobile = $("input#mobile").val();
-//		var sumTotalPrice = ${requestScope.sumTotalPrice};
 	
 		var totalPay = ${requestScope.sumTotalPrice};
 		
-		console.log(totalPay);
-
 		// 결제 팝업창 띄우기 
 		var url = "<%= request.getContextPath()%>/product/productPay.one?totalPay=" + totalPay + "&userid=${sessionScope.loginuser.userid}";
 		

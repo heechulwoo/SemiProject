@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
        
 <%
-	String ctxPath = request.getContextPath();
-	// /SemiProject
+   String ctxPath = request.getContextPath();
+   // /SemiProject
 %>    
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  <!-- jstl을 사용하기 위함  -->    
@@ -42,7 +42,7 @@
    }
    
    #tblMemberUpdate input {
-   	border:none;
+      border:none;
    } 
    
    
@@ -52,9 +52,9 @@
    } 
    
    .review {
-   		cursor: pointer;
-   		font-weight: bold;
-   		color: blue;
+         cursor: pointer;
+         font-weight: bold;
+         color: blue;
    }
    
    
@@ -63,67 +63,67 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script type="text/javascript">
-	
-	
+   
+   
   $(document).ready(function() {
-		
-	  $("tr.orderInfo").bind("click", function(){
-			
-			var $target = $(event.target);	
-	
-			var pnum =  $target.parent().find(".odrcode").html();		
+      
+     $("td.review").bind("click", function(){
+         
+         var $target = $(event.target);   
+   
+         var pnum =  $target.parent().find(".odrcode").html();      
 
-			$('input[name=pnum]').attr('value',pnum);
-			
-	
-			var frmd = document.reviewfrm;
-			frmd.action = "oderReview.one"
-			frmd.method = "GET";
-			frmd.submit(); 
-			
+         $('input[name=pnum]').attr('value',pnum);
+         
+   
+         var frmd = document.reviewfrm;
+         frmd.action = "oderReview.one"
+         frmd.method = "GET";
+         frmd.submit(); 
+         
 
-		<%-- location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid --%>
+      <%-- location.href="<%= ctxPath%>/member/memberOneDetail.one?userid="+userid --%>
 
-	});
-	
+   });
+   
 
-		
-	  
-	  
-	});
-	
-	
-	
-	
-	function goOderList() {
-		window.history.back();
-	}
-	
+      
+     
+     
+   });
+   
+   
+   
+   
+   function goOderList() {
+      window.history.back();
+   }
+   
 
 
-	
-	
+   
+   
 </script>
 
-	<!-- 상단 컨텐츠 시작 -->
-	<div class="container" style="max-width:950px; margin-top:40px; height: 600px;">
-	<div class="row custom-topcontents">
-		
-	
-		<div id="head">
-			<span style="font-size: 26pt"><b>&nbsp;주문 상세</b></span><br>
-			<span class="mt-1"style="font-size: 13pt; margin-left:12px;">주문번호:&nbsp;${requestScope.odrcode}</span>
+   <!-- 상단 컨텐츠 시작 -->
+   <div class="container" style="max-width:950px; margin-top:40px; height: 600px;">
+   <div class="row custom-topcontents">
+      
+   
+      <div id="head">
+         <span style="font-size: 26pt"><b>&nbsp;주문 상세</b></span><br>
+         <span class="mt-1"style="font-size: 13pt; margin-left:12px;">주문번호:&nbsp;${requestScope.odrcode}</span>
 
-		</div>
-				<img class="w1-image" width="1100" height="10" src="<%= ctxPath%>/images/yellow.PNG" style="margin-top:20px">	
-		</div>
+      </div>
+            <img class="w1-image" width="1100" height="10" src="<%= ctxPath%>/images/yellow.PNG" style="margin-top:20px">   
+      </div>
 
   
   
   <table id="orderTbl" class="table table-bordered" style="width:100%; margin-top: 40px;">
         <thead>
            <tr >
-           	  <th>제품코드</th>
+                <th>제품코드</th>
               <th>제품명</th>
               <th>제품금액</th>
               <th>주문개수</th>
@@ -133,42 +133,44 @@
         </thead>
         
         <tbody>
-    		<c:forEach var="odrDetail" items="${requestScope.odrDetail}">
-    			<tr class="orderInfo" >
-    			    <td class="odrcode">${odrDetail.pvo.pnum}</td>
-    				<td >${odrDetail.pvo.pname}</td>
-    				<td><fmt:formatNumber value="${odrDetail.pvo.price}" pattern="###,###" />원</td>
-    				<td>${odrDetail.oqty}개</td>
-    				<td>
-    				<c:choose>
-    					<c:when test="${odrDetail.deliverstatus eq '1'}">
-    							주문완료
-    					</c:when>
-    					<c:when test="${odrDetail.deliverstatus eq '2'}">
-    							배송중
-    					</c:when>
-    						<c:otherwise>
-    							배송완료
-    						</c:otherwise>
-    					</c:choose>
-					</td>
-    				<td class="review">
-    				<c:choose>
-    					<c:when test="${odrDetail.deliverstatus eq '3'}">
-    						작성하기
-    					</c:when>
-    						<c:otherwise>
-    							-
-    						</c:otherwise>
-    					</c:choose>
-    				</td>
-				</tr>
-    		</c:forEach>    
-		</tbody>
-	</table>
-	
+          <c:forEach var="odrDetail" items="${requestScope.odrDetail}">
+             <tr class="orderInfo" >
+                 <td class="odrcode">${odrDetail.pvo.pnum}</td>
+                <td >${odrDetail.pvo.pname}</td>
+                <td><fmt:formatNumber value="${odrDetail.pvo.price}" pattern="###,###" />원</td>
+                <td>${odrDetail.oqty}개</td>
+                <td>
+                <c:choose>
+                   <c:when test="${odrDetail.deliverstatus eq '1'}">
+                         주문완료
+                   </c:when>
+                   <c:when test="${odrDetail.deliverstatus eq '2'}">
+                         배송중
+                   </c:when>
+                      <c:otherwise>
+                         배송완료
+                      </c:otherwise>
+                   </c:choose>
+               </td>
+                <c:choose>
+                   <c:when test="${odrDetail.deliverstatus eq '3'}">
+                <td class="review">
+                      작성하기
+                </td>
+                   </c:when>
+                      <c:otherwise>
+                <td>
+                         -
+                </td>
+                      </c:otherwise>
+                   </c:choose>
+            </tr>
+          </c:forEach>    
+      </tbody>
+   </table>
+   
 <form name="reviewfrm">
-	<input type="hidden" name="pnum" value="" />
+   <input type="hidden" name="pnum" value="" />
 </form>
  
 
