@@ -209,8 +209,8 @@
 
 
    <!-- 아이디찾기 Sidebar 시작 -->
-   <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none; z-index:2; width:200%; max-width:1700px" id="sidebarId">
-      <div class="container" style="float:left; color:white; background-color:#00579c; max-width:492px; height:700px"> 
+   <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none; z-index:2; width:200%; max-width:2000px" id="sidebarId">
+      <div class="container" style="float:left; color:white; background-color:#00579c; max-width:492px; height:900px"> 
         <a href="javascript:void(0)" onclick="id_close()"class=" w3-button myclose" style="border-radius: 70px; margin:30px; color:white"><i class="fas fa-times"></i></a>
         <a class="navbar-brand" href="<%= ctxPath%>/index.one" style="margin-left:29px"><img src="<%= ctxPath%>/images/logo2.jpg" alt="IKEA_logo" width="87" height="36"/></a>           
         <div style="margin-top:105px; margin-left:140px">
@@ -218,15 +218,15 @@
               <span style="font-size:15px">가입하셨던 성명과 이메일을 입력해 주세요.</span>
         </div>
        </div>
-          <div id="idFind"><iframe style="border: none; margin:45px 0 0 60px; width:550px; height: 650px;" src="<%= request.getContextPath()%>/login/idFind.one">
+          <div id="idFind"><iframe style="border: none; margin:45px 0 0 60px; width:1000px; height: 650px;" src="<%= request.getContextPath()%>/login/idFind.one">
                 </iframe>
           </div>
    </nav>
    <!-- 아이디찾기 Sidebar 끝-->
    
    <!-- 비밀번호찾기 Sidebar 시작 -->
-   <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none; z-index:2; width:200%; max-width:1700px" id="sidebarPwd">
-      <div class="container" style="float:left; color:white; background-color:#00579c; max-width:492px; height:700px"> 
+   <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left w3-light" style="display:none; z-index:2; width:200%; max-width:2000px" id="sidebarPwd">
+      <div class="container" style="float:left; color:white; background-color:#00579c; max-width:492px; height:900px"> 
         <a href="javascript:void(0)" onclick="pwd_close()"class=" w3-button myclose" style="border-radius: 70px; margin:30px; color:white"><i class="fas fa-times"></i></a>
         <a class="navbar-brand" href="<%= ctxPath%>/index.one" style="margin-left:29px"><img src="<%= ctxPath%>/images/logo2.jpg" alt="IKEA_logo" width="87" height="36"/></a>           
         <div style="margin-top:93px; margin-left:140px">
@@ -234,7 +234,7 @@
               <span style="font-size:15px">이메일을 통해 비밀번호를 재설정해 주세요.</span>
         </div>
        </div>
-          <div id="pwdFind"><iframe style="border: none; margin:55px 0 0 48px; width:600px; height: 520px;" src="<%= request.getContextPath()%>/login/pwdFind.one">
+          <div id="pwdFind"><iframe style="border: none; margin:55px 0 0 18px; width:800px; height: 650px;" src="<%= request.getContextPath()%>/login/pwdFind.one">
                 </iframe>
           </div>
    </nav>

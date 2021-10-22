@@ -132,22 +132,22 @@
 				<p class="loader ml-4" style="white-space: nowrap; margin-top:20px"><b>이메일 전송 중...</b></p>
 			</div>
 <div class="FindFrm">	
-<form name="pwdFindFrm" id="pwdFindFrm" style="font-size:14px">
+<form name="pwdFindFrm" id="pwdFindFrm" style="font-size:20px">
    <ul style="list-style-type: none; margin-top: 150px" id="pwdFindFrm">
          <li class="my-3">
             <label for="userid" style="display: none">성명</label>
-			<input type="text" name="userid" id="userid" size="50" style="height: 42px"  placeholder="아이디" autocomplete="off" required />
+			<input type="text" name="userid" id="userid" size="50" style="height: 60px"  placeholder="아이디" autocomplete="off" required />
 		 </li>
          <li class="my-4">
              <label for="userid" style="display: none">이메일</label>
-		     <input type="text" name="email" id="email" size="50" style="height: 42px" placeholder="이메일" autocomplete="off" required />
+		     <input type="text" name="email" id="email" size="50" style="height: 60px" placeholder="이메일" autocomplete="off" required />
 	     	 <br>
 	     	 <span class="error" style="color:#cc0014">이메일 형식에 맞지 않습니다.</span>
 	     </li>
    </ul>
    <div class="my-4" id="div_btnFind">
         <p class="text-center">
-           <button type="button" class="btn" id="btnFind" style="margin-left:37px; background-color:#00579c; color:white; border-radius: 50px; font-size:14px; width: 390px; height:55px">
+           <button type="button" class="btn" id="btnFind" style="margin-left:37px; background-color:#00579c; color:white; border-radius: 50px; font-size:18px; width: 540px; height:70px">
            <b>비밀번호 찾기</b></button>
         </p>   
    </div>
