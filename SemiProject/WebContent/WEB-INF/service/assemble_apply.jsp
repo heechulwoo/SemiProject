@@ -449,7 +449,7 @@ let boolFlag = true; // 필수입력 사항에 올바르게 모두 입력이 되
 					     	<option><c:out value="${odrcode}" /></option>
 					     </c:forEach>
 					 </select> 
-						<a href="<%= ctxPath%>/member/memberOderList.one" class="mybtn" target="_blank">주문 내역 확인하기 </a>
+						<a href="<%= ctxPath%>/member/memberOderList.one" class="mybtn" target="_blank">주문내역 확인하기 </a>
 						</td>
 				</tr>
 				

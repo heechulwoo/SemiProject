@@ -13,7 +13,7 @@
 <script type="text/javascript">
 
 	const lenHIT = 8;
-	// HIT 상품 "스크롤"을 할 때 보여줄 상품의 개수(단위)크기 
+	// 스크롤을 할 때 보여줄 상품의 개수
 
 	var start = 1;
 	var range = "pname";
@@ -237,7 +237,7 @@
 					// 상품 결과를 출력하기
 					$("div#displayProd").append(html);
 			
-					// countHIT 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
+					// 지금까지 출력된 상품의 개수를 누적해서 기록한다.
 					$("span#countProd").text(Number($("span#countProd").text()) + json.length);
 					
 				}

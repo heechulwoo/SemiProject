@@ -609,7 +609,7 @@ public class AdminDAO implements InterAdminDAO {
 	         conn = ds.getConnection();
 	         
 	         String sql = " insert into tbl_shoppingmap(storeid, storename, postcode, address, detailaddress, "
-	         											+ "extraaddress, storeimg, openhour, closehour, ropenhour, rclosehour) " +  
+	         									+ "extraaddress, storeimg, openhour, closehour, ropenhour, rclosehour) " +  
 	                    " values(seq_store.nextval,?,?,?,?,?,?,?,?,?,?)";
 	         
 	         pstmt = conn.prepareStatement(sql);

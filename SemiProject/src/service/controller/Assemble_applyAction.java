@@ -35,11 +35,10 @@ public class Assemble_applyAction extends AbstractController {
 			if(loginuser != null) {
 				// 로그인을 한 경우
 
-				String userid = loginuser.getUserid(); // 혹은 로그인 아이디를 받아 숨겨둔 인풋태그에서 getparameter해도 된다.
+				String userid = loginuser.getUserid(); 
 				InterServiceDAO sdao = new AssembleDAO();
 				
 				List<String> odrcodeList = sdao.takeOdrcode(userid); // 로그인 한 사용자의 주문번호 가져오는 메소드
-				// 주문을 한번만 하는게 아니기 때문에 리턴타입은 리스트로 받는다.
 				
 				if(odrcodeList.isEmpty()){ // 주문내역이 없는 경우
 					 String message = "⛔ 조립 서비스는 제품을 구매한 후 이용 가능합니다.";

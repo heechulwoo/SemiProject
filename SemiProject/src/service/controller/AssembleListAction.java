@@ -83,7 +83,7 @@ public class AssembleListAction extends AbstractController {
 		// blockSize 는 블럭(토막)당 보여지는 페이지 번호의 개수이다.
 		
 		int loop = 1;
-		// loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수(지금은 15개)까지만 증가하는 용도이다.
+		// loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수까지만 증가하는 용도이다.
 		
 		// !!! 아래는 pageNo를 구하는 공식이다.
 		int pageNo = ( (Integer.parseInt(currentShowPageNo) - 1)/blockSize ) * blockSize + 1;

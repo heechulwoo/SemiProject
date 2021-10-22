@@ -138,9 +138,7 @@ function goSearch(){
 		</table>
 		
 		<nav class="pagebar">
-		
-				<ul class="pagination" style="margin: auto; display: inline-block;">${requestScope.pageBar}</ul>
-			
+				<ul class="pagination" style="margin: auto; display: inline-block;">${requestScope.pageBar}</ul>	
 		</nav>
 	</div>
 </div>
